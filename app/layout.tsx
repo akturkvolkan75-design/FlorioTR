@@ -24,6 +24,12 @@ export const metadata: Metadata = {
 
   applicationName: "FlorioTR",
 
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
+
   keywords: [
     "FlorioTR",
     "online çiçek siparişi",
@@ -55,7 +61,7 @@ export const metadata: Metadata = {
       index: true,
       follow: true,
       "max-image-preview": "large",
-      "max-snippet": -1,
+      maxSnippet: -1,
       "max-video-preview": -1,
     },
   },
