@@ -1,6 +1,5 @@
 "use client";
 
-
 import Link from "next/link";
 
 import FavoriteButton from "@/components/FavoriteButton";
@@ -11,111 +10,74 @@ import { themes } from "@/themes/themes";
 import ProductRating from "@/components/reviews/ProductRating";
 
 
-
 type Product = {
-
   id:number;
-
   slug:string;
-
   name:string;
-
   category:string;
-
   price:number;
-
   rating:number;
-
   image:string;
-
   description:string;
-
   vip:boolean;
-
 };
 
 
 
-
-
 export default function ProductCard({
-
   product,
-
 }:{
-
   product:Product;
-
 }){
 
 
-  const { theme } = useTheme();
+  const {theme}=useTheme();
 
-  const colors = themes[theme].colors;
+  const colors=themes[theme].colors;
 
 
 
   return (
 
-
-
     <article
-
 
       className="
       group
-      flex
-      h-full
-      flex-col
       overflow-hidden
-      rounded-[32px]
-      shadow-xl
+      rounded-3xl
       transition-all
-      duration-500
-      hover:-translate-y-3
-      hover:shadow-2xl
+      duration-300
+      hover:-translate-y-2
       "
 
       style={{
 
-
-        background:
-        colors.card,
-
+        background:colors.card,
 
         border:
-        `2px solid ${colors.cardBorder}`,
+        `1px solid ${colors.cardBorder}`,
 
         boxShadow:
-        `0 14px 34px ${colors.cardBorder}22`
-
+        `0 10px 25px ${colors.cardBorder}22`
 
       }}
-
 
     >
 
 
 
-
-
-      {/* Görsel */}
-
-
+      {/* FOTOĞRAF */}
 
       <div
 
         className="
         relative
-          h-56
-          sm:h-64
-          lg:h-72
+        h-40
+        sm:h-44
         overflow-hidden
         "
 
       >
-
-
 
         <img
 
@@ -128,12 +90,44 @@ export default function ProductCard({
           w-full
           object-cover
           transition
-          duration-700
-          group-hover:scale-110
+          duration-500
+          group-hover:scale-105
           "
 
         />
 
+
+
+        {product.vip && (
+
+          <span
+
+            className="
+            absolute
+            right-2
+            top-2
+            rounded-full
+            px-3
+            py-1
+            text-[11px]
+            font-bold
+            "
+
+            style={{
+
+              background:colors.primary,
+
+              color:colors.background
+
+            }}
+
+          >
+
+            ✨ VIP
+
+          </span>
+
+        )}
 
 
 
@@ -141,62 +135,15 @@ export default function ProductCard({
 
           className="
           absolute
-          inset-0
-          bg-gradient-to-t
-          from-black/50
-          via-transparent
-          to-transparent
+          bottom-2
+          right-2
           "
 
-        />
+        >
 
+          <FavoriteButton slug={product.slug}/>
 
-
-
-
-
-
-        {product.vip && (
-
-
-          <span
-
-            className="
-            absolute
-            right-4
-            top-4
-            rounded-full
-            px-4
-            py-2
-            text-xs
-            font-bold
-            "
-
-            style={{
-
-
-              background:
-              colors.primary,
-
-
-              color:
-              colors.background
-
-
-            }}
-
-          >
-
-            ✨ VIP Koleksiyon
-
-
-          </span>
-
-
-        )}
-
-
-
+        </div>
 
 
       </div>
@@ -205,44 +152,33 @@ export default function ProductCard({
 
 
 
+      {/* BİLGİ */}
 
+      <div
 
+        className="
+        p-4
+        "
 
-      {/* Bilgiler */}
-
-
-
-      <div className="flex flex-1 flex-col p-6">
-
-
-
+      >
 
 
         <p
 
           className="
-          text-sm
+          text-xs
           font-bold
           "
 
           style={{
-
-
-            color:
-            colors.primary
-
-
+            color:colors.primary
           }}
 
         >
 
           {product.category}
 
-
         </p>
-
-
-
 
 
 
@@ -250,18 +186,15 @@ export default function ProductCard({
         <h3
 
           className="
-          mt-3
-          min-h-[56px]
-          text-xl
-          font-extrabold
+          mt-1
+          truncate
+          text-base
+          font-black
           "
 
           style={{
 
-
-            color:
-            colors.foreground
-
+            color:colors.foreground
 
           }}
 
@@ -269,43 +202,7 @@ export default function ProductCard({
 
           {product.name}
 
-
         </h3>
-
-
-
-
-
-
-
-        <p
-
-          className="
-          mt-3
-          line-clamp-2
-          text-sm
-          font-medium
-          leading-relaxed
-          "
-
-          style={{
-
-
-            color: colors.muted
-
-
-          }}
-
-        >
-
-          {product.description}
-
-
-        </p>
-
-
-
-
 
 
 
@@ -314,7 +211,7 @@ export default function ProductCard({
         <div
 
           className="
-          mt-6
+          mt-2
           flex
           items-center
           justify-between
@@ -322,21 +219,16 @@ export default function ProductCard({
 
         >
 
-
-
           <span
 
             className="
-            text-2xl
+            text-lg
             font-black
             "
 
             style={{
 
-
-              color:
-              colors.primary
-
+              color:colors.primary
 
             }}
 
@@ -344,11 +236,7 @@ export default function ProductCard({
 
             {product.price.toLocaleString("tr-TR")} TL
 
-
           </span>
-
-
-
 
 
 
@@ -356,59 +244,23 @@ export default function ProductCard({
           <span
 
             className="
-            rounded-full
-            px-4
-            py-2
-            text-sm
-            font-bold
+            text-xs
             "
-
-            style={{
-
-
-              background:
-              colors.secondary,
-
-
-              color:
-              colors.foreground
-
-
-            }}
 
           >
 
-            <ProductRating productSlug={product.slug} fallback={product.rating} />
+            <ProductRating
 
+              productSlug={product.slug}
+
+              fallback={product.rating}
+
+            />
 
           </span>
 
 
-
-
         </div>
-
-
-
-
-
-
-
-
-        <div className="mt-auto pt-5">
-
-
-          <FavoriteButton
-
-            slug={product.slug}
-
-          />
-
-
-        </div>
-
-
-
 
 
 
@@ -417,59 +269,40 @@ export default function ProductCard({
 
         <Link
 
-
           href={`/urunler/${product.slug}`}
 
-
           className="
-          mt-4
+          mt-3
           block
-          rounded-2xl
-          py-3
+          rounded-xl
+          py-2
           text-center
+          text-sm
           font-bold
-          transition
-          hover:scale-105
           "
-
 
           style={{
 
+            background:colors.actionSecondary,
 
-            background:
-            colors.actionSecondary,
-
-
-            color:
-            colors.actionSecondaryText,
-
-            border:
-            `2px solid ${colors.actionPrimary}`
-
+            color:colors.actionSecondaryText
 
           }}
 
         >
 
-          🌸 Ürünü İncele
-
+          🌸 İncele
 
         </Link>
 
 
 
 
-
-
-
-        <div className="mt-3">
-
+        <div className="mt-2">
 
           <AddToCartButton
 
-
             product={{
-
 
               id:product.id,
 
@@ -479,30 +312,20 @@ export default function ProductCard({
 
               price:product.price,
 
-              image:product.image,
-
+              image:product.image
 
             }}
 
-
           />
 
-
         </div>
-
-
 
 
 
       </div>
 
 
-
-
-
     </article>
-
-
 
   );
 
