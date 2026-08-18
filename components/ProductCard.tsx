@@ -26,8 +26,6 @@ type Product = {
 
   description:string;
 
-  vip:boolean;
-
 };
 
 
@@ -43,291 +41,254 @@ export default function ProductCard({
 }){
 
 
-  const { theme } = useTheme();
+const {theme}=useTheme();
 
-  const colors = themes[theme].colors;
+const colors=themes[theme].colors;
 
 
 
-  return (
+return (
 
-    <article
+<article
 
-      className="
-      group
-      overflow-hidden
-      rounded-2xl
-      transition-all
-      duration-300
-      hover:-translate-y-1
-      "
+className="
+group
+overflow-hidden
+rounded-2xl
+transition-all
+duration-300
+hover:-translate-y-1
+"
 
-      style={{
+style={{
 
-        background:colors.card,
+background:colors.card,
 
-        border:
-        `1px solid ${colors.cardBorder}`,
+border:
+`1px solid ${colors.cardBorder}`,
 
-        boxShadow:
-        `0 8px 22px ${colors.cardBorder}25`
+boxShadow:
+`0 8px 22px ${colors.cardBorder}25`
 
-      }}
+}}
 
-    >
+>
 
 
+<Link
 
-      <div
+href={`/urunler/${product.slug}`}
 
-        className="
-        relative
-        h-44
-        overflow-hidden
-        "
+className="block"
 
-      >
+>
 
-        <img
 
-          src={product.image}
+<div
 
-          alt={product.name}
+className="
+relative
+h-44
+overflow-hidden
+"
 
-          className="
-          h-full
-          w-full
-          object-cover
-          transition
-          duration-500
-          group-hover:scale-105
-          "
+>
 
-        />
 
+<img
 
-        {product.vip && (
+src={product.image}
 
-          <span
+alt={product.name}
 
-            className="
-            absolute
-            right-2
-            top-2
-            rounded-full
-            px-2
-            py-1
-            text-[10px]
-            font-black
-            "
+className="
+h-full
+w-full
+object-cover
+transition
+duration-500
+group-hover:scale-105
+"
 
-            style={{
+/>
 
-              background:colors.primary,
 
-              color:colors.background
 
-            }}
+<div
 
-          >
+className="
+absolute
+right-3
+top-3
+"
 
-            VIP
+>
 
-          </span>
+<FavoriteButton
 
-        )}
+slug={product.slug}
 
+/>
 
-      </div>
 
+</div>
 
 
+</div>
 
 
-      <div className="p-3">
 
 
 
-        <p
+<div className="p-3">
 
-          className="
-          text-[11px]
-          font-bold
-          "
 
-          style={{
+<p
 
-            color:colors.primary
+className="
+text-[11px]
+font-bold
+"
 
-          }}
+style={{
 
-        >
+color:colors.primary
 
-          {product.category}
+}}
 
-        </p>
+>
 
+{product.category}
 
 
+</p>
 
-        <h3
 
-          className="
-          mt-1
-          truncate
-          text-sm
-          font-black
-          "
 
-          style={{
+<h3
 
-            color:colors.foreground
+className="
+mt-1
+truncate
+text-sm
+font-black
+"
 
-          }}
+style={{
 
-        >
+color:colors.foreground
 
-          {product.name}
+}}
 
-        </h3>
+>
 
+{product.name}
 
+</h3>
 
 
-        <div
 
-          className="
-          mt-2
-          flex
-          items-center
-          justify-between
-          "
 
-        >
 
-          <span
+<div
 
-            className="
-            text-base
-            font-black
-            "
+className="
+mt-2
+flex
+items-center
+justify-between
+"
 
-            style={{
+>
 
-              color:colors.primary
 
-            }}
+<span
 
-          >
+className="
+text-base
+font-black
+"
 
-            {product.price.toLocaleString("tr-TR")} TL
+style={{
 
-          </span>
+color:colors.primary
 
+}}
 
+>
 
-          <span
+{product.price.toLocaleString("tr-TR")} TL
 
-            className="
-            text-xs
-            font-bold
-            "
 
-          >
+</span>
 
-            <ProductRating
 
-              productSlug={product.slug}
 
-              fallback={product.rating}
+<span
 
-            />
+className="
+text-xs
+font-bold
+"
 
-          </span>
+>
 
+<ProductRating
 
-        </div>
+productSlug={product.slug}
 
+fallback={product.rating}
 
+/>
 
 
+</span>
 
-        <div className="mt-3">
 
-          <FavoriteButton
 
-            slug={product.slug}
+</div>
 
-          />
 
-        </div>
 
+</div>
 
 
+</Link>
 
 
-        <Link
 
-          href={`/urunler/${product.slug}`}
 
-          className="
-          mt-3
-          block
-          rounded-xl
-          py-2
-          text-center
-          text-xs
-          font-black
-          "
 
-          style={{
+<div className="px-3 pb-3">
 
-            background:
-            colors.actionSecondary,
 
-            color:
-            colors.actionSecondaryText
+<AddToCartButton
 
-          }}
+product={{
 
-        >
+id:product.id,
 
-          🌸 İncele
+slug:product.slug,
 
-        </Link>
+name:product.name,
 
+price:product.price,
 
+image:product.image,
 
+}}
 
-        <div className="mt-2">
+/>
 
-          <AddToCartButton
 
-            product={{
+</div>
 
-              id:product.id,
 
-              slug:product.slug,
 
-              name:product.name,
+</article>
 
-              price:product.price,
 
-              image:product.image,
+);
 
-            }}
-
-          />
-
-        </div>
-
-
-
-      </div>
-
-
-    </article>
-
-  );
 
 }

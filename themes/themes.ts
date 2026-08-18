@@ -1,140 +1,40 @@
 export const themes = {
-  zumrutSampanya: {
-    name: "Zümrüt & Şampanya",
+  florio: {
+    name: "FlorioTR Premium",
+
     colors: {
-      background: "#FBF7EC",
-      foreground: "#142E27",
-      muted: "#806638",
+      background: "#F8F3E8",
+
+      foreground: "#17382F",
+
+      muted: "#6E6658",
+
+
       card: "#FFFDF7",
-      cardBorder: "#C9A65B",
-      actionPrimary: "#0E4A3B",
-      actionPrimaryText: "#FFF9E9",
-      actionSecondary: "#E8D5A8",
+
+      cardBorder: "#D8B56A",
+
+
+      actionPrimary: "#075E4B",
+
+      actionPrimaryText: "#FFF9E8",
+
+
+      actionSecondary: "#EFD9A6",
+
       actionSecondaryText: "#17382F",
-      primary: "#0E4A3B",
+
+
+      primary: "#075E4B",
+
       secondary: "#FFFDF7",
-      accent: "#A77A2D",
-    },
-  },
-  pudra: {
-    name: "Pudra",
-    colors: {
-      background: "#FFF8FA",
-      foreground: "#252235",
-      muted: "#8F3158",
-      card: "#FFF0F5",
-      cardBorder: "#B84272",
-      actionPrimary: "#B84272",
-      actionPrimaryText: "#FFFFFF",
-      actionSecondary: "#FFE3ED",
-      actionSecondaryText: "#252235",
-      primary: "#B84272",
-      secondary: "#FFFFFF",
-      accent: "#7A3654",
-    },
-  },
-  geceBahcesi: {
-    name: "Gece Bahçesi",
-    colors: {
-      background: "#101916",
-      foreground: "#F7F3E9",
-      muted: "#E5C6CE",
-      card: "#1C2B25",
-      cardBorder: "#D7AF67",
-      actionPrimary: "#1C2B25",
-      actionPrimaryText: "#F7F3E9",
-      actionSecondary: "#D7AF67",
-      actionSecondaryText: "#101916",
-      primary: "#D7AF67",
-      secondary: "#1C2B25",
-      accent: "#E5C6CE",
-    },
-  },
-  ayYildiz: {
-    name: "Ay-Yıldız",
-    colors: {
-      background: "#FFF8F8",
-      foreground: "#2B1B20",
-      muted: "#9E1B2C",
-      card: "#FFF0F1",
-      cardBorder: "#C9283B",
-      actionPrimary: "#C9283B",
-      actionPrimaryText: "#FFFFFF",
-      actionSecondary: "#FFFFFF",
-      actionSecondaryText: "#2B1B20",
-      primary: "#C9283B",
-      secondary: "#FFFFFF",
-      accent: "#8C1425",
-    },
-  },
-  lacivertSari: {
-    name: "Lacivert & Sarı",
-    colors: {
-      background: "#F8FAFF",
-      foreground: "#13234B",
-      muted: "#8C6500",
-      card: "#FFF8D9",
-      cardBorder: "#D3A400",
-      actionPrimary: "#173E8D",
-      actionPrimaryText: "#FFFFFF",
-      actionSecondary: "#F0C400",
-      actionSecondaryText: "#13234B",
-      primary: "#173E8D",
-      secondary: "#FFFFFF",
-      accent: "#B88400",
-    },
-  },
-  sariKirmizi: {
-    name: "Sarı & Kırmızı",
-    colors: {
-      background: "#FFFBEF",
-      foreground: "#3A1820",
-      muted: "#9A5700",
-      card: "#FFF3CF",
-      cardBorder: "#D69A00",
-      actionPrimary: "#B21F3B",
-      actionPrimaryText: "#FFFFFF",
-      actionSecondary: "#F5C518",
-      actionSecondaryText: "#3A1820",
-      primary: "#B21F3B",
-      secondary: "#FFFFFF",
-      accent: "#B67A00",
-    },
-  },
-  siyahBeyaz: {
-    name: "Siyah & Beyaz",
-    colors: {
-      background: "#F5F5F5",
-      foreground: "#171717",
-      muted: "#5B5B5B",
-      card: "#FFFFFF",
-      cardBorder: "#242424",
-      actionPrimary: "#242424",
-      actionPrimaryText: "#FFFFFF",
-      actionSecondary: "#FFFFFF",
-      actionSecondaryText: "#171717",
-      primary: "#242424",
-      secondary: "#FFFFFF",
-      accent: "#5B5B5B",
-    },
-  },
-  bordoMavi: {
-    name: "Bordo & Mavi",
-    colors: {
-      background: "#FCF8FA",
-      foreground: "#2D1830",
-      muted: "#215A9B",
-      card: "#EEF5FF",
-      cardBorder: "#215A9B",
-      actionPrimary: "#791E3C",
-      actionPrimaryText: "#FFFFFF",
-      actionSecondary: "#215A9B",
-      actionSecondaryText: "#FFFFFF",
-      primary: "#791E3C",
-      secondary: "#FFFFFF",
-      accent: "#215A9B",
+
+
+      accent: "#D89B3C",
     },
   },
 } as const;
 
-export type ThemeName = keyof typeof themes;
+
+export type ThemeName =
+  keyof typeof themes;

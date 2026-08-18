@@ -7,7 +7,9 @@ datasource db {
   provider = "sqlite"
 }
 
+
 model FlowerShop {
+
   id Int @id @default(autoincrement())
 
   shopName String
@@ -37,21 +39,37 @@ model FlowerShop {
   orders Order[]
 
   passwordResets FlowerShopPasswordReset[]
+
 }
+
+
 
 model FlowerShopPasswordReset {
+
   id Int @id @default(autoincrement())
+
   flowerShopId Int
+
   codeHash String
+
   expiresAt DateTime
+
   attempts Int @default(0)
+
   createdAt DateTime @default(now())
+
   flowerShop FlowerShop @relation(fields: [flowerShopId], references: [id], onDelete: Cascade)
+
   @@index([flowerShopId])
+
 }
 
+
+
 model Order {
+
   id Int @id @default(autoincrement())
+
 
   customerName String
 
@@ -59,37 +77,47 @@ model Order {
 
   senderPhone String @default("")
 
+
   city String
 
   district String
 
   address String
 
+
   customerNote String?
 
   recipientNote String?
+
 
   productName String
 
   productSlug String?
 
+
   quantity Int
 
   price Int
+
 
   paymentStatus String @default("Bekliyor")
 
   status String @default("Yeni")
 
+
   flowerShopId Int?
 
+
   assignedAt DateTime?
+
 
   deliveryDate String?
 
   deliveryTimeSlot String?
 
+
   customerId Int?
+
 
   acceptedAt DateTime?
 
@@ -101,72 +129,143 @@ model Order {
 
   deliveredAt DateTime?
 
+
   preparationImage String?
+
 
   selected Boolean @default(false)
 
+
   createdAt DateTime @default(now())
+
 
   flowerShop FlowerShop? @relation(fields: [flowerShopId], references: [id])
 
   customer Customer? @relation(fields: [customerId], references: [id])
 
+
   histories OrderHistory[]
 
   review Review?
+
 }
+
+
 
 model Customer {
+
   id Int @id @default(autoincrement())
+
   name String
+
   email String @unique
+
   phone String
+
   passwordHash String
+
   emailVerifiedAt DateTime?
+
   status String @default("Aktif")
+
   createdAt DateTime @default(now())
+
+
   sessions CustomerSession[]
+
   emailVerifications CustomerEmailVerification[]
+
   addresses CustomerAddress[]
+
   orders Order[]
+
+
+  reviewReplies ReviewReply[]
+
+  reviewLikes ReviewLike[]
+
+}
+model CustomerAddress {
+
+  id Int @id @default(autoincrement())
+
+  customerId Int
+
+  title String
+
+  receiverName String
+
+  receiverPhone String
+
+  city String @default("İstanbul")
+
+  district String
+
+  address String
+
+  createdAt DateTime @default(now())
+
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+
+  @@index([customerId])
+
 }
 
-model CustomerAddress {
-  id Int @id @default(autoincrement())
-  customerId Int
-  title String
-  receiverName String
-  receiverPhone String
-  city String @default("İstanbul")
-  district String
-  address String
-  createdAt DateTime @default(now())
-  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  @@index([customerId])
-}
+
+
 
 model CustomerEmailVerification {
+
   id Int @id @default(autoincrement())
+
   customerId Int
+
   codeHash String
+
   expiresAt DateTime
+
   attempts Int @default(0)
+
   createdAt DateTime @default(now())
+
+
   customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+
   @@index([customerId])
+
 }
+
+
+
 
 model CustomerSession {
+
   id Int @id @default(autoincrement())
+
   customerId Int
+
   tokenHash String @unique
+
   expiresAt DateTime
+
   createdAt DateTime @default(now())
+
+
   customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+
   @@index([customerId])
+
 }
 
+
+
+
 model Review {
+
   id Int @id @default(autoincrement())
 
   orderId Int @unique
@@ -183,42 +282,140 @@ model Review {
 
   createdAt DateTime @default(now())
 
+
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
+
+  replies ReviewReply[]
+
+  likes ReviewLike[]
+
+
   @@index([productSlug])
+
 }
+
+
+
+
+model ReviewReply {
+
+  id Int @id @default(autoincrement())
+
+  reviewId Int
+
+  customerId Int
+
+  message String
+
+  createdAt DateTime @default(now())
+
+
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+
+  @@index([reviewId])
+
+}
+
+
+
+
+model ReviewLike {
+
+  id Int @id @default(autoincrement())
+
+  reviewId Int
+
+  customerId Int
+
+  createdAt DateTime @default(now())
+
+
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+
+  @@unique([reviewId, customerId])
+
+}
+
+
+
 
 model AdminUser {
+
   id Int @id @default(autoincrement())
+
   email String @unique
+
   passwordHash String
+
   createdAt DateTime @default(now())
+
+
   sessions AdminSession[]
+
   passwordResets AdminPasswordReset[]
+
 }
+
+
+
 
 model AdminPasswordReset {
+
   id Int @id @default(autoincrement())
+
   adminId Int
+
   codeHash String
+
   expiresAt DateTime
+
   attempts Int @default(0)
+
   createdAt DateTime @default(now())
+
+
   admin AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+
   @@index([adminId])
+
 }
+
+
+
 
 model AdminSession {
+
   id Int @id @default(autoincrement())
+
   adminId Int
+
   tokenHash String @unique
+
   expiresAt DateTime
+
   createdAt DateTime @default(now())
+
+
   admin AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+
   @@index([adminId])
+
 }
 
+
+
+
 model OrderHistory {
+
   id Int @id @default(autoincrement())
 
   orderId Int
@@ -229,20 +426,38 @@ model OrderHistory {
 
   createdAt DateTime @default(now())
 
+
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
 }
 
+
+
+
 model ProductOverride {
+
   slug String @id
+
   catalogId Int? @unique
+
   name String?
+
   category String?
+
   description String?
+
   price Int
+
   image String
+
   rating Float @default(0)
+
   vip Boolean @default(false)
+
   isCustom Boolean @default(false)
+
   isActive Boolean @default(true)
+
   updatedAt DateTime @updatedAt
+
 }

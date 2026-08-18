@@ -1,7 +1,7 @@
-import Hero from "@/components/home/Hero";
 import Categories from "@/components/home/Categories";
-import ProductSection from "@/components/home/ProductSection";
-import AboutFlorio from "@/components/home/AboutFlorio";
+import CustomerStories from "@/components/home/CustomerStories";
+import TrustCards from "@/components/home/TrustCards";
+import FeaturedFlowers from "@/components/home/FeaturedFlowers";
 
 
 export default function Home() {
@@ -9,45 +9,48 @@ export default function Home() {
 
   return (
 
-
     <main
 
-      className="relative
+      className="
       min-h-screen
       "
 
     >
 
-      <div className="pointer-events-none absolute right-0 top-0 z-10 hidden w-[clamp(220px,25vw,360px)] overflow-hidden lg:block" aria-hidden="true">
-        <img src="/images/ivy-daisy-page-edge.png" alt="" className="h-auto w-full object-contain object-right-top opacity-90 drop-shadow-[-7px_10px_12px_rgba(24,70,42,0.12)]" />
-      </div>
+
+      <section
+
+        className="
+        mx-auto
+        grid
+        max-w-7xl
+        gap-6
+        px-5
+        py-8
+        lg:grid-cols-[1fr_360px]
+        "
+
+      >
 
 
-      {/* FlorioTR Marka Hikayesi */}
-
-      <Hero />
+        <Categories />
 
 
+        <CustomerStories />
 
-      {/* Çiçek Kategorileri */}
 
-      <Categories />
+      </section>
 
 
 
-      {/* FlorioTR Çiçek Koleksiyonu */}
-
-      <ProductSection />
+      <FeaturedFlowers />
 
 
 
-      {/* FlorioTR Hakkımızda */}
-
-      <AboutFlorio />
+      <TrustCards />
 
 
     </main>
-
 
   );
 

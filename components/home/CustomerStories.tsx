@@ -1,7 +1,262 @@
 "use client";
-import {useEffect,useState} from "react";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import {useTheme} from "@/context/ThemeContext";
-import {themes} from "@/themes/themes";
-type Review={id:number;comment:string;productName:string;productSlug:string};
-export default function CustomerStories(){const [reviews,setReviews]=useState<Review[]>([]);const [open,setOpen]=useState(false);const {theme}=useTheme();const colors=themes[theme].colors;useEffect(()=>{fetch("/api/reviews?featured=true").then(r=>r.json()).then(d=>{if(d.success)setReviews(d.reviews)}).catch(()=>undefined)},[]);const review=reviews[0];return <><button type="button" onClick={()=>review&&setOpen(true)} className="relative z-20 hidden w-[360px] rounded-[24px] border p-5 text-right shadow-lg backdrop-blur-sm transition hover:-translate-y-1 lg:block" style={{background:`${colors.card}E8`,borderColor:colors.cardBorder,color:colors.foreground,cursor:review?"pointer":"default"}}><p className="text-[11px] font-black uppercase tracking-[.2em]" style={{color:colors.accent}}>Sizden Gelen Güzel Yorumlar</p>{review?<><blockquote className="mt-3 line-clamp-2 text-sm font-bold italic leading-6">“{review.comment}”</blockquote><p className="mt-2 line-clamp-1 text-xs font-black" style={{color:colors.primary}}>Alınan ürün: {review.productName}</p><p className="mt-2 text-[11px] font-bold opacity-65">Tüm yorumları gör →</p></>:<p className="mt-3 text-sm font-semibold" style={{color:colors.muted}}>İlk güzel yorumlarınızı bekliyoruz.</p>}</button>{open&&<div className="fixed inset-0 z-[200] grid place-items-center bg-black/60 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Müşteri yorumları" onClick={()=>setOpen(false)}><div className="max-h-[82vh] w-full max-w-2xl overflow-y-auto rounded-[30px] border-2 p-6 shadow-2xl sm:p-8" style={{background:colors.background,borderColor:colors.cardBorder,color:colors.foreground}} onClick={(event)=>event.stopPropagation()}><div className="flex items-start justify-between gap-4"><div><p className="text-xs font-black uppercase tracking-[.2em]" style={{color:colors.accent}}>Doğrulanmış alışverişler</p><h2 className="mt-2 text-3xl font-black">Sizden Gelen Güzel Yorumlar</h2></div><button type="button" onClick={()=>setOpen(false)} className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-2xl font-black" style={{background:colors.actionSecondary,color:colors.actionSecondaryText}} aria-label="Yorumları kapat">×</button></div><div className="mt-7 grid gap-4">{reviews.map(item=><article key={item.id} className="rounded-2xl border-2 p-5" style={{background:colors.card,borderColor:colors.cardBorder}}><blockquote className="font-semibold italic leading-7">“{item.comment}”</blockquote><Link href={`/urunler/${item.productSlug}`} onClick={()=>setOpen(false)} className="mt-4 inline-flex rounded-full px-4 py-2 text-sm font-black transition hover:-translate-y-0.5" style={{background:colors.actionPrimary,color:colors.actionPrimaryText}}>🌸 {item.productName} ürününü incele →</Link></article>)}</div></div></div>}</>}
+import { useTheme } from "@/context/ThemeContext";
+import { themes } from "@/themes/themes";
+
+
+type Review = {
+
+  id:number;
+
+  comment:string | null;
+
+  productName:string;
+
+  productSlug:string;
+
+};
+
+
+
+export default function CustomerStories(){
+
+
+const [reviews,setReviews]=useState<Review[]>([]);
+
+
+const {theme}=useTheme();
+
+const colors=themes[theme].colors;
+
+
+
+useEffect(()=>{
+
+
+fetch("/api/reviews?featured=true")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+
+if(data.success){
+
+setReviews(data.reviews);
+
+}
+
+
+})
+
+
+.catch(()=>undefined);
+
+
+
+},[]);
+
+
+
+const review=reviews[0];
+
+
+
+return (
+
+
+<Link
+
+href="/yorumlar"
+
+className="
+block
+w-full
+rounded-[30px]
+p-6
+transition
+hover:-translate-y-1
+"
+
+style={{
+
+background:colors.card,
+
+border:`2px solid ${colors.cardBorder}`,
+
+color:colors.foreground
+
+}}
+
+>
+
+
+
+<div
+
+className="
+rounded-full
+px-5
+py-3
+text-center
+"
+
+style={{
+
+background:colors.secondary
+
+}}
+
+>
+
+
+<h2
+
+className="
+text-2xl
+font-black
+"
+
+style={{
+
+color:colors.primary
+
+}}
+
+>
+
+🌸 Sizden Gelen Güzel Yorumlar
+
+</h2>
+
+
+</div>
+
+
+
+
+
+{
+
+review ? (
+
+
+<div
+
+className="
+mt-6
+"
+
+>
+
+
+<div
+
+className="
+text-xl
+"
+
+>
+
+⭐⭐⭐⭐⭐
+
+</div>
+
+
+
+<p
+
+className="
+mt-4
+font-bold
+italic
+leading-7
+"
+
+>
+
+“{review.comment}”
+
+</p>
+
+
+
+
+<p
+
+className="
+mt-4
+text-sm
+font-black
+"
+
+style={{
+
+color:colors.primary
+
+}}
+
+>
+
+🌷 {review.productName}
+
+</p>
+
+
+
+<p
+
+className="
+mt-5
+text-xs
+font-black
+opacity-70
+"
+
+>
+
+Tüm yorumları gör →
+
+</p>
+
+
+</div>
+
+
+)
+
+
+:(
+
+
+<p
+
+className="
+mt-6
+text-sm
+font-semibold
+"
+
+>
+
+İlk güzel yorumlarınızı bekliyoruz.
+
+</p>
+
+
+)
+
+
+}
+
+
+
+</Link>
+
+
+);
+
+
+}

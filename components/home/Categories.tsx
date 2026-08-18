@@ -1,307 +1,364 @@
 "use client";
 
 import Link from "next/link";
-import { useProducts } from "@/hooks/useProducts";
 import { useTheme } from "@/context/ThemeContext";
 import { themes } from "@/themes/themes";
 
 
 const categories = [
-  {
-    name: "Gül Buketleri",
-    slug: "gul-buketleri",
-    icon: "🌹",
-  },
-  {
-    name: "Orkideler",
-    slug: "orkideler",
-    icon: "🌸",
-  },
-  {
-    name: "Papatya Buketleri",
-    slug: "papatya-gul-buketleri",
-    icon: "🌼",
-  },
-  {
-    name: "Saksı Çiçekleri",
-    slug: "saksi-cicekleri",
-    icon: "🪴",
-  },
-  {
-    name: "Özel Günler",
-    slug: "ozel-gunler",
-    icon: "🎁",
-  },
-  {
-    name: "Düğün Çiçekleri",
-    slug: "dugun-sepetleri",
-    icon: "💍",
-  },
-  {
-    name: "Çelenkler",
-    slug: "celenkler",
-    icon: "🌿",
-  },
-  {
-    name: "VIP Koleksiyon",
-    slug: "vip",
-    icon: "✨",
-  },
+
+{
+name:"Gül Buketleri",
+slug:"gul-buketleri",
+image:"/images/categories/gul.jpg",
+description:"Sevginin en zarif hali"
+},
+
+{
+name:"Özel Buketler",
+slug:"ozel-buketler",
+image:"/images/categories/ozel-buket.jpg",
+description:"Her özel ana uygun tasarımlar"
+},
+
+{
+name:"Papatya Buketleri",
+slug:"papatya-buketleri",
+image:"/images/categories/papatya.jpg",
+description:"Doğallığın ve mutluluğun simgesi"
+},
+
+{
+name:"Mevsim Buketleri",
+slug:"mevsim-buketleri",
+image:"/images/categories/mevsim.jpg",
+description:"Mevsimin en güzel renkleri"
+},
+
+{
+name:"Orkideler",
+slug:"orkideler",
+image:"/images/categories/orkide.jpg",
+description:"Zarafet ve şıklığın simgesi"
+},
+
+{
+name:"Saksı Çiçekleri",
+slug:"saksi-cicekleri",
+image:"/images/categories/saksi.jpg",
+description:"Yaşam alanlarına doğal güzellik"
+},
+
+{
+name:"Çelenkler",
+slug:"celenkler",
+image:"/images/categories/celenk.jpg",
+description:"Anlamlı günler için özel tasarımlar"
+}
+
 ];
 
 
-export default function Categories() {
 
+export default function Categories(){
 
-  const products = useProducts();
 
-  const { theme } = useTheme();
+const {theme}=useTheme();
 
-  const colors = themes[theme].colors;
+const colors=themes[theme].colors;
 
 
 
-  function getImage(category:string,index:number){
+return (
 
-    const product =
-      products.find(
-        item =>
-        item.category
-        .toLocaleLowerCase("tr")
-        .includes(
-          category
-          .split(" ")[0]
-          .toLocaleLowerCase("tr")
-        )
-      );
+<section
 
+className="
+w-full
+"
 
-    return (
-      product?.image ||
-      products[index % products.length]?.image ||
-      "/images/renkli-bahce.jpg"
-    );
+style={{
+background:colors.background
+}}
 
-  }
+>
 
 
+<div
 
+className="
+rounded-[30px]
+"
 
-  return (
+style={{
+background:colors.card,
+border:`1px solid ${colors.cardBorder}`
+}}
 
+>
 
-    <section
 
-      className="
-      mx-auto
-      max-w-7xl
-      px-4
-      py-10
-      sm:px-6
-      "
+<div
 
-    >
+className="
+mb-5
+rounded-full
+px-5
+py-3
+text-center
+"
 
+style={{
+background:colors.secondary
+}}
 
+>
 
-      <div className="mb-8 flex items-end justify-between">
+<h2
 
+className="
+text-2xl
+font-black
+"
 
-        <div>
+style={{
+color:colors.primary
+}}
 
-          <p
+>
 
-            className="
-            text-xs
-            font-black
-            uppercase
-            tracking-[.25em]
-            "
+🌸 Çiçek Kategorileri
 
-            style={{
-              color:colors.accent
-            }}
+</h2>
 
-          >
+</div>
 
-            FlorioTR
 
-          </p>
 
 
-          <h2
+<div
 
-            className="
-            mt-2
-            text-3xl
-            font-black
-            "
+className="
+grid
+gap-4
+lg:grid-cols-2
+"
 
-            style={{
-              color:colors.primary
-            }}
+>
 
-          >
 
-            Çiçek Kategorileri
+{
+categories.slice(0,4).map((category)=>(
 
-          </h2>
 
+<Link
 
-        </div>
+key={category.slug}
 
+href={`/kategori/${category.slug}`}
 
+className="
+group
+relative
+h-36
+overflow-hidden
+rounded-[26px]
+"
 
-      </div>
+>
 
 
+<img
 
+src={category.image}
 
+alt={category.name}
 
-      <div
+className="
+absolute
+inset-0
+h-full
+w-full
+object-cover
+transition
+duration-700
+group-hover:scale-110
+"
 
-        className="
-        grid
-        grid-cols-2
-        gap-4
-        sm:grid-cols-4
-        "
+/>
 
-      >
 
+<div
 
-        {
-          categories.map(
-            (category,index)=>(
+className="
+absolute
+inset-0
+bg-gradient-to-r
+from-black/70
+to-transparent
+"
 
+/>
 
-            <Link
 
-              key={category.slug}
+<div
 
-              href={`/kategori/${category.slug}`}
+className="
+absolute
+bottom-5
+left-6
+text-white
+"
 
-              className="
-              group
-              relative
-              overflow-hidden
-              rounded-3xl
-              aspect-square
-              shadow-md
-              transition
-              duration-300
-              hover:-translate-y-1
-              "
+>
 
-              style={{
 
-                border:
-                `1px solid ${colors.cardBorder}`,
+<h3
 
-                background:
-                colors.card
+className="
+text-2xl
+font-black
+"
 
-              }}
+>
 
-            >
+{category.name}
 
+</h3>
 
-              <img
 
-                src={getImage(category.name,index)}
+<p
 
-                alt={category.name}
+className="
+text-sm
+font-semibold
+"
 
-                className="
-                absolute
-                inset-0
-                h-full
-                w-full
-                object-cover
-                transition
-                duration-500
-                group-hover:scale-110
-                "
+>
 
-              />
+{category.description}
 
+</p>
 
 
-              <div
+</div>
 
-                className="
-                absolute
-                inset-0
-                bg-gradient-to-t
-                from-black/70
-                via-black/10
-                to-transparent
-                "
 
-              />
+</Link>
 
 
+))
+}
 
-              <div
 
-                className="
-                absolute
-                bottom-0
-                left-0
-                right-0
-                p-4
-                "
+</div>
 
-              >
 
-                <div
 
-                  className="
-                  text-xl
-                  "
 
-                >
+<div
 
-                  {category.icon}
+className="
+mt-4
+grid
+gap-4
+sm:grid-cols-3
+"
 
-                </div>
+>
 
 
-                <h3
+{
+categories.slice(4).map((category)=>(
 
-                  className="
-                  mt-1
-                  text-sm
-                  font-black
-                  text-white
-                  "
 
-                >
+<Link
 
-                  {category.name}
+key={category.slug}
 
-                </h3>
+href={`/kategori/${category.slug}`}
 
+className="
+group
+relative
+h-32
+overflow-hidden
+rounded-[24px]
+"
 
-              </div>
+>
 
 
+<img
 
-            </Link>
+src={category.image}
 
+alt={category.name}
 
-          ))
-        }
+className="
+absolute
+inset-0
+h-full
+w-full
+object-cover
+transition
+duration-700
+group-hover:scale-110
+"
 
+/>
 
-      </div>
 
 
+<div
 
-    </section>
+className="
+absolute
+inset-0
+bg-black/45
+"
 
+/>
 
-  );
+
+
+<h3
+
+className="
+absolute
+bottom-4
+left-5
+text-xl
+font-black
+text-white
+"
+
+>
+
+{category.name}
+
+</h3>
+
+
+</Link>
+
+
+))
+
+}
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+);
 
 
 }

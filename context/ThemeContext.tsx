@@ -1,30 +1,23 @@
 "use client";
 
-
 import {
   createContext,
   useContext,
-  useState,
   ReactNode,
-  useEffect
+  useEffect,
 } from "react";
 
 
-import { themes, type ThemeName } from "@/themes/themes";
-
+import { themes } from "@/themes/themes";
 
 
 type ThemeContextType = {
 
-  theme: ThemeName;
+  theme: "florio";
 
-  changeTheme:
-  (
-    theme: ThemeName
-  ) => void;
+  changeTheme: () => void;
 
 };
-
 
 
 const ThemeContext =
@@ -32,105 +25,75 @@ createContext<ThemeContextType | null>(null);
 
 
 
-
-
 export function ThemeProvider({
 
 children,
-
-initialTheme = "pudra",
 
 }:{
 
 children:ReactNode;
 
-initialTheme?: ThemeName;
-
 }){
 
 
-const [theme,setTheme] =
-useState<ThemeName>(initialTheme);
+const theme = "florio";
+
 
 
 useEffect(()=>{
 
-const savedTheme =
-window.localStorage.getItem("floriotr_theme") as ThemeName | null;
 
-const hasThemeCookie =
-document.cookie.includes("floriotr_theme=");
+const colors = themes.florio.colors;
 
-if(!hasThemeCookie && savedTheme && savedTheme in themes){
 
-// Eski localStorage kaydını yeni sunucu çerezine yalnızca bir kez taşı.
-// eslint-disable-next-line react-hooks/set-state-in-effect
-setTheme(savedTheme);
+document.body.style.background =
+colors.background;
 
-document.cookie =
-`floriotr_theme=${savedTheme}; path=/; max-age=31536000; samesite=lax`;
 
-}
+document.body.style.color =
+colors.foreground;
+
+
+document.documentElement.style.setProperty(
+"--background",
+colors.background
+);
+
+
+document.documentElement.style.setProperty(
+"--foreground",
+colors.foreground
+);
+
+
+document.documentElement.style.setProperty(
+"--primary",
+colors.primary
+);
+
+
+document.documentElement.style.setProperty(
+"--accent",
+colors.accent
+);
+
+
 
 },[]);
 
 
 
-useEffect(()=>{
 
+function changeTheme(){
 
-document.body.style.background =
-themes[theme].colors.background;
-
-
-document.body.style.color =
-themes[theme].colors.foreground;
-
-document.documentElement.style.setProperty(
-  "--background",
-  themes[theme].colors.background
-);
-
-document.documentElement.style.setProperty(
-  "--foreground",
-  themes[theme].colors.foreground
-);
-
-document.documentElement.style.setProperty(
-  "--primary",
-  themes[theme].colors.primary
-);
-
-document.documentElement.style.setProperty(
-  "--accent",
-  themes[theme].colors.accent
-);
-
-
-
-},[theme]);
-
-
-
-
-
-function changeTheme(theme:ThemeName){
-
-setTheme(theme);
-
-window.localStorage.setItem("floriotr_theme",theme);
-
-document.cookie =
-`floriotr_theme=${theme}; path=/; max-age=31536000; samesite=lax`;
+// Tema sistemi kaldırıldı.
+// FlorioTR tek marka teması kullanır.
 
 }
 
 
 
-
-
 return(
-
 
 <ThemeContext.Provider
 
@@ -144,9 +107,7 @@ changeTheme
 
 >
 
-
 {children}
-
 
 </ThemeContext.Provider>
 
@@ -155,9 +116,6 @@ changeTheme
 
 
 }
-
-
-
 
 
 
@@ -177,7 +135,6 @@ throw new Error(
 );
 
 }
-
 
 
 return context;

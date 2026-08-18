@@ -8,50 +8,80 @@ import { themes } from "@/themes/themes";
 export default function FavoriteButton({
   slug,
 }: {
-  slug: string;
+  slug:string;
 }) {
 
-  const [favorite, setFavorite] = useState(false);
-  const { theme } = useTheme();
-  const colors = themes[theme].colors;
+
+  const [favorite,setFavorite] = useState(false);
+
+  const {theme}=useTheme();
+
+  const colors=themes[theme].colors;
 
 
-  useEffect(() => {
+
+  useEffect(()=>{
+
 
     const saved =
-      JSON.parse(localStorage.getItem("favorites") || "[]");
-
-    // Tarayıcıda kayıtlı favori durumunu ilk açılışta eşitle.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setFavorite(saved.includes(slug));
-
-  }, [slug]);
+    JSON.parse(
+      localStorage.getItem("favorites") || "[]"
+    );
 
 
+    setFavorite(
+      saved.includes(slug)
+    );
 
-  function toggleFavorite() {
+
+  },[slug]);
+
+
+
+
+
+  function toggleFavorite(
+    event:React.MouseEvent<HTMLButtonElement>
+  ){
+
+
+    event.preventDefault();
+
+    event.stopPropagation();
+
+
 
     const saved =
-      JSON.parse(localStorage.getItem("favorites") || "[]");
+    JSON.parse(
+      localStorage.getItem("favorites") || "[]"
+    );
+
 
 
     let updated;
 
 
-    if (saved.includes(slug)) {
 
-      updated = saved.filter(
-        (item: string) => item !== slug
+    if(saved.includes(slug)){
+
+
+      updated =
+      saved.filter(
+        (item:string)=>item!==slug
       );
 
-    } else {
 
-      updated = [
+    }else{
+
+
+      updated=[
         ...saved,
         slug
       ];
 
+
     }
+
 
 
     localStorage.setItem(
@@ -59,37 +89,84 @@ export default function FavoriteButton({
       JSON.stringify(updated)
     );
 
-    window.dispatchEvent(new CustomEvent("floriotr:favorites-changed"));
+
+
+    window.dispatchEvent(
+      new CustomEvent(
+        "floriotr:favorites-changed"
+      )
+    );
+
 
 
     setFavorite(!favorite);
+
 
   }
 
 
 
+
+
   return (
+
 
     <button
 
+
+      type="button"
+
+
       onClick={toggleFavorite}
 
-      className="mt-4 w-full rounded-xl border-2 p-3 font-bold transition hover:scale-[1.02]"
+
+      className="
+      grid
+      h-10
+      w-10
+      place-items-center
+      rounded-full
+      border
+      text-xl
+      shadow-md
+      transition
+      hover:scale-110
+      "
+
+
       style={{
-        background: colors.actionPrimary,
-        borderColor: colors.actionPrimary,
-        color: colors.actionPrimaryText,
-        boxShadow: `0 8px 20px ${colors.actionPrimary}33`,
+
+
+        background:
+        colors.card,
+
+
+        borderColor:
+        colors.cardBorder,
+
+
+        color:
+        favorite
+        ? "#d6336c"
+        : colors.primary,
+
+
       }}
+
+
+      aria-label="Favorilere ekle"
+
 
     >
 
-      {favorite
-        ? "❤️ Favorilerde"
-        : "🤍 Favorilere Ekle"}
+
+      {favorite ? "♥" : "♡"}
+
 
     </button>
 
+
   );
+
 
 }
