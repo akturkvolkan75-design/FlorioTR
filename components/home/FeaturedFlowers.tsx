@@ -10,60 +10,43 @@ export default function FeaturedFlowers() {
 
   const products = useProducts();
 
-
-  const featuredProducts = products.slice(0,4);
-
+  const featuredProducts = products.slice(0,8);
 
   const { theme } = useTheme();
 
   const colors = themes[theme].colors;
 
 
-
   return (
 
-
     <section
-
       className="
       mx-auto
-      max-w-6xl
-      px-6
-      py-16
+      max-w-7xl
+      px-4
+      py-8
       "
-
     >
 
 
+      <div className="mb-6 text-center">
 
+        <h2
+          className="
+          text-2xl
+          font-black
+          md:text-3xl
+          "
+          style={{
+            color: colors.primary
+          }}
+        >
 
-      <h2
+          ✨ En Çok Tercih Edilenler
 
-        className="
-        mb-10
-        text-center
-        text-3xl
-        font-extrabold
-        md:text-4xl
-        "
+        </h2>
 
-        style={{
-
-          color:
-          colors.primary
-
-        }}
-
-      >
-
-        ✨ FlorioTR Seçkileri
-
-
-      </h2>
-
-
-
-
+      </div>
 
 
 
@@ -71,259 +54,164 @@ export default function FeaturedFlowers() {
 
         className="
         grid
-        gap-8
-        sm:grid-cols-2
-        lg:grid-cols-4
+        grid-cols-2
+        gap-4
+        sm:grid-cols-3
+        lg:grid-cols-5
         "
 
       >
 
 
+        {featuredProducts.map((product)=>(
+
+
+          <article
+
+            key={product.id}
+
+            className="
+            group
+            overflow-hidden
+            rounded-2xl
+            transition
+            duration-300
+            hover:-translate-y-1
+            "
+
+            style={{
+
+              background:colors.card,
+
+              border:
+              `1px solid ${colors.cardBorder}`,
+
+              boxShadow:
+              `0 8px 20px ${colors.cardBorder}22`
+
+            }}
+
+          >
 
 
 
-        {
-
-          featuredProducts.map((product)=>(
-
-
-
-            <article
-
-
-              key={product.id}
-
+            <div
 
               className="
-              group
+              h-36
               overflow-hidden
-              rounded-[32px]
-              shadow-2xl
-              transition-all
-              duration-500
-              hover:-translate-y-3
               "
-
-              style={{
-
-
-                background:
-                colors.card,
-
-
-                border:
-                `2px solid ${colors.cardBorder}`,
-
-                boxShadow:
-                `0 14px 34px ${colors.cardBorder}22`
-
-
-              }}
-
-
 
             >
 
+              <img
 
+                src={product.image}
 
-
-
-              {/* Görsel */}
-
-
-              <div
+                alt={product.name}
 
                 className="
-                relative
-                h-56
-                sm:h-64
-                lg:h-72
-                overflow-hidden
+                h-full
+                w-full
+                object-cover
+                transition
+                duration-500
+                group-hover:scale-105
                 "
+
+              />
+
+            </div>
+
+
+
+            <div className="p-3">
+
+
+              <h3
+
+                className="
+                truncate
+                text-sm
+                font-black
+                "
+
+                style={{
+                  color:colors.foreground
+                }}
 
               >
 
+                {product.name}
 
+              </h3>
 
-                <img
 
-                  src={product.image}
 
-                  alt={product.name}
+              <p
 
-                  className="
-                  h-full
-                  w-full
-                  object-cover
-                  transition
-                  duration-700
-                  group-hover:scale-110
-                  "
+                className="
+                mt-1
+                text-base
+                font-black
+                "
 
-                />
+                style={{
+                  color:colors.primary
+                }}
 
+              >
 
+                {product.price.toLocaleString("tr-TR")} TL
 
-                <div
+              </p>
 
-                  className="
-                  absolute
-                  inset-0
-                  bg-black/10
-                  opacity-0
-                  transition
-                  duration-500
-                  group-hover:opacity-100
-                  "
 
-                />
 
+              <Link
 
+                href={`/urunler/${product.slug}`}
 
-              </div>
+                className="
+                mt-3
+                block
+                rounded-xl
+                py-2
+                text-center
+                text-xs
+                font-black
+                "
 
+                style={{
 
+                  background:
+                  colors.actionSecondary,
 
+                  color:
+                  colors.actionSecondaryText
 
+                }}
 
+              >
 
+                İncele
 
-              {/* Bilgi */}
+              </Link>
 
 
-              <div className="p-6">
+            </div>
 
 
+          </article>
 
 
-
-                <h3
-
-                  className="
-                  text-xl
-                  font-bold
-                  "
-
-                  style={{
-
-                    color:
-                    colors.foreground
-
-                  }}
-
-                >
-
-                  {product.name}
-
-
-                </h3>
-
-
-
-
-
-
-
-                <p
-
-                  className="
-                  mt-3
-                  text-2xl
-                  font-extrabold
-                  "
-
-                  style={{
-
-                    color:
-                    colors.primary
-
-                  }}
-
-                >
-
-                  {product.price} TL
-
-
-                </p>
-
-
-
-
-
-
-
-                <Link
-
-
-                  href={`/urunler/${product.slug}`}
-
-
-                  className="
-                  mt-6
-                  block
-                  rounded-2xl
-                  py-3
-                  text-center
-                  font-bold
-                  transition-all
-                  hover:scale-105
-                  "
-
-                  style={{
-
-
-                    background:
-                    colors.actionSecondary,
-
-
-                    color:
-                    colors.actionSecondaryText,
-
-                    border:
-                    `2px solid ${colors.actionPrimary}`
-
-
-                  }}
-
-
-
-                >
-
-                  🌸 İncele
-
-
-                </Link>
-
-
-
-
-
-              </div>
-
-
-
-
-
-            </article>
-
-
-
-
-          ))
-
-        }
-
-
-
+        ))}
 
 
       </div>
 
 
-
-
     </section>
-
 
   );
 
