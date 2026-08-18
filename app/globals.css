@@ -1,0 +1,218 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+
+:root {
+
+  --background: #ffffff;
+
+  --foreground: #171717;
+
+  --primary: #B84272;
+
+  --accent: #7A3654;
+
+}
+
+
+
+/* Genel */
+
+html,
+body {
+
+  min-height:100%;
+
+}
+
+
+
+body {
+
+  background:var(--background);
+
+  color:var(--foreground);
+
+  font-family:
+  Arial,
+  Helvetica,
+  sans-serif;
+
+  transition:
+  background 0.4s ease,
+  color 0.4s ease;
+
+}
+
+
+
+
+/* Seçim rengi */
+
+::selection {
+
+  background:var(--primary);
+
+  color:#000;
+
+}
+
+
+
+
+
+/* Leaflet */
+
+.leaflet-container {
+
+  width:100%;
+
+  height:500px;
+
+  border-radius:24px;
+
+  z-index:1;
+
+}
+
+
+
+
+
+/* Scroll */
+
+::-webkit-scrollbar {
+
+  width:10px;
+
+}
+
+
+::-webkit-scrollbar-track {
+
+  background:#f3f3f3;
+
+}
+
+
+::-webkit-scrollbar-thumb {
+
+  background:
+  var(--primary);
+
+  border-radius:20px;
+
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+
+  background:var(--accent);
+
+}
+
+
+
+
+
+/* Genel kutu */
+
+* {
+
+  box-sizing:border-box;
+
+}
+
+
+
+
+/* Yazdırma */
+
+@media print {
+
+
+body{
+
+background:white!important;
+
+color:black!important;
+
+}
+
+
+.print-area{
+
+width:210mm;
+
+padding:10mm;
+
+}
+
+
+.print-card{
+
+page-break-inside:avoid;
+
+}
+
+
+
+button{
+
+display:none;
+
+}
+
+
+}
+/* Form yazı renk düzeltmesi */
+
+input,
+textarea,
+select {
+
+  color: #111111 !important;
+
+  background-color: #ffffff !important;
+
+}
+
+
+input::placeholder,
+textarea::placeholder {
+
+  color: #6b7280 !important;
+
+}
+
+/* Ana sayfa bannerına sessiz, video hissi veren zarif hareketler */
+@keyframes floriotr-hero-camera {
+  0% { transform: scale(1.035) translate3d(0, 0, 0); }
+  50% { transform: scale(1.085) translate3d(-0.7%, -0.4%, 0); }
+  100% { transform: scale(1.035) translate3d(0, 0, 0); }
+}
+
+@keyframes floriotr-hero-glow {
+  0%, 100% { opacity: 0.08; transform: translateX(-15%); }
+  50% { opacity: 0.22; transform: translateX(18%); }
+}
+
+.floriotr-hero-motion {
+  animation: floriotr-hero-camera 10s ease-in-out infinite;
+  transform-origin: 72% 48%;
+  will-change: transform;
+}
+
+.floriotr-hero-light {
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 239, 207, 0.22) 54%, transparent 69%);
+  animation: floriotr-hero-glow 8s ease-in-out infinite;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floriotr-hero-motion,
+  .floriotr-hero-light {
+    animation: none;
+  }
+}

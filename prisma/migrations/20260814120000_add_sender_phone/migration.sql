@@ -1,0 +1,1 @@
+ALTER TABLE "Order" ADD COLUMN "senderPhone" TEXT NOT NULL DEFAULT '';
