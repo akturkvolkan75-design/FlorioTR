@@ -1,8 +1,5 @@
-import { PrismaClient as PostgresPrismaClient } from "@/generated/prisma-postgres/client";
-import { PrismaClient as SqlitePrismaClient } from "@/lib/generated/prisma/client";
-
+import { PrismaClient } from "@/generated/prisma-postgres/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 
 
 const databaseUrl =
@@ -11,54 +8,30 @@ const databaseUrl =
   process.env.DATABASE_URL;
 
 
-const isPostgres =
-  databaseUrl?.startsWith("postgres://") ||
-  databaseUrl?.startsWith("postgresql://");
-
-
-function createPrismaClient() {
-
-  if (isPostgres && databaseUrl) {
-
-    const adapter =
-      new PrismaPg({
-        connectionString: databaseUrl,
-      });
-
-
-    return new PostgresPrismaClient({
-      adapter,
-    });
-
-  }
-
-
-  const adapter =
-    new PrismaBetterSqlite3({
-      url:
-        databaseUrl ||
-        "file:./prisma/dev.db",
-    });
-
-
-  return new SqlitePrismaClient({
-    adapter,
-  });
-
+if (!databaseUrl) {
+  throw new Error(
+    "DATABASE_URL bulunamadı."
+  );
 }
 
+
+const adapter =
+  new PrismaPg({
+    connectionString: databaseUrl,
+  });
 
 
 const globalForPrisma =
   globalThis as unknown as {
-    prisma: ReturnType<typeof createPrismaClient> | undefined;
+    prisma: PrismaClient | undefined;
   };
 
 
 export const prisma =
   globalForPrisma.prisma ??
-  createPrismaClient();
-
+  new PrismaClient({
+    adapter,
+  });
 
 
 if (
