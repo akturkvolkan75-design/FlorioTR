@@ -4,309 +4,197 @@ import { products } from "@/data/products";
 import { getCustomerSession } from "@/lib/customer-auth";
 
 
-export async function GET(request:Request){
+export async function GET(request: Request) {
 
-try{
+  try {
 
+    const { searchParams } = new URL(request.url);
 
-const {searchParams}=new URL(request.url);
 
+    const productSlug =
+      searchParams.get("productSlug")?.trim();
 
-const productSlug =
-searchParams.get("productSlug")?.trim();
 
+    const featured =
+      searchParams.get("featured") === "true";
 
-const featured =
-searchParams.get("featured")==="true";
 
 
+    const reviews =
+      await prisma.review.findMany({
 
-const reviews = await prisma.review.findMany({
+        where: {
 
-where:{
+          isApproved: true,
 
-isApproved:true,
+          ...(productSlug
+            ? {
+                productSlug,
+              }
+            : {}),
 
-...(productSlug
-?
-{
-productSlug
-}
-:
-{})
+        },
 
-},
 
+        include: {
 
-include:{
+          replies: {
 
+            include: {
 
-replies:{
+              customer: {
 
-include:{
+                select: {
+                  name: true,
+                },
 
+              },
 
-customer:{
+            },
 
-select:{
-name:true
-}
 
-}
+            orderBy: {
 
-},
+              createdAt: "asc",
 
+            },
 
-orderBy:{
+          },
 
-createdAt:"asc"
 
-}
+          likes: true,
 
-},
+        },
 
 
+        orderBy: {
 
-likes:true
+          createdAt: "desc",
 
+        },
 
-},
 
+        take: featured ? 20 : 100,
 
-orderBy:{
+      });
 
-createdAt:"desc"
 
-},
 
+    const result =
+      reviews.map((review) => {
 
-take:featured ? 20 : 100
 
+        const product =
+          products.find(
+            (p) =>
+              p.slug === review.productSlug
+          );
 
-});
 
 
+        return {
 
 
-const result = reviews.map(review=>{
+          id: review.id,
 
 
-const product =
-products.find(
-p=>p.slug===review.productSlug
-);
+          productSlug:
+            review.productSlug,
 
 
+          productName:
+            product?.name ??
+            "Çiçek Ürünü",
 
-return{
 
 
-id:review.id,
+          productImage:
+            product?.image ??
+            "/images/logo.png",
 
-productSlug:review.productSlug,
 
-productName:
-product?.name ?? "Çiçek Ürünü",
 
+          rating:
+            review.rating,
 
-productImage:
-product?.image ?? "/images/logo.png",
 
 
-rating:review.rating,
+          comment:
+            review.comment,
 
-comment:review.comment,
 
 
-customerName:
-review.customerName,
+          customerName:
+            review.customerName,
 
 
-createdAt:
-review.createdAt,
 
+          createdAt:
+            review.createdAt,
 
-likeCount:
-review.likes.length,
 
 
-replies:
-review.replies.map(reply=>({
+          likeCount:
+            review.likes.length,
 
-id:reply.id,
 
-message:reply.message,
 
-customerName:
-reply.customer.name,
+          replies:
+            review.replies.map((reply) => ({
 
-createdAt:
-reply.createdAt
+              id:
+                reply.id,
 
-}))
 
+              message:
+                reply.message,
 
-}
 
+              customerName:
+                reply.customer?.name ||
+                "Müşteri",
 
-});
 
+              createdAt:
+                reply.createdAt,
 
+            })),
 
-return NextResponse.json({
+        };
 
-success:true,
 
-reviews:result
+      });
 
-});
 
 
+    return NextResponse.json({
 
-}
+      success: true,
 
-catch(error){
+      reviews: result,
 
-console.log(error);
+    });
 
 
-return NextResponse.json({
 
-success:false,
+  } catch (error) {
 
-message:"Yorumlar alınamadı."
+    console.log(error);
 
-},
 
-{
-status:500
-}
+    return NextResponse.json({
 
-);
+      success: false,
 
+      message:
+        "Yorumlar alınamadı.",
 
-}
+    },
+    {
+      status: 500,
+    });
 
-}
-
-
-
-
-
-
-export async function POST(request:Request){
-
-try{
-
-
-const body =
-await request.json();
-
-
-const orderId =
-Number(body.orderId);
-
-
-const productSlug =
-String(body.productSlug ?? "")
-.trim();
-
-
-const rating =
-Number(body.rating);
-
-
-const comment =
-String(body.comment ?? "")
-.trim()
-.slice(0,500);
-
-
-
-if(
-!orderId ||
-!productSlug ||
-rating<1 ||
-rating>5
-){
-
-return NextResponse.json({
-
-success:false,
-message:"Eksik bilgiler."
-
-},{
-status:400
-});
-
-}
-
-
-
-
-const customer =
-await getCustomerSession();
-
-
-
-if(!customer){
-
-return NextResponse.json({
-
-success:false,
-message:"Yorum için giriş yapmalısınız."
-
-},{
-status:401
-});
-
-}
-
-
-
-const order =
-await prisma.order.findFirst({
-
-where:{
-
-id:orderId,
-
-customerId:customer.id
-
-}
-
-});
-
-
-
-if(!order){
-
-return NextResponse.json({
-
-success:false,
-message:"Sipariş bulunamadı."
-
-},{
-status:404
-});
-
-}
-
-
-
-
-if(order.status!=="Teslim Edildi"){
-
-
-return NextResponse.json({
-
-success:false,
-message:"Sadece teslim edilen ürünlere yorum yapılabilir."
-
-},{
-status:403
-});
-
+  }
 
 }
 
@@ -314,111 +202,297 @@ status:403
 
 
 
-const product =
-products.find(
-p=>p.slug===productSlug
-);
+export async function POST(request: Request) {
+
+
+  try {
+
+
+    const body =
+      await request.json();
 
 
 
-if(!product){
-
-return NextResponse.json({
-
-success:false,
-message:"Ürün bulunamadı."
-
-},{
-status:404
-});
-
-}
+    const orderId =
+      Number(body.orderId);
 
 
 
-
-const exists =
-await prisma.review.findUnique({
-
-where:{
-orderId
-}
-
-});
+    const productSlug =
+      String(body.productSlug ?? "")
+        .trim();
 
 
 
-if(exists){
+    const rating =
+      Number(body.rating);
 
-return NextResponse.json({
 
-success:false,
-message:"Bu sipariş zaten değerlendirilmiş."
 
-},{
-status:409
-});
-
-}
+    const comment =
+      String(body.comment ?? "")
+        .trim()
+        .slice(0, 500);
 
 
 
 
+    if (
+      !orderId ||
+      !productSlug ||
+      rating < 1 ||
+      rating > 5
+    ) {
 
-await prisma.review.create({
+      return NextResponse.json({
 
-data:{
+        success: false,
 
+        message:
+          "Eksik bilgiler.",
 
-orderId,
+      },
+      {
+        status: 400,
+      });
 
-productSlug,
-
-rating,
-
-comment,
-
-customerName:
-customer.name,
-
-isApproved:false
-
-
-}
-
-});
+    }
 
 
 
 
-return NextResponse.json({
-
-success:true,
-
-message:"Yorumunuz onaya gönderildi."
-
-});
+    const customer =
+      await getCustomerSession();
 
 
 
-}
 
-catch(error){
-
-console.log(error);
+    if (!customer) {
 
 
-return NextResponse.json({
+      return NextResponse.json({
 
-success:false,
+        success: false,
 
-message:"Yorum kaydedilemedi."
+        message:
+          "Yorum için giriş yapmalısınız.",
 
-},{
-status:500
-});
+      },
+      {
+        status: 401,
+      });
 
 
-}
+    }
+
+
+
+
+
+    const order =
+      await prisma.order.findFirst({
+
+        where: {
+
+          id: orderId,
+
+          customerId:
+            customer.id,
+
+        },
+
+      });
+
+
+
+
+
+    if (!order) {
+
+
+      return NextResponse.json({
+
+        success: false,
+
+        message:
+          "Sipariş bulunamadı.",
+
+      },
+      {
+        status: 404,
+      });
+
+
+    }
+
+
+
+
+
+    if (
+      order.status !==
+      "Teslim Edildi"
+    ) {
+
+
+      return NextResponse.json({
+
+        success: false,
+
+        message:
+          "Sadece teslim edilen ürünlere yorum yapılabilir.",
+
+      },
+      {
+        status: 403,
+      });
+
+
+    }
+
+
+
+
+
+
+    const product =
+      products.find(
+        (p) =>
+          p.slug === productSlug
+      );
+
+
+
+
+
+    if (!product) {
+
+
+      return NextResponse.json({
+
+        success: false,
+
+        message:
+          "Ürün bulunamadı.",
+
+      },
+      {
+        status: 404,
+      });
+
+
+    }
+
+
+
+
+
+    const exists =
+      await prisma.review.findUnique({
+
+        where: {
+
+          orderId,
+
+        },
+
+      });
+
+
+
+
+
+    if (exists) {
+
+
+      return NextResponse.json({
+
+        success: false,
+
+        message:
+          "Bu sipariş zaten değerlendirilmiş.",
+
+      },
+      {
+        status: 409,
+      });
+
+
+    }
+
+
+
+
+
+
+    await prisma.review.create({
+
+      data: {
+
+
+        orderId,
+
+
+        productSlug,
+
+
+        rating,
+
+
+        comment,
+
+
+
+        customerName:
+          customer.name,
+
+
+
+        isApproved:
+          false,
+
+
+      },
+
+    });
+
+
+
+
+
+    return NextResponse.json({
+
+      success: true,
+
+      message:
+        "Yorumunuz onaya gönderildi.",
+
+    });
+
+
+
+
+  } catch (error) {
+
+
+    console.log(error);
+
+
+
+    return NextResponse.json({
+
+      success: false,
+
+      message:
+        "Yorum kaydedilemedi.",
+
+    },
+    {
+      status: 500,
+    });
+
+
+  }
+
 
 }
