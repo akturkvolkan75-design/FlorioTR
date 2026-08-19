@@ -16,12 +16,9 @@ const isPostgres =
   databaseUrl?.startsWith("postgresql://");
 
 
-
 function createPrismaClient() {
 
-
   if (isPostgres && databaseUrl) {
-
 
     const adapter =
       new PrismaPg({
@@ -31,11 +28,9 @@ function createPrismaClient() {
 
     return new PostgresPrismaClient({
       adapter,
-    }) as unknown as SqlitePrismaClient;
-
+    });
 
   }
-
 
 
   const adapter =
@@ -46,10 +41,9 @@ function createPrismaClient() {
     });
 
 
-
   return new SqlitePrismaClient({
     adapter,
-  }) as unknown as PostgresPrismaClient;
+  });
 
 }
 
@@ -57,9 +51,8 @@ function createPrismaClient() {
 
 const globalForPrisma =
   globalThis as unknown as {
-    prisma: any;
+    prisma: ReturnType<typeof createPrismaClient> | undefined;
   };
-
 
 
 export const prisma =
@@ -71,7 +64,5 @@ export const prisma =
 if (
   process.env.NODE_ENV !== "production"
 ) {
-
   globalForPrisma.prisma = prisma;
-
 }
