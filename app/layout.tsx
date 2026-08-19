@@ -7,8 +7,15 @@ import Footer from "@/components/Footer";
 import PanelBrand from "@/components/PanelBrand";
 
 
+const rawSiteUrl =
+  process.env.NEXT_PUBLIC_APP_URL?.trim();
+
+
 const siteUrl =
-  process.env.NEXT_PUBLIC_APP_URL || "https://floriotr.vercel.app";
+  rawSiteUrl &&
+  /^https?:\/\//.test(rawSiteUrl)
+    ? rawSiteUrl
+    : "https://www.floriotr.com";
 
 
 
@@ -99,6 +106,7 @@ export const metadata: Metadata = {
   category: "shopping",
 
 };
+
 
 
 

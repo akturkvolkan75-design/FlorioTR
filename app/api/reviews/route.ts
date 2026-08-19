@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { products } from "@/data/products";
 import { getCustomerSession } from "@/lib/customer-auth";
 
+export const dynamic = "force-dynamic";
+
 
 
 export async function GET(request: Request) {
@@ -15,7 +17,6 @@ export async function GET(request: Request) {
 
     const productSlug =
       searchParams.get("productSlug")?.trim();
-
 
 
     const featured =
@@ -96,10 +97,9 @@ export async function GET(request: Request) {
           );
 
 
-
         return {
 
-          id:review.id,
+          id: review.id,
 
           productSlug:
             review.productSlug,
@@ -173,9 +173,7 @@ export async function GET(request: Request) {
     });
 
 
-  }
-
-  catch(error){
+  } catch(error) {
 
     console.log(error);
 
@@ -191,24 +189,15 @@ export async function GET(request: Request) {
       status:500,
     });
 
-
   }
 
 }
-
-
-
-
-
-
-export async function POST(request:Request){
+export async function POST(request: Request) {
 
   try {
 
-
     const body =
       await request.json();
-
 
 
     const customer =
@@ -216,7 +205,7 @@ export async function POST(request:Request){
 
 
 
-    if(!customer){
+    if (!customer) {
 
       return NextResponse.json({
 
@@ -235,12 +224,12 @@ export async function POST(request:Request){
 
 
 
-
     // ==========================
-    // YORUMA CEVAP
+    // YORUMA CEVAP EKLEME
     // ==========================
 
-    if(body.reply){
+    if (body.reply) {
+
 
       const reviewId =
         Number(body.reviewId);
@@ -249,21 +238,22 @@ export async function POST(request:Request){
 
       const message =
         String(body.reply)
-        .trim()
-        .slice(0,500);
+          .trim()
+          .slice(0,500);
 
 
 
-      if(
+      if (
         !reviewId ||
         !message
-      ){
+      ) {
 
         return NextResponse.json({
 
           success:false,
 
-          message:"Eksik bilgi.",
+          message:
+            "Eksik bilgi.",
 
         },
         {
@@ -275,10 +265,9 @@ export async function POST(request:Request){
 
 
 
-
       await prisma.reviewReply.create({
 
-        data:{
+        data: {
 
           reviewId,
 
@@ -294,13 +283,12 @@ export async function POST(request:Request){
 
 
 
-
       return NextResponse.json({
 
         success:true,
 
         message:
-          "Cevabınız eklendi.",
+          "Cevabınız yayınlandı.",
 
       });
 
@@ -311,9 +299,8 @@ export async function POST(request:Request){
 
 
 
-
     // ==========================
-    // YENİ YORUM
+    // YENİ YORUM EKLEME
     // ==========================
 
 
@@ -324,7 +311,7 @@ export async function POST(request:Request){
 
     const productSlug =
       String(body.productSlug ?? "")
-      .trim();
+        .trim();
 
 
 
@@ -335,24 +322,26 @@ export async function POST(request:Request){
 
     const comment =
       String(body.comment ?? "")
-      .trim()
-      .slice(0,500);
+        .trim()
+        .slice(0,500);
 
 
 
 
-    if(
+
+    if (
       !orderId ||
       !productSlug ||
-      rating<1 ||
-      rating>5
-    ){
+      rating < 1 ||
+      rating > 5
+    ) {
 
       return NextResponse.json({
 
         success:false,
 
-        message:"Eksik bilgiler.",
+        message:
+          "Eksik bilgiler.",
 
       },
       {
@@ -368,9 +357,9 @@ export async function POST(request:Request){
     const order =
       await prisma.order.findFirst({
 
-        where:{
+        where: {
 
-          id:orderId,
+          id: orderId,
 
           customerId:
             customer.id,
@@ -382,13 +371,15 @@ export async function POST(request:Request){
 
 
 
-    if(!order){
+
+    if (!order) {
 
       return NextResponse.json({
 
         success:false,
 
-        message:"Sipariş bulunamadı.",
+        message:
+          "Sipariş bulunamadı.",
 
       },
       {
@@ -401,7 +392,10 @@ export async function POST(request:Request){
 
 
 
-    if(order.status !== "Teslim Edildi"){
+    if (
+      order.status !==
+      "Teslim Edildi"
+    ) {
 
       return NextResponse.json({
 
@@ -420,20 +414,25 @@ export async function POST(request:Request){
 
 
 
+
     const product =
       products.find(
-        p=>p.slug===productSlug
+        (p)=>
+          p.slug === productSlug
       );
 
 
 
-    if(!product){
+
+
+    if (!product) {
 
       return NextResponse.json({
 
         success:false,
 
-        message:"Ürün bulunamadı.",
+        message:
+          "Ürün bulunamadı.",
 
       },
       {
@@ -449,15 +448,19 @@ export async function POST(request:Request){
     const exists =
       await prisma.review.findUnique({
 
-        where:{
+        where: {
+
           orderId,
+
         },
 
       });
 
 
 
-    if(exists){
+
+
+    if (exists) {
 
       return NextResponse.json({
 
@@ -476,9 +479,10 @@ export async function POST(request:Request){
 
 
 
+
     await prisma.review.create({
 
-      data:{
+      data: {
 
         orderId,
 
@@ -513,10 +517,11 @@ export async function POST(request:Request){
 
   }
 
+  catch(error) {
 
-  catch(error){
 
     console.log(error);
+
 
 
     return NextResponse.json({
@@ -533,6 +538,5 @@ export async function POST(request:Request){
 
 
   }
-
 
 }
