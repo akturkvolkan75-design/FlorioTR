@@ -1,28 +1,64 @@
-import { PrismaClient } from "@/generated/prisma-sqlite/client";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
-import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient as PostgresPrismaClient } from "@/generated/prisma-postgres/client";
+import { PrismaClient as SqlitePrismaClient } from "@/lib/generated/prisma/client";
+
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 
 
-const configuredUrl = process.env.POSTGRES_PRISMA_URL || process.env.POSTGRES_URL || process.env.DATABASE_URL;
-const isPostgres = configuredUrl?.startsWith("postgres://") || configuredUrl?.startsWith("postgresql://");
+const databaseUrl =
+  process.env.POSTGRES_PRISMA_URL ||
+  process.env.POSTGRES_URL ||
+  process.env.DATABASE_URL;
 
-function createPrismaClient(): PrismaClient {
-  if (isPostgres && configuredUrl) {
-    const adapter = new PrismaPg({ connectionString: configuredUrl });
-    return new PostgresPrismaClient({ adapter }) as unknown as PrismaClient;
+
+const isPostgres =
+  databaseUrl?.startsWith("postgres://") ||
+  databaseUrl?.startsWith("postgresql://");
+
+
+
+function createPrismaClient() {
+
+
+  if (isPostgres && databaseUrl) {
+
+
+    const adapter =
+      new PrismaPg({
+        connectionString: databaseUrl,
+      });
+
+
+    return new PostgresPrismaClient({
+      adapter,
+    }) as unknown as SqlitePrismaClient;
+
+
   }
 
-  const adapter = new PrismaBetterSqlite3({
-    url: configuredUrl || "file:./prisma/dev.db",
-  });
-  return new PrismaClient({ adapter });
+
+
+  const adapter =
+    new PrismaBetterSqlite3({
+      url:
+        databaseUrl ||
+        "file:./prisma/dev.db",
+    });
+
+
+
+  return new SqlitePrismaClient({
+    adapter,
+  }) as unknown as PostgresPrismaClient;
+
 }
 
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
+
+const globalForPrisma =
+  globalThis as unknown as {
+    prisma: any;
+  };
 
 
 
@@ -32,7 +68,9 @@ export const prisma =
 
 
 
-if(process.env.NODE_ENV !== "production"){
+if (
+  process.env.NODE_ENV !== "production"
+) {
 
   globalForPrisma.prisma = prisma;
 
