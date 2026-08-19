@@ -45,20 +45,25 @@ export default function YorumlarPage(){
 
 const [reviews,setReviews]=useState<Review[]>([]);
 
+const [replyOpen,setReplyOpen]=useState<number|null>(null);
+
+const [replyText,setReplyText]=useState("");
+
 const {theme}=useTheme();
 
 const colors=themes[theme].colors;
 
 
 
-useEffect(()=>{
+
+async function loadReviews(){
+
+const res =
+await fetch("/api/reviews");
 
 
-fetch("/api/reviews")
-
-.then(res=>res.json())
-
-.then(data=>{
+const data =
+await res.json();
 
 
 if(data.success){
@@ -67,14 +72,88 @@ setReviews(data.reviews);
 
 }
 
+}
+
+
+
+
+useEffect(()=>{
+
+loadReviews();
+
+},[]);
+
+
+
+
+
+async function sendReply(
+reviewId:number
+){
+
+
+if(!replyText.trim()){
+
+alert("Lütfen cevap yazın.");
+
+return;
+
+}
+
+
+
+const res =
+await fetch(
+"/api/reviews",
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":
+"application/json",
+
+},
+
+body:JSON.stringify({
+
+reviewId,
+
+reply:
+replyText,
 
 })
 
+}
 
-.catch(()=>undefined);
+);
 
 
-},[]);
+
+const data =
+await res.json();
+
+
+
+if(!data.success){
+
+alert(data.message);
+
+return;
+
+}
+
+
+
+setReplyText("");
+
+setReplyOpen(null);
+
+loadReviews();
+
+
+}
 
 
 
@@ -108,7 +187,6 @@ max-w-6xl
 "
 
 >
-
 
 
 <div
@@ -241,6 +319,7 @@ color:colors.primary
 
 
 
+
 <div
 
 className="
@@ -315,11 +394,6 @@ font-bold
 
 
 
-{
-
-review.replies.length > 0 && (
-
-
 <div
 
 className="
@@ -349,6 +423,25 @@ font-black
 💬 Cevaplar
 
 </p>
+
+
+
+{
+
+review.replies.length===0 && (
+
+<p className="text-sm">
+
+Henüz cevap yok.
+
+</p>
+
+)
+
+}
+
+
+
 
 
 {
@@ -389,25 +482,123 @@ text-sm
 
 
 
+<button
+
+onClick={()=>{
+
+setReplyOpen(
+replyOpen===review.id
+?
+null
+:
+review.id
+);
+
+}}
+
+className="
+mt-3
+rounded-xl
+bg-emerald-700
+px-4
+py-2
+font-black
+text-white
+"
+
+>
+
+💬 Cevap yaz
+
+</button>
+
+
+
+
+
+{
+
+replyOpen===review.id && (
+
+
+<div
+
+className="
+mt-3
+space-y-2
+"
+
+>
+
+
+<textarea
+
+value={replyText}
+
+onChange={(e)=>
+setReplyText(e.target.value)
+}
+
+className="
+w-full
+rounded-xl
+border
+p-3
+"
+
+placeholder="Cevabınızı yazın..."
+
+rows={3}
+
+/>
+
+
+
+<button
+
+onClick={()=>
+sendReply(review.id)
+}
+
+className="
+rounded-xl
+bg-blue-950
+px-5
+py-2
+font-black
+text-white
+"
+
+>
+
+Gönder
+
+</button>
+
+
 </div>
 
 
 )
 
-
 }
+
+
 
 
 
 </div>
 
+
+
+
+</div>
 
 
 </article>
 
 
 ))
-
 
 }
 

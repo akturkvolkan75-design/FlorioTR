@@ -4,15 +4,18 @@ import { products } from "@/data/products";
 import { getCustomerSession } from "@/lib/customer-auth";
 
 
+
 export async function GET(request: Request) {
 
   try {
 
-    const { searchParams } = new URL(request.url);
+    const { searchParams } =
+      new URL(request.url);
 
 
     const productSlug =
       searchParams.get("productSlug")?.trim();
+
 
 
     const featured =
@@ -45,7 +48,9 @@ export async function GET(request: Request) {
               customer: {
 
                 select: {
+
                   name: true,
+
                 },
 
               },
@@ -81,12 +86,12 @@ export async function GET(request: Request) {
 
 
     const result =
-      reviews.map((review) => {
+      reviews.map((review)=>{
 
 
         const product =
           products.find(
-            (p) =>
+            (p)=>
               p.slug === review.productSlug
           );
 
@@ -94,9 +99,7 @@ export async function GET(request: Request) {
 
         return {
 
-
-          id: review.id,
-
+          id:review.id,
 
           productSlug:
             review.productSlug,
@@ -107,40 +110,33 @@ export async function GET(request: Request) {
             "Çiçek Ürünü",
 
 
-
           productImage:
             product?.image ??
             "/images/logo.png",
-
 
 
           rating:
             review.rating,
 
 
-
           comment:
             review.comment,
-
 
 
           customerName:
             review.customerName,
 
 
-
           createdAt:
             review.createdAt,
-
 
 
           likeCount:
             review.likes.length,
 
 
-
           replies:
-            review.replies.map((reply) => ({
+            review.replies.map(reply=>({
 
               id:
                 reply.id,
@@ -151,7 +147,7 @@ export async function GET(request: Request) {
 
 
               customerName:
-                reply.customer?.name ||
+                reply.customer?.name ??
                 "Müşteri",
 
 
@@ -159,6 +155,7 @@ export async function GET(request: Request) {
                 reply.createdAt,
 
             })),
+
 
         };
 
@@ -169,30 +166,31 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
 
-      success: true,
+      success:true,
 
-      reviews: result,
+      reviews:result,
 
     });
 
 
+  }
 
-  } catch (error) {
+  catch(error){
 
     console.log(error);
 
 
     return NextResponse.json({
 
-      success: false,
+      success:false,
 
-      message:
-        "Yorumlar alınamadı.",
+      message:"Yorumlar alınamadı.",
 
     },
     {
-      status: 500,
+      status:500,
     });
+
 
   }
 
@@ -202,8 +200,8 @@ export async function GET(request: Request) {
 
 
 
-export async function POST(request: Request) {
 
+export async function POST(request:Request){
 
   try {
 
@@ -213,6 +211,112 @@ export async function POST(request: Request) {
 
 
 
+    const customer =
+      await getCustomerSession();
+
+
+
+    if(!customer){
+
+      return NextResponse.json({
+
+        success:false,
+
+        message:
+          "Bu işlem için giriş yapmalısınız.",
+
+      },
+      {
+        status:401,
+      });
+
+    }
+
+
+
+
+
+    // ==========================
+    // YORUMA CEVAP
+    // ==========================
+
+    if(body.reply){
+
+      const reviewId =
+        Number(body.reviewId);
+
+
+
+      const message =
+        String(body.reply)
+        .trim()
+        .slice(0,500);
+
+
+
+      if(
+        !reviewId ||
+        !message
+      ){
+
+        return NextResponse.json({
+
+          success:false,
+
+          message:"Eksik bilgi.",
+
+        },
+        {
+          status:400,
+        });
+
+      }
+
+
+
+
+
+      await prisma.reviewReply.create({
+
+        data:{
+
+          reviewId,
+
+          customerId:
+            customer.id,
+
+          message,
+
+        },
+
+      });
+
+
+
+
+
+      return NextResponse.json({
+
+        success:true,
+
+        message:
+          "Cevabınız eklendi.",
+
+      });
+
+
+    }
+
+
+
+
+
+
+    // ==========================
+    // YENİ YORUM
+    // ==========================
+
+
     const orderId =
       Number(body.orderId);
 
@@ -220,7 +324,7 @@ export async function POST(request: Request) {
 
     const productSlug =
       String(body.productSlug ?? "")
-        .trim();
+      .trim();
 
 
 
@@ -231,57 +335,29 @@ export async function POST(request: Request) {
 
     const comment =
       String(body.comment ?? "")
-        .trim()
-        .slice(0, 500);
+      .trim()
+      .slice(0,500);
 
 
 
 
-    if (
+    if(
       !orderId ||
       !productSlug ||
-      rating < 1 ||
-      rating > 5
-    ) {
+      rating<1 ||
+      rating>5
+    ){
 
       return NextResponse.json({
 
-        success: false,
+        success:false,
 
-        message:
-          "Eksik bilgiler.",
-
-      },
-      {
-        status: 400,
-      });
-
-    }
-
-
-
-
-    const customer =
-      await getCustomerSession();
-
-
-
-
-    if (!customer) {
-
-
-      return NextResponse.json({
-
-        success: false,
-
-        message:
-          "Yorum için giriş yapmalısınız.",
+        message:"Eksik bilgiler.",
 
       },
       {
-        status: 401,
+        status:400,
       });
-
 
     }
 
@@ -292,9 +368,9 @@ export async function POST(request: Request) {
     const order =
       await prisma.order.findFirst({
 
-        where: {
+        where:{
 
-          id: orderId,
+          id:orderId,
 
           customerId:
             customer.id,
@@ -306,22 +382,18 @@ export async function POST(request: Request) {
 
 
 
-
-    if (!order) {
-
+    if(!order){
 
       return NextResponse.json({
 
-        success: false,
+        success:false,
 
-        message:
-          "Sipariş bulunamadı.",
+        message:"Sipariş bulunamadı.",
 
       },
       {
-        status: 404,
+        status:404,
       });
-
 
     }
 
@@ -329,57 +401,44 @@ export async function POST(request: Request) {
 
 
 
-    if (
-      order.status !==
-      "Teslim Edildi"
-    ) {
-
+    if(order.status !== "Teslim Edildi"){
 
       return NextResponse.json({
 
-        success: false,
+        success:false,
 
         message:
           "Sadece teslim edilen ürünlere yorum yapılabilir.",
 
       },
       {
-        status: 403,
+        status:403,
       });
-
 
     }
 
 
 
 
-
-
     const product =
       products.find(
-        (p) =>
-          p.slug === productSlug
+        p=>p.slug===productSlug
       );
 
 
 
-
-
-    if (!product) {
-
+    if(!product){
 
       return NextResponse.json({
 
-        success: false,
+        success:false,
 
-        message:
-          "Ürün bulunamadı.",
+        message:"Ürün bulunamadı.",
 
       },
       {
-        status: 404,
+        status:404,
       });
-
 
     }
 
@@ -390,67 +449,49 @@ export async function POST(request: Request) {
     const exists =
       await prisma.review.findUnique({
 
-        where: {
-
+        where:{
           orderId,
-
         },
 
       });
 
 
 
-
-
-    if (exists) {
-
+    if(exists){
 
       return NextResponse.json({
 
-        success: false,
+        success:false,
 
         message:
           "Bu sipariş zaten değerlendirilmiş.",
 
       },
       {
-        status: 409,
+        status:409,
       });
-
 
     }
 
 
 
 
-
-
     await prisma.review.create({
 
-      data: {
-
+      data:{
 
         orderId,
 
-
         productSlug,
-
 
         rating,
 
-
         comment,
-
-
 
         customerName:
           customer.name,
 
-
-
-        isApproved:
-          false,
-
+        isApproved:false,
 
       },
 
@@ -462,7 +503,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
 
-      success: true,
+      success:true,
 
       message:
         "Yorumunuz onaya gönderildi.",
@@ -470,25 +511,24 @@ export async function POST(request: Request) {
     });
 
 
+  }
 
 
-  } catch (error) {
-
+  catch(error){
 
     console.log(error);
 
 
-
     return NextResponse.json({
 
-      success: false,
+      success:false,
 
       message:
-        "Yorum kaydedilemedi.",
+        "İşlem başarısız.",
 
     },
     {
-      status: 500,
+      status:500,
     });
 
 
