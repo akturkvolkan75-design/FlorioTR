@@ -77,7 +77,8 @@ export async function GET() {
 
         productName:
           product?.name ??
-          review.order.productName,
+          review.order?.productName ??
+          "Ürün",
 
         productImage:
           product?.image ??
@@ -95,6 +96,7 @@ export async function GET() {
 
         likeCount: review.likes.length,
 
+
         replies: review.replies.map((reply) => ({
 
           id: reply.id,
@@ -102,7 +104,8 @@ export async function GET() {
           message: reply.message,
 
           customerName:
-            reply.customer.name,
+            reply.customer?.name ||
+            "Müşteri",
 
           createdAt:
             reply.createdAt,
