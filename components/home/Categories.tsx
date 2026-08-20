@@ -13,11 +13,13 @@ const categories = [
     position: "center 48%",
   },
   {
-    name: "Özel Buketler",
-    slug: "ozel-buketler",
-    image: "/images/categories/ozel-buketler.jpg",
-    description: "Özel tasarımlar",
-    position: "center",
+ {
+  name: "Papatya Buketleri",
+  slug: "papatya-buketleri",
+  image: "/images/categories/papatya-buketleri.jpg",
+  description: "Doğallığın simgesi",
+  position: "center",
+},   
   },
   {
     name: "Papatya Buketleri",
