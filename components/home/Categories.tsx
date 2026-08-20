@@ -57,7 +57,7 @@ const categories = [
   {
     name: "Kutu Güller",
     slug: "kutu-guller",
-    image: "/images/categories/kutu-gul.jpg",
+    image: "/images/categories/kutu-guller.jpg",
     description: "Şık sürprizler",
     position: "center",
   },
