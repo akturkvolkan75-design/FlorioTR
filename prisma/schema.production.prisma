@@ -1,12 +1,10 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma-postgres"
 }
 
 datasource db {
   provider = "postgresql"
 }
-
 model FlowerShop {
   id Int @id @default(autoincrement())
 
@@ -32,7 +30,9 @@ model FlowerShop {
   passwordResets FlowerShopPasswordReset[]
 }
 
+
 model FlowerShopPasswordReset {
+
   id Int @id @default(autoincrement())
 
   flowerShopId Int
@@ -48,9 +48,12 @@ model FlowerShopPasswordReset {
   flowerShop FlowerShop @relation(fields: [flowerShopId], references: [id], onDelete: Cascade)
 
   @@index([flowerShopId])
+
 }
 
+
 model Order {
+
   id Int @id @default(autoincrement())
 
   customerName String
@@ -107,6 +110,7 @@ model Order {
 
   createdAt DateTime @default(now()) @db.Timestamptz
 
+
   flowerShop FlowerShop? @relation(fields: [flowerShopId], references: [id])
 
   customer Customer? @relation(fields: [customerId], references: [id])
@@ -115,13 +119,21 @@ model Order {
 
   review Review?
 
+
   @@index([flowerShopId])
+
   @@index([customerId])
+
   @@index([status])
+
   @@index([createdAt])
+
 }
 
+
+
 model Customer {
+
   id Int @id @default(autoincrement())
 
   name String
@@ -138,6 +150,7 @@ model Customer {
 
   createdAt DateTime @default(now()) @db.Timestamptz
 
+
   sessions CustomerSession[]
 
   emailVerifications CustomerEmailVerification[]
@@ -149,9 +162,10 @@ model Customer {
   reviewReplies ReviewReply[]
 
   reviewLikes ReviewLike[]
-}
 
+}
 model CustomerAddress {
+
   id Int @id @default(autoincrement())
 
   customerId Int
@@ -170,12 +184,18 @@ model CustomerAddress {
 
   createdAt DateTime @default(now()) @db.Timestamptz
 
+
   customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
+
   @@index([customerId])
+
 }
 
+
+
 model CustomerEmailVerification {
+
   id Int @id @default(autoincrement())
 
   customerId Int
@@ -188,12 +208,18 @@ model CustomerEmailVerification {
 
   createdAt DateTime @default(now()) @db.Timestamptz
 
+
   customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
+
   @@index([customerId])
+
 }
 
+
+
 model CustomerSession {
+
   id Int @id @default(autoincrement())
 
   customerId Int
@@ -204,157 +230,285 @@ model CustomerSession {
 
   createdAt DateTime @default(now()) @db.Timestamptz
 
+
   customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
+
   @@index([customerId])
+
 }
 
+
+
 model Review {
+
   id Int @id @default(autoincrement())
 
-  orderId Int @unique
+
+  orderId Int? @unique
+
 
   productSlug String
 
+
   rating Int
+
 
   comment String?
 
+
   customerName String
+
 
   isApproved Boolean @default(false)
 
+
+  isHidden Boolean @default(false)
+
+
+  isDeleted Boolean @default(false)
+
+
   createdAt DateTime @default(now()) @db.Timestamptz
 
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+
+  order Order? @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+
 
   replies ReviewReply[]
 
+
   likes ReviewLike[]
 
+
+
   @@index([productSlug])
+
+  @@index([isApproved])
+
+  @@index([isHidden])
+
 }
 
+
+
 model ReviewReply {
+
   id Int @id @default(autoincrement())
+
 
   reviewId Int
 
+
   customerId Int?
+
 
   message String
 
+
+  isApproved Boolean @default(false)
+
+
+  isHidden Boolean @default(false)
+
+
+  isDeleted Boolean @default(false)
+
+
   createdAt DateTime @default(now()) @db.Timestamptz
+
+
 
   review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 
+
   customer Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
+
+
   @@index([reviewId])
+
+  @@index([isApproved])
+
+  @@index([isHidden])
+
 }
 
+
+
 model ReviewLike {
+
   id Int @id @default(autoincrement())
+
 
   reviewId Int
 
+
   customerId Int?
 
+
   createdAt DateTime @default(now()) @db.Timestamptz
+
+
 
   review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 
+
   customer Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
+
+
   @@index([reviewId])
+
 }
 
+
+
 model OrderHistory {
+
   id Int @id @default(autoincrement())
+
 
   orderId Int
 
+
   oldStatus String
+
 
   newStatus String
 
+
   createdAt DateTime @default(now()) @db.Timestamptz
 
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+
+  order Order? @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
 
   @@index([orderId])
+
 }
 
+
+
 model AdminUser {
+
   id Int @id @default(autoincrement())
+
 
   email String @unique
 
+
   passwordHash String
 
+
   createdAt DateTime @default(now()) @db.Timestamptz
+
+
 
   sessions AdminSession[]
 
+
   passwordResets AdminPasswordReset[]
+
 }
 
+
+
 model AdminPasswordReset {
+
   id Int @id @default(autoincrement())
 
+
   adminId Int
+
 
   codeHash String
 
+
   expiresAt DateTime @db.Timestamptz
+
 
   attempts Int @default(0)
 
+
   createdAt DateTime @default(now()) @db.Timestamptz
+
+
 
   admin AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
 
+
   @@index([adminId])
+
 }
 
+
+
 model AdminSession {
+
   id Int @id @default(autoincrement())
+
 
   adminId Int
 
+
   tokenHash String @unique
+
 
   expiresAt DateTime @db.Timestamptz
 
+
   createdAt DateTime @default(now()) @db.Timestamptz
+
+
 
   admin AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
 
+
   @@index([adminId])
+
 }
 
+
+
 model ProductOverride {
+
   slug String @id
+
 
   catalogId Int? @unique
 
+
   name String?
+
 
   category String?
 
+
   description String?
+
 
   price Int
 
+
   image String
+
 
   rating Float @default(0)
 
+
   vip Boolean @default(false)
+
 
   isCustom Boolean @default(false)
 
+
   isActive Boolean @default(true)
 
+
   updatedAt DateTime @updatedAt @db.Timestamptz
+
 }

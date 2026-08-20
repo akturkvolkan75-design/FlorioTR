@@ -5,139 +5,150 @@ import {
   useContext,
   ReactNode,
   useEffect,
+  useState,
 } from "react";
 
-
-import { themes } from "@/themes/themes";
+import {
+  themes,
+  type ThemeName,
+} from "@/themes/themes";
 
 
 type ThemeContextType = {
-
-  theme: "florio";
-
+  theme: ThemeName;
   changeTheme: () => void;
-
 };
 
 
 const ThemeContext =
-createContext<ThemeContextType | null>(null);
-
+  createContext<ThemeContextType | null>(null);
 
 
 export function ThemeProvider({
-
-children,
-
-}:{
-
-children:ReactNode;
-
-}){
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const [theme, setTheme] =
+    useState<ThemeName>("florio");
 
 
-const theme = "florio";
+  function applyTheme(selectedTheme: ThemeName) {
+    const colors =
+      themes[selectedTheme].colors;
 
 
+    document.body.style.background =
+      colors.background;
 
-useEffect(()=>{
-
-
-const colors = themes.florio.colors;
-
-
-document.body.style.background =
-colors.background;
+    document.body.style.color =
+      colors.foreground;
 
 
-document.body.style.color =
-colors.foreground;
+    document.documentElement.style.setProperty(
+      "--background",
+      colors.background
+    );
+
+    document.documentElement.style.setProperty(
+      "--foreground",
+      colors.foreground
+    );
+
+    document.documentElement.style.setProperty(
+      "--primary",
+      colors.primary
+    );
+
+    document.documentElement.style.setProperty(
+      "--accent",
+      colors.accent
+    );
+
+    document.documentElement.style.setProperty(
+      "--card",
+      colors.card
+    );
+
+    document.documentElement.style.setProperty(
+      "--card-border",
+      colors.cardBorder
+    );
+
+    document.documentElement.style.setProperty(
+      "--muted",
+      colors.muted
+    );
+
+    document.documentElement.dataset.theme =
+      selectedTheme;
+
+    document.documentElement.style.colorScheme =
+      selectedTheme === "night"
+        ? "dark"
+        : "light";
+  }
 
 
-document.documentElement.style.setProperty(
-"--background",
-colors.background
-);
+  useEffect(() => {
+    const savedTheme =
+      localStorage.getItem("floriotr_theme");
 
 
-document.documentElement.style.setProperty(
-"--foreground",
-colors.foreground
-);
+    const initialTheme: ThemeName =
+      savedTheme === "night"
+        ? "night"
+        : "florio";
 
 
-document.documentElement.style.setProperty(
-"--primary",
-colors.primary
-);
+    setTheme(initialTheme);
+
+    applyTheme(initialTheme);
+  }, []);
 
 
-document.documentElement.style.setProperty(
-"--accent",
-colors.accent
-);
+  function changeTheme() {
+    const nextTheme: ThemeName =
+      theme === "florio"
+        ? "night"
+        : "florio";
 
 
+    setTheme(nextTheme);
 
-},[]);
+    localStorage.setItem(
+      "floriotr_theme",
+      nextTheme
+    );
+
+    applyTheme(nextTheme);
+  }
 
 
-
-
-function changeTheme(){
-
-// Tema sistemi kaldırıldı.
-// FlorioTR tek marka teması kullanır.
-
+  return (
+    <ThemeContext.Provider
+      value={{
+        theme,
+        changeTheme,
+      }}
+    >
+      {children}
+    </ThemeContext.Provider>
+  );
 }
 
 
-
-return(
-
-<ThemeContext.Provider
-
-value={{
-
-theme,
-
-changeTheme
-
-}}
-
->
-
-{children}
-
-</ThemeContext.Provider>
+export function useTheme() {
+  const context =
+    useContext(ThemeContext);
 
 
-);
+  if (!context) {
+    throw new Error(
+      "useTheme ThemeProvider içinde kullanılmalı"
+    );
+  }
 
 
-}
-
-
-
-
-export function useTheme(){
-
-
-const context =
-useContext(ThemeContext);
-
-
-
-if(!context){
-
-throw new Error(
-"useTheme ThemeProvider içinde kullanılmalı"
-);
-
-}
-
-
-return context;
-
-
+  return context;
 }

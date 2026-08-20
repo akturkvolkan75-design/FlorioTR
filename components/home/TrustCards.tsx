@@ -3,168 +3,85 @@
 import { useTheme } from "@/context/ThemeContext";
 import { themes } from "@/themes/themes";
 
-
-const cards = [
-
+const items = [
   {
-    icon: "🌹",
-    title: "Özenle Hazırlanan Tasarımlar",
-    text:
-      "Her çiçek tasarımı özel anlarınıza değer katmak için hazırlanır.",
+    icon: "🌷",
+    title: "Özenle Hazırlanır",
+    text: "Her sipariş özenle hazırlanır",
   },
-
   {
     icon: "🚚",
     title: "Zamanında Teslimat",
-    text:
-      "Sevdiklerinize mutluluğu doğru zamanda ulaştırıyoruz.",
+    text: "Siparişiniz zamanında ulaşır",
   },
-
   {
     icon: "💝",
-    title: "Özel Anlara Özel Çiçekler",
-    text:
-      "Doğum günü, yıldönümü ve tüm özel günler için zarif seçimler.",
+    title: "Özel Anlara Özel",
+    text: "Her ana uygun çiçek seçenekleri",
   },
-
 ];
 
-
-
-export default function TrustCards(){
-
-
+export default function TrustCards() {
   const { theme } = useTheme();
-
   const colors = themes[theme].colors;
 
-
-
   return (
-
-    <section
-
-      className="
-      mx-auto
-      max-w-6xl
-      px-6
-      py-12
-      "
-
-    >
-
-
+    <section className="w-full py-1">
       <div
-
         className="
-        grid
-        gap-6
-        md:grid-cols-3
+          grid
+          gap-3
+          md:grid-cols-3
         "
-
       >
+        {items.map((item) => (
+          <div
+            key={item.title}
+            className="
+              flex
+              items-center
+              justify-center
+              gap-2.5
+              rounded-xl
+              px-3
+              py-2
+            "
+            style={{
+              background: colors.card,
+              border: `1px solid ${colors.cardBorder}`,
+            }}
+          >
+            <span className="text-base">
+              {item.icon}
+            </span>
 
-
-        {
-          cards.map((card)=>(
-
-
-            <div
-
-              key={card.title}
-
-              className="
-              rounded-3xl
-              p-8
-              text-center
-              shadow-lg
-              transition
-              hover:-translate-y-2
-              "
-
-              style={{
-
-                background: colors.card,
-
-                border:
-                `2px solid ${colors.cardBorder}`,
-
-                boxShadow:
-                `0 14px 30px ${colors.primary}22`
-
-              }}
-
-            >
-
-
-              <div className="text-5xl">
-
-                {card.icon}
-
-              </div>
-
-
-
+            <div>
               <h3
-
                 className="
-                mt-5
-                text-xl
-                font-black
+                  text-xs
+                  font-black
+                  leading-4
                 "
-
                 style={{
-
-                  color:
-                  colors.primary
-
+                  color: colors.primary,
                 }}
-
               >
-
-                {card.title}
-
+                {item.title}
               </h3>
 
-
-
               <p
-
                 className="
-                mt-3
-                text-sm
-                leading-relaxed
-                font-medium
+                  text-[9px]
+                  leading-3
+                  opacity-60
                 "
-
-                style={{
-
-                  color:
-                  colors.muted
-
-                }}
-
               >
-
-                {card.text}
-
+                {item.text}
               </p>
-
-
-
             </div>
-
-
-          ))
-
-        }
-
-
+          </div>
+        ))}
       </div>
-
-
     </section>
-
   );
-
 }

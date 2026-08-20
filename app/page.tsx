@@ -3,55 +3,56 @@ import CustomerStories from "@/components/home/CustomerStories";
 import TrustCards from "@/components/home/TrustCards";
 import FeaturedFlowers from "@/components/home/FeaturedFlowers";
 
-
 export default function Home() {
-
-
   return (
-
-    <main
-
-      className="
-      min-h-screen
-      "
-
-    >
-
+    <main className="min-h-screen">
 
       <section
-
         className="
-        mx-auto
-        grid
-        max-w-7xl
-        gap-6
-        px-5
-        py-8
-        lg:grid-cols-[1fr_360px]
+          mx-auto
+          max-w-[1650px]
+          px-4
+          pt-6
         "
-
       >
+        <div
+          className="
+            grid
+            gap-5
+            lg:grid-cols-[minmax(0,1fr)_420px]
+            lg:items-stretch
+          "
+        >
+          <Categories />
 
-
-        <Categories />
-
-
-        <CustomerStories />
-
-
+          <CustomerStories />
+        </div>
       </section>
 
 
+      <section
+        className="
+          mx-auto
+          mt-4
+          max-w-[1650px]
+          px-4
+        "
+      >
+        <FeaturedFlowers />
+      </section>
 
-      <FeaturedFlowers />
 
-
-
-      <TrustCards />
-
+      <section
+        className="
+          mx-auto
+          mt-4
+          max-w-[1650px]
+          px-4
+        "
+      >
+        <TrustCards />
+      </section>
 
     </main>
-
   );
-
 }

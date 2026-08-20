@@ -11,14 +11,10 @@ export async function GET(request: Request) {
 
   try {
 
-
-    const { searchParams } =
-      new URL(request.url);
-
+    const { searchParams } = new URL(request.url);
 
     const productSlug =
       searchParams.get("productSlug")?.trim();
-
 
     const featured =
       searchParams.get("featured") === "true";
@@ -31,7 +27,8 @@ export async function GET(request: Request) {
         where: {
 
           isApproved: true,
-
+          isHidden: false,
+          isDeleted: false,
 
           ...(productSlug
             ? {
@@ -46,17 +43,27 @@ export async function GET(request: Request) {
 
           replies: {
 
+            where: {
+
+              isApproved:true,
+              isHidden:false,
+              isDeleted:false,
+
+            },
+
+
             include: {
 
               customer: {
 
-                select: {
+                select:{
                   name:true,
                 },
 
               },
 
             },
+
 
             orderBy:{
               createdAt:"asc",
@@ -71,9 +78,7 @@ export async function GET(request: Request) {
 
 
         orderBy:{
-
           createdAt:"desc",
-
         },
 
 
@@ -86,91 +91,73 @@ export async function GET(request: Request) {
 
 
 
-    const result =
-      reviews.map((review)=>{
+    const result = reviews.map((review)=>{
 
 
-        const product =
-          products.find(
-            (p)=>
-              p.slug === review.productSlug
-          );
-
-
-
-        return {
-
-
-          id:review.id,
-
-
-          productSlug:
-            review.productSlug,
-
-
-          productName:
-            product?.name ??
-            "Çiçek Ürünü",
-
-
-          productImage:
-            product?.image ??
-            "/images/logo.png",
+      const product =
+        products.find(
+          p=>p.slug === review.productSlug
+        );
 
 
 
-          rating:
-            review.rating,
+      return {
+
+        id:review.id,
+
+        productSlug:review.productSlug,
+
+        productName:
+          product?.name ??
+          "Çiçek Ürünü",
 
 
-          comment:
-            review.comment,
+        productImage:
+          product?.image ??
+          "/images/logo.png",
 
 
-
-          customerName:
-            review.customerName,
-
+        rating:
+          review.rating,
 
 
-          createdAt:
-            review.createdAt,
+        comment:
+          review.comment,
 
 
-
-          likeCount:
-            review.likes.length,
-
+        customerName:
+          review.customerName,
 
 
-          replies:
-            review.replies.map(reply=>({
+        createdAt:
+          review.createdAt,
 
 
-              id:
-                reply.id,
+        likeCount:
+          review.likes.length,
 
 
-              message:
-                reply.message,
+        replies:
+          review.replies.map(reply=>({
+
+            id:reply.id,
+
+            message:reply.message,
+
+            customerName:
+              reply.customer?.name ??
+              "Müşteri",
+
+            createdAt:
+              reply.createdAt,
+
+          })),
 
 
-              customerName:
-                reply.customer?.name ??
-                "Müşteri",
+      };
 
 
-              createdAt:
-                reply.createdAt,
-
-
-            })),
-
-
-        };
-
-
-      });
+    });
 
 
 
@@ -184,11 +171,10 @@ export async function GET(request: Request) {
     });
 
 
-
   }
 
-  catch(error){
 
+  catch(error){
 
     console.log(error);
 
@@ -198,7 +184,6 @@ export async function GET(request: Request) {
       success:false,
 
       message:"Yorumlar alınamadı.",
-
 
     },
     {
@@ -217,13 +202,9 @@ export async function GET(request: Request) {
 
 
 
-
-
 export async function POST(request:Request){
 
-
   try {
-
 
 
     const customer =
@@ -233,20 +214,17 @@ export async function POST(request:Request){
 
     if(!customer){
 
-
       return NextResponse.json({
 
         success:false,
 
         message:
-          "Yorum yazmak için giriş yapmalısınız.",
-
+          "Bu işlem için giriş yapmalısınız.",
 
       },
       {
         status:401,
       });
-
 
     }
 
@@ -261,9 +239,10 @@ export async function POST(request:Request){
 
 
 
-    // =========================
+
+    // ==========================
     // CEVAP EKLEME
-    // =========================
+    // ==========================
 
 
     if(body.reply){
@@ -282,18 +261,13 @@ export async function POST(request:Request){
 
 
 
-      if(
-        !reviewId ||
-        !message
-      ){
-
+      if(!reviewId || !message){
 
         return NextResponse.json({
 
           success:false,
 
           message:"Eksik bilgi.",
-
 
         },
         {
@@ -313,7 +287,6 @@ export async function POST(request:Request){
 
           reviewId,
 
-
           customerId:
             customer.id,
 
@@ -321,7 +294,15 @@ export async function POST(request:Request){
           message,
 
 
+          isApproved:false,
+
+          isHidden:false,
+
+          isDeleted:false,
+
+
         },
+
 
       });
 
@@ -333,11 +314,9 @@ export async function POST(request:Request){
         success:true,
 
         message:
-          "Cevabınız yayınlandı.",
-
+          "Cevabınız onaya gönderildi.",
 
       });
-
 
 
     }
@@ -348,11 +327,9 @@ export async function POST(request:Request){
 
 
 
-
-
-    // =========================
+    // ==========================
     // YENİ YORUM
-    // =========================
+    // ==========================
 
 
 
@@ -377,13 +354,10 @@ export async function POST(request:Request){
 
 
     if(
-
       !productSlug ||
-
       rating < 1 ||
-
-      rating > 5
-
+      rating > 5 ||
+      !comment
     ){
 
 
@@ -392,7 +366,6 @@ export async function POST(request:Request){
         success:false,
 
         message:"Eksik bilgiler.",
-
 
       },
       {
@@ -406,11 +379,11 @@ export async function POST(request:Request){
 
 
 
+
     const product =
       products.find(
-        p=>p.slug===productSlug
+        p=>p.slug === productSlug
       );
-
 
 
 
@@ -422,7 +395,6 @@ export async function POST(request:Request){
         success:false,
 
         message:"Ürün bulunamadı.",
-
 
       },
       {
@@ -437,41 +409,29 @@ export async function POST(request:Request){
 
 
 
+
     await prisma.review.create({
 
       data:{
 
-
-        orderId:
-          body.orderId
-          ? Number(body.orderId)
-          : 0,
-
-
         productSlug,
-
 
         rating,
 
-
         comment,
-
-
 
         customerName:
           customer.name,
 
-
-
         isApproved:false,
 
+        isHidden:false,
+
+        isDeleted:false,
 
       },
 
     });
-
-
-
 
 
     return NextResponse.json({
@@ -481,13 +441,11 @@ export async function POST(request:Request){
       message:
         "Yorumunuz onaya gönderildi.",
 
-
     });
 
 
-
-
   }
+
 
   catch(error){
 
@@ -495,19 +453,18 @@ export async function POST(request:Request){
     console.log(error);
 
 
-
     return NextResponse.json({
 
       success:false,
 
-      message:"İşlem başarısız.",
+      message:
+        "İşlem başarısız.",
 
 
     },
     {
       status:500,
     });
-
 
 
   }

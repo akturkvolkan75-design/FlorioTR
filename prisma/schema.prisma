@@ -185,6 +185,9 @@ model Customer {
   reviewLikes ReviewLike[]
 
 }
+
+
+
 model CustomerAddress {
 
   id Int @id @default(autoincrement())
@@ -212,10 +215,6 @@ model CustomerAddress {
   @@index([customerId])
 
 }
-
-
-
-
 model CustomerEmailVerification {
 
   id Int @id @default(autoincrement())
@@ -237,6 +236,7 @@ model CustomerEmailVerification {
   @@index([customerId])
 
 }
+
 
 
 
@@ -264,26 +264,39 @@ model CustomerSession {
 
 
 
+
 model Review {
 
   id Int @id @default(autoincrement())
 
-  orderId Int @unique
+
+  orderId Int? @unique
+
 
   productSlug String
 
+
   rating Int
+
 
   comment String?
 
+
   customerName String
 
+
   isApproved Boolean @default(false)
+
+  isHidden Boolean @default(false)
+
+  isDeleted Boolean @default(false)
+
 
   createdAt DateTime @default(now())
 
 
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  order Order? @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
 
   replies ReviewReply[]
@@ -293,7 +306,12 @@ model Review {
 
   @@index([productSlug])
 
+  @@index([isApproved])
+
+  @@index([isHidden])
+
 }
+
 
 
 
@@ -302,18 +320,32 @@ model ReviewReply {
 
   id Int @id @default(autoincrement())
 
+
   reviewId Int
 
-  customerId Int
+
+  customerId Int?
+
 
   message String
+
+
+  isApproved Boolean @default(false)
+
+  isHidden Boolean @default(false)
+
+  isDeleted Boolean @default(false)
+
 
   createdAt DateTime @default(now())
 
 
+
   review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 
-  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
 
 
   @@index([reviewId])
@@ -323,20 +355,27 @@ model ReviewReply {
 
 
 
+
 model ReviewLike {
 
   id Int @id @default(autoincrement())
 
+
   reviewId Int
 
-  customerId Int
+
+  customerId Int?
+
 
   createdAt DateTime @default(now())
 
 
+
   review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 
-  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
 
 
   @@unique([reviewId, customerId])
@@ -346,18 +385,24 @@ model ReviewLike {
 
 
 
+
 model AdminUser {
 
   id Int @id @default(autoincrement())
 
+
   email String @unique
 
+
   passwordHash String
+
 
   createdAt DateTime @default(now())
 
 
+
   sessions AdminSession[]
+
 
   passwordResets AdminPasswordReset[]
 
@@ -366,27 +411,36 @@ model AdminUser {
 
 
 
+
 model AdminPasswordReset {
 
   id Int @id @default(autoincrement())
 
+
   adminId Int
+
 
   codeHash String
 
+
   expiresAt DateTime
+
 
   attempts Int @default(0)
 
+
   createdAt DateTime @default(now())
+
 
 
   admin AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
 
 
+
   @@index([adminId])
 
 }
+
 
 
 
@@ -395,16 +449,22 @@ model AdminSession {
 
   id Int @id @default(autoincrement())
 
+
   adminId Int
+
 
   tokenHash String @unique
 
+
   expiresAt DateTime
+
 
   createdAt DateTime @default(now())
 
 
+
   admin AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
 
 
   @@index([adminId])
@@ -414,17 +474,23 @@ model AdminSession {
 
 
 
+
 model OrderHistory {
 
   id Int @id @default(autoincrement())
 
+
   orderId Int
+
 
   oldStatus String
 
+
   newStatus String
 
+
   createdAt DateTime @default(now())
+
 
 
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
@@ -434,29 +500,41 @@ model OrderHistory {
 
 
 
+
 model ProductOverride {
 
   slug String @id
 
+
   catalogId Int? @unique
+
 
   name String?
 
+
   category String?
+
 
   description String?
 
+
   price Int
+
 
   image String
 
+
   rating Float @default(0)
+
 
   vip Boolean @default(false)
 
+
   isCustom Boolean @default(false)
 
+
   isActive Boolean @default(true)
+
 
   updatedAt DateTime @updatedAt
 

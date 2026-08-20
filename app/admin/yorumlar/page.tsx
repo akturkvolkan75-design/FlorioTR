@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import ReviewCard from "./ReviewCard";
 
 
 type Reply = {
@@ -11,14 +12,19 @@ type Reply = {
 
   customerName:string;
 
+  isApproved:boolean;
+
+  isHidden:boolean;
+
+  isDeleted:boolean;
+
 };
+
 
 
 type Review = {
 
   id:number;
-
-  orderId:number;
 
   productName:string;
 
@@ -32,9 +38,11 @@ type Review = {
 
   isApproved:boolean;
 
-  createdAt:string;
+  isHidden:boolean;
 
-  likeCount:number;
+  isDeleted:boolean;
+
+  createdAt?:string;
 
   replies:Reply[];
 
@@ -42,14 +50,23 @@ type Review = {
 
 
 
+
+
 export default function AdminReviews(){
 
 
-const [reviews,setReviews]=useState<Review[]>([]);
+const [reviews,setReviews] =
+useState<Review[]>([]);
 
 
 
-const loadReviews = useCallback(async()=>{
+
+
+const loadReviews =
+useCallback(async()=>{
+
+
+try{
 
 
 const res =
@@ -60,11 +77,37 @@ const data =
 await res.json();
 
 
+
+
 if(data.success){
 
-setReviews(data.reviews);
+
+setReviews(
+
+data.reviews.map((review:Review)=>({
+
+...review,
+
+createdAt:
+review.createdAt ??
+new Date().toISOString()
+
+}))
+
+);
+
 
 }
+
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
 
 
 },[]);
@@ -72,9 +115,14 @@ setReviews(data.reviews);
 
 
 
+
+
+
 useEffect(()=>{
 
+
 loadReviews();
+
 
 },[loadReviews]);
 
@@ -83,40 +131,65 @@ loadReviews();
 
 
 
+
+
 async function update(
+
 id:number,
-isApproved:boolean
+
+type:"review"|"reply",
+
+action:string
+
 ){
 
 
-await fetch(
-"/api/admin/reviews",
-{
+
+try{
+
+
+await fetch("/api/admin/reviews",{
+
 
 method:"PATCH",
 
+
 headers:{
+
 
 "Content-Type":"application/json"
 
+
 },
+
 
 body:JSON.stringify({
 
 id,
 
-isApproved
+type,
+
+action
 
 })
 
-}
 
-);
+});
 
 
 loadReviews();
 
 
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+
 }
 
 
@@ -125,45 +198,55 @@ loadReviews();
 
 
 
-async function remove(id:number){
+const pendingCount =
+reviews.filter(
 
+(review)=>
 
-if(!confirm("Bu yorumu silmek istediğinize emin misiniz?"))
+!review.isApproved &&
+!review.isHidden &&
+!review.isDeleted
 
-return;
-
-
-
-await fetch(
-
-"/api/admin/reviews",
-
-{
-
-method:"DELETE",
-
-headers:{
-
-"Content-Type":"application/json"
-
-},
-
-body:JSON.stringify({
-
-id
-
-})
-
-}
-
-);
+).length;
 
 
 
-loadReviews();
+const activeCount =
+reviews.filter(
+
+(review)=>
+
+review.isApproved &&
+!review.isHidden &&
+!review.isDeleted
+
+).length;
 
 
-}
+
+
+const hiddenCount =
+reviews.filter(
+
+(review)=>
+
+review.isHidden &&
+!review.isDeleted
+
+).length;
+
+
+
+
+const deletedCount =
+reviews.filter(
+
+(review)=>
+
+review.isDeleted
+
+).length;
+
 
 
 
@@ -178,8 +261,7 @@ return (
 className="
 min-h-screen
 bg-slate-100
-p-6
-text-slate-950
+p-5
 "
 
 >
@@ -189,10 +271,11 @@ text-slate-950
 
 className="
 mx-auto
-max-w-6xl
+max-w-5xl
 "
 
 >
+
 
 
 <div
@@ -200,7 +283,7 @@ max-w-6xl
 className="
 rounded-3xl
 bg-[#0c2f27]
-p-8
+p-6
 text-white
 "
 
@@ -210,28 +293,86 @@ text-white
 <h1
 
 className="
-text-3xl
+text-2xl
 font-black
 "
 
 >
 
-🌸 Müşteri Yorumları
+🌸 Yorum Yönetimi
 
 </h1>
+
 
 
 <p
 
 className="
 mt-2
+text-sm
 font-semibold
-text-white/80
 "
 
 >
 
-Yorumları kontrol edin, onaylayın veya kaldırın.
+Yorum ve cevap kontrol paneli
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div
+
+className="
+mt-5
+grid
+gap-3
+md:grid-cols-4
+"
+
+>
+
+
+
+<div
+
+className="
+rounded-2xl
+bg-yellow-100
+p-4
+text-center
+"
+
+>
+
+<p className="
+text-xs
+font-black
+text-yellow-800
+">
+
+🟡 Bekleyen
+
+</p>
+
+
+<p className="
+text-3xl
+font-black
+text-yellow-900
+">
+
+{pendingCount}
 
 </p>
 
@@ -247,40 +388,142 @@ Yorumları kontrol edin, onaylayın veya kaldırın.
 <div
 
 className="
-mt-6
-grid
-gap-6
-"
-
->
-
-
-{
-
-reviews.length===0 &&
-
-<div
-
-className="
-rounded-3xl
-bg-white
-p-10
+rounded-2xl
+bg-green-100
+p-4
 text-center
-font-black
-shadow
 "
 
 >
 
-Henüz müşteri yorumu yok.
+<p className="
+text-xs
+font-black
+text-green-800
+">
+
+🟢 Yayında
+
+</p>
+
+
+<p className="
+text-3xl
+font-black
+text-green-900
+">
+
+{activeCount}
+
+</p>
+
 
 </div>
 
 
-}
 
 
 
+
+
+
+<div
+
+className="
+rounded-2xl
+bg-orange-100
+p-4
+text-center
+"
+
+>
+
+<p className="
+text-xs
+font-black
+text-orange-800
+">
+
+🟠 Gizli
+
+</p>
+
+
+<p className="
+text-3xl
+font-black
+text-orange-900
+">
+
+{hiddenCount}
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div
+
+className="
+rounded-2xl
+bg-red-100
+p-4
+text-center
+"
+
+>
+
+<p className="
+text-xs
+font-black
+text-red-800
+">
+
+🔴 Silinen
+
+</p>
+
+
+<p className="
+text-3xl
+font-black
+text-red-900
+">
+
+{deletedCount}
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div
+
+className="
+mt-5
+grid
+gap-4
+"
+
+>
 
 
 
@@ -289,359 +532,21 @@ Henüz müşteri yorumu yok.
 reviews.map((review)=>(
 
 
-<article
+<ReviewCard
+
 
 key={review.id}
 
-className="
-overflow-hidden
-rounded-3xl
-bg-white
-shadow
-"
 
->
+review={review}
 
 
-<div
+update={update}
 
-className="
-grid
-md:grid-cols-[220px_1fr]
-"
-
->
-
-
-<img
-
-src={review.productImage}
-
-alt={review.productName}
-
-className="
-h-52
-w-full
-object-cover
-"
 
 />
 
 
-
-
-
-<div
-
-className="
-p-6
-"
-
->
-
-
-<div
-
-className="
-flex
-items-start
-justify-between
-gap-4
-"
-
->
-
-
-<div>
-
-
-<h2
-
-className="
-text-xl
-font-black
-"
-
->
-
-{review.productName}
-
-</h2>
-
-
-<p
-
-className="
-mt-2
-font-black
-"
-
->
-
-{review.customerName}
-
-</p>
-
-
-</div>
-
-
-
-<span
-
-className="
-rounded-full
-px-4
-py-2
-text-xs
-font-black
-"
-
-style={{
-
-background:
-review.isApproved
-?
-"#dcfce7"
-:
-"#fef3c7"
-
-}}
-
->
-
-{
-
-review.isApproved
-?
-"Yayında"
-:
-"Onay Bekliyor"
-
-}
-
-</span>
-
-
-
-</div>
-
-
-
-
-
-
-<div
-
-className="
-mt-4
-text-xl
-"
-
->
-
-{"⭐".repeat(review.rating)}
-
-</div>
-
-
-
-
-
-<p
-
-className="
-mt-4
-font-semibold
-leading-7
-"
-
->
-
-{review.comment || "Sadece puan verildi."}
-
-</p>
-
-
-
-
-
-<p
-
-className="
-mt-4
-text-sm
-font-bold
-text-slate-500
-"
-
->
-
-❤️ {review.likeCount} beğeni
-
-</p>
-
-
-
-
-
-{
-
-review.replies.length>0 &&
-
-<div
-
-className="
-mt-5
-rounded-2xl
-bg-slate-100
-p-4
-"
-
->
-
-
-<p
-
-className="
-font-black
-"
-
->
-
-💬 Cevaplar
-
-</p>
-
-
-{
-
-review.replies.map(reply=>(
-
-
-<p
-
-key={reply.id}
-
-className="
-mt-2
-text-sm
-"
-
->
-
-<b>{reply.customerName}:</b>{" "}
-
-{reply.message}
-
-</p>
-
-
-))
-
-}
-
-
-</div>
-
-
-}
-
-
-
-
-
-
-
-<div
-
-className="
-mt-6
-flex
-flex-wrap
-gap-3
-"
-
->
-
-
-<button
-
-onClick={()=>update(review.id,true)}
-
-className="
-rounded-xl
-bg-emerald-700
-px-5
-py-3
-font-black
-text-white
-"
-
->
-
-✓ Onayla
-
-</button>
-
-
-
-
-<button
-
-onClick={()=>update(review.id,false)}
-
-className="
-rounded-xl
-bg-amber-400
-px-5
-py-3
-font-black
-"
-
->
-
-Gizle
-
-</button>
-
-
-
-
-<button
-
-onClick={()=>remove(review.id)}
-
-className="
-rounded-xl
-bg-red-700
-px-5
-py-3
-font-black
-text-white
-"
-
->
-
-Sil
-
-</button>
-
-
-</div>
-
-
-
-
-</div>
-
-
-</div>
-
-
-</article>
-
-
 ))
 
 
@@ -650,6 +555,10 @@ Sil
 
 
 </div>
+
+
+
+
 
 
 </div>
