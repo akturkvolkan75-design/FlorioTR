@@ -15,7 +15,7 @@ const categories = [
   {
     name: "Özel Buketler",
     slug: "ozel-buketler",
-    image: "/images/categories/ozel-buket.jpg",
+    image: "/images/categories/ozel-buketler.jpg",
     description: "Özel tasarımlar",
     position: "center",
   },
