@@ -36,14 +36,18 @@ export const metadata: Metadata = {
     "FlorioTR",
 
   icons: {
-    icon:
-      "/icon.png",
+    icon: [
+      {
+        url: "/floriotr-icon.svg",
+        type: "image/svg+xml",
+      },
+    ],
 
     shortcut:
-      "/icon.png",
+      "/floriotr-icon.svg",
 
     apple:
-      "/icon.png",
+      "/floriotr-icon.svg",
   },
 
   keywords: [
@@ -61,8 +65,7 @@ export const metadata: Metadata = {
 
   authors: [
     {
-      name:
-        "FlorioTR",
+      name: "FlorioTR",
     },
   ],
 
@@ -73,84 +76,43 @@ export const metadata: Metadata = {
     "FlorioTR",
 
   alternates: {
-    canonical:
-      "/",
+    canonical: "/",
   },
 
   robots: {
-    index:
-      true,
-
-    follow:
-      true,
+    index: true,
+    follow: true,
 
     googleBot: {
-      index:
-        true,
-
-      follow:
-        true,
-
-      "max-image-preview":
-        "large",
-
-      "max-snippet":
-        -1,
-
-      "max-video-preview":
-        -1,
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
     },
   },
 
   openGraph: {
-    type:
-      "website",
-
-    locale:
-      "tr_TR",
-
-    url:
-      siteUrl,
-
-    siteName:
-      "FlorioTR",
+    type: "website",
+    locale: "tr_TR",
+    url: siteUrl,
+    siteName: "FlorioTR",
 
     title:
       "FlorioTR | Online Çiçek Siparişi ve Çiçek Gönderimi",
 
     description:
       "Özel anlarınız için özenle hazırlanan çiçekleri FlorioTR'da keşfedin ve sevdiklerinize kolayca gönderin.",
-
-    images: [
-      {
-        url:
-          "/icon.png",
-
-        width:
-          512,
-
-        height:
-          512,
-
-        alt:
-          "FlorioTR",
-      },
-    ],
   },
 
   twitter: {
-    card:
-      "summary_large_image",
+    card: "summary",
 
     title:
       "FlorioTR | Online Çiçek Siparişi ve Çiçek Gönderimi",
 
     description:
       "Özel anlarınız için özenle hazırlanan çiçekleri FlorioTR'da keşfedin.",
-
-    images: [
-      "/icon.png",
-    ],
   },
 
   category:
@@ -161,8 +123,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children:
-    React.ReactNode;
+  children: React.ReactNode;
 }>) {
 
   const websiteStructuredData = {
@@ -206,7 +167,7 @@ export default function RootLayout({
       siteUrl,
 
     logo:
-      `${siteUrl}/icon.png`,
+      `${siteUrl}/floriotr-icon.svg`,
   };
 
 
@@ -227,7 +188,6 @@ export default function RootLayout({
           }}
         />
 
-
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -237,7 +197,6 @@ export default function RootLayout({
               ),
           }}
         />
-
 
         <ThemeProvider>
 
