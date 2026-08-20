@@ -29,7 +29,7 @@ const categories = [
   {
     name: "Mevsim Buketleri",
     slug: "mevsim-buketleri",
-    image: "/images/categories/mevsim.jpg",
+    image: "/images/categories/mevsim-buketleri.jpg",
     description: "Mevsimin renkleri",
     position: "center",
   },
