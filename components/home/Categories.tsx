@@ -50,7 +50,7 @@ const categories = [
   {
     name: "Çelenkler",
     slug: "celenkler",
-    image: "/images/categories/celenk.jpg",
+    image: "/images/categories/celenkler.jpg",
     description: "Özel gün tasarımları",
     position: "center",
   },
