@@ -8,10 +8,10 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import FlorioLogo from "@/components/FlorioLogo";
 import { useTheme } from "@/context/ThemeContext";
 import { themes } from "@/themes/themes";
 import { useProducts } from "@/hooks/useProducts";
-
 
 type Review = {
   id: number;
@@ -20,7 +20,6 @@ type Review = {
   productSlug: string;
   rating?: number;
 };
-
 
 export default function CustomerStories() {
   const [reviews, setReviews] =
@@ -37,7 +36,6 @@ export default function CustomerStories() {
 
   const colors =
     themes[theme].colors;
-
 
   useEffect(() => {
     fetch(
@@ -59,10 +57,8 @@ export default function CustomerStories() {
       .catch(() => {});
   }, []);
 
-
   const review =
     reviews[0];
-
 
   const bestProduct =
     products.find(
@@ -77,16 +73,13 @@ export default function CustomerStories() {
     ) ||
     products[0];
 
-
   if (!bestProduct) {
     return null;
   }
 
-
   function openReviews() {
     router.push("/yorumlar");
   }
-
 
   return (
     <div
@@ -99,7 +92,6 @@ export default function CustomerStories() {
           event.key === " "
         ) {
           event.preventDefault();
-
           openReviews();
         }
       }}
@@ -129,9 +121,6 @@ export default function CustomerStories() {
       }}
       aria-label="Tüm müşteri yorumlarını görüntüle"
     >
-
-      {/* BAŞLIK */}
-
       <div
         className="
           flex
@@ -139,9 +128,12 @@ export default function CustomerStories() {
           gap-2
         "
       >
-        <span>
-          🌸
-        </span>
+        <FlorioLogo
+          primary={colors.primary}
+          accent={colors.accent}
+          compact
+          iconOnly
+        />
 
         <h2
           className="
@@ -183,18 +175,9 @@ export default function CustomerStories() {
         </span>
       </div>
 
-
-      {/* SON YORUM */}
-
-      <div
-        className="
-          mt-4
-        "
-      >
+      <div className="mt-4">
         <div
-          className="
-            text-xs
-          "
+          className="text-xs"
           style={{
             color:
               colors.accent,
@@ -223,25 +206,36 @@ export default function CustomerStories() {
           ”
         </p>
 
-        <p
+        <div
           className="
             mt-2
-            text-[10px]
-            font-bold
+            flex
+            items-center
+            gap-1.5
           "
-          style={{
-            color:
-              colors.primary,
-          }}
         >
-          🌷{" "}
-          {review?.productName ||
-            "FlorioTR Çiçekleri"}
-        </p>
+          <FlorioLogo
+            primary={colors.primary}
+            accent={colors.accent}
+            compact
+            iconOnly
+          />
+
+          <p
+            className="
+              text-[10px]
+              font-bold
+            "
+            style={{
+              color:
+                colors.primary,
+            }}
+          >
+            {review?.productName ||
+              "FlorioTR Çiçekleri"}
+          </p>
+        </div>
       </div>
-
-
-      {/* EN ÇOK BEĞENİLEN */}
 
       <div
         className="
@@ -267,9 +261,6 @@ export default function CustomerStories() {
         >
           👑 En Çok Beğenilen Çiçek
         </h3>
-
-
-        {/* BU ALANA BASILIRSA ÜRÜNE GİDER */}
 
         <Link
           href={`/urunler/${bestProduct.slug}`}
@@ -360,9 +351,6 @@ export default function CustomerStories() {
         </Link>
       </div>
 
-
-      {/* TÜM YORUMLAR */}
-
       <div
         className="
           mt-auto
@@ -394,7 +382,6 @@ export default function CustomerStories() {
           Tüm Yorumları Gör →
         </div>
       </div>
-
     </div>
   );
 }

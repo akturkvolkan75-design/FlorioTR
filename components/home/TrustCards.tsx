@@ -1,20 +1,24 @@
 "use client";
 
+import FlorioLogo from "@/components/FlorioLogo";
 import { useTheme } from "@/context/ThemeContext";
 import { themes } from "@/themes/themes";
 
 const items = [
   {
-    icon: "🌷",
+    type: "brand",
+    icon: "",
     title: "Özenle Hazırlanır",
     text: "Her sipariş özenle hazırlanır",
   },
   {
+    type: "emoji",
     icon: "🚚",
     title: "Zamanında Teslimat",
     text: "Siparişiniz zamanında ulaşır",
   },
   {
+    type: "emoji",
     icon: "💝",
     title: "Özel Anlara Özel",
     text: "Her ana uygun çiçek seçenekleri",
@@ -23,7 +27,8 @@ const items = [
 
 export default function TrustCards() {
   const { theme } = useTheme();
-  const colors = themes[theme].colors;
+  const colors =
+    themes[theme].colors;
 
   return (
     <section className="w-full py-1">
@@ -47,13 +52,29 @@ export default function TrustCards() {
               py-2
             "
             style={{
-              background: colors.card,
-              border: `1px solid ${colors.cardBorder}`,
+              background:
+                colors.card,
+
+              border:
+                `1px solid ${colors.cardBorder}`,
             }}
           >
-            <span className="text-base">
-              {item.icon}
-            </span>
+            {item.type === "brand" ? (
+              <FlorioLogo
+                primary={
+                  colors.primary
+                }
+                accent={
+                  colors.accent
+                }
+                compact
+                iconOnly
+              />
+            ) : (
+              <span className="text-base">
+                {item.icon}
+              </span>
+            )}
 
             <div>
               <h3
@@ -63,7 +84,8 @@ export default function TrustCards() {
                   leading-4
                 "
                 style={{
-                  color: colors.primary,
+                  color:
+                    colors.primary,
                 }}
               >
                 {item.title}
