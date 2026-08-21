@@ -1,200 +1,187 @@
 "use client";
 
-import { useProducts } from "@/hooks/useProducts";
 import { useParams } from "next/navigation";
-import FavoriteButton from "@/components/FavoriteButton";
+
 import AddToCartButton from "@/components/AddToCartButton";
-import { useTheme } from "@/context/ThemeContext";
-import { themes } from "@/themes/themes";
+import FavoriteButton from "@/components/FavoriteButton";
+import FlorioLogo from "@/components/FlorioLogo";
 import ProductRating from "@/components/reviews/ProductRating";
 import ProductReviews from "@/components/reviews/ProductReviews";
+import { useTheme } from "@/context/ThemeContext";
+import { useProducts } from "@/hooks/useProducts";
+import { themes } from "@/themes/themes";
 
+type TrustItem = {
+  text: string;
+  icon?: string;
+  brand?: boolean;
+};
 
 export default function ProductPage() {
-
   const products = useProducts();
 
   const params = useParams();
-  const slug = params.slug as string;
-  const { theme } = useTheme();
-  const colors = themes[theme].colors;
 
+  const slug =
+    params.slug as string;
 
-  const product = products.find(
+  const { theme } =
+    useTheme();
 
-    (item)=>item.slug === slug
+  const colors =
+    themes[theme].colors;
 
-  );
-
-
-
-
-  if(!product){
-
-
-    return (
-
-      <main
-
-        className="
-        min-h-screen
-        flex
-        items-center
-        justify-center
-        "
-
-        style={{ background: colors.background }}
-
-      >
-
-        <h1
-
-          className="
-          text-3xl
-          font-bold
-          "
-
-          style={{ color: colors.primary }}
-
-        >
-
-          🌸 Ürün bulunamadı
-
-
-        </h1>
-
-
-      </main>
-
+  const product =
+    products.find(
+      (item) =>
+        item.slug === slug
     );
 
-  }
-
-
-
-
-
-  return (
-
-
-    <main
-
-      className="
-      min-h-screen
-      px-6
-      py-16
-      "
-
-      style={{
-
-        background:colors.background
-
-      }}
-
-    >
-
-
-
-      <div
-
+  if (!product) {
+    return (
+      <main
         className="
-        mx-auto
-        max-w-6xl
-        rounded-[40px]
-        border
-        p-8
-        shadow-2xl
+          flex
+          min-h-screen
+          items-center
+          justify-center
+          px-6
         "
-
         style={{
-          background: colors.card,
-          borderColor: colors.cardBorder,
+          background:
+            colors.background,
         }}
-
       >
-
-
-
-
-
-        <div
-
-          className="
-          grid
-          gap-10
-          md:grid-cols-2
-          "
-
-        >
-
-
-
-
-
-          {/* Ürün Görseli */}
-
-
+        <div className="text-center">
           <div
-
             className="
-            overflow-hidden
-            rounded-[35px]
+              flex
+              h-20
+              items-center
+              justify-center
             "
-
           >
-
-
-            <img
-
-              src={product.image}
-
-              alt={product.name}
-
-              className="
-              h-[500px]
-              w-full
-              object-cover
-              transition
-              duration-700
-              hover:scale-105
-              "
-
-            />
-
-
+            <div className="scale-[2.2]">
+              <FlorioLogo
+                primary={
+                  colors.primary
+                }
+                accent={
+                  colors.accent
+                }
+                iconOnly
+              />
+            </div>
           </div>
 
+          <h1
+            className="
+              mt-5
+              text-3xl
+              font-bold
+            "
+            style={{
+              color:
+                colors.primary,
+            }}
+          >
+            Ürün bulunamadı
+          </h1>
+        </div>
+      </main>
+    );
+  }
 
+  const trustItems: TrustItem[] =
+    [
+      {
+        icon: "🚚",
+        text: "Aynı gün teslimat",
+      },
+      {
+        brand: true,
+        text: "Profesyonel hazırlama",
+      },
+      {
+        icon: "🔒",
+        text: "Güvenli ödeme",
+      },
+      {
+        icon: "💝",
+        text: "Özel gün tasarımları",
+      },
+    ];
 
+  return (
+    <main
+      className="
+        min-h-screen
+        px-6
+        py-16
+      "
+      style={{
+        background:
+          colors.background,
+      }}
+    >
+      <div
+        className="
+          mx-auto
+          max-w-6xl
+          rounded-[40px]
+          border
+          p-8
+          shadow-2xl
+        "
+        style={{
+          background:
+            colors.card,
 
-
-
-
-
-          {/* Bilgiler */}
-
-
+          borderColor:
+            colors.cardBorder,
+        }}
+      >
+        <div
+          className="
+            grid
+            gap-10
+            md:grid-cols-2
+          "
+        >
+          {/* ÜRÜN GÖRSELİ */}
 
           <div
-
             className="
-            flex
-            flex-col
-            justify-center
+              overflow-hidden
+              rounded-[35px]
             "
-
           >
+            <img
+              src={product.image}
+              alt={product.name}
+              className="
+                h-[500px]
+                w-full
+                object-cover
+                transition
+                duration-700
+                hover:scale-105
+              "
+            />
+          </div>
 
+          {/* ÜRÜN BİLGİLERİ */}
 
-
-
-            {
-              product.vip && (
-
-
-                <span
-
-                  className="
+          <div
+            className="
+              flex
+              flex-col
+              justify-center
+            "
+          >
+            {product.vip && (
+              <span
+                className="
                   mb-5
                   w-fit
                   rounded-full
@@ -202,358 +189,216 @@ export default function ProductPage() {
                   py-2
                   text-sm
                   font-bold
-                  "
+                "
+                style={{
+                  background:
+                    colors.actionSecondary,
 
-                  style={{
-
-                    background:colors.actionSecondary,
-
-                    color:colors.actionSecondaryText
-
-                  }}
-
-                >
-
-                  ✨ VIP Koleksiyon
-
-
-                </span>
-
-
-              )
-
-            }
-
-
-
-
-
-
+                  color:
+                    colors.actionSecondaryText,
+                }}
+              >
+                ✨ VIP Koleksiyon
+              </span>
+            )}
 
             <p
-
-              className="
-              font-bold
-              "
-
+              className="font-bold"
               style={{
-
-                color:colors.primary
-
+                color:
+                  colors.primary,
               }}
-
             >
-
               {product.category}
-
-
             </p>
-
-
-
-
-
 
             <h1
-
               className="
-              mt-4
-              text-5xl
-              font-extrabold
+                mt-4
+                text-5xl
+                font-extrabold
               "
-
               style={{
-
-                color:colors.foreground
-
+                color:
+                  colors.foreground,
               }}
-
             >
-
               {product.name}
-
-
             </h1>
 
-
-
-
-
-
-
             <p
-
               className="
-              mt-6
-              text-lg
-              leading-relaxed
+                mt-6
+                text-lg
+                leading-relaxed
               "
-
               style={{
-
-                color:colors.muted
-
+                color:
+                  colors.muted,
               }}
-
             >
-
               {product.description}
-
-
             </p>
 
-
-
-
-
-
-
-
             <div
-
               className="
-              mt-8
-              flex
-              items-center
-              justify-between
+                mt-8
+                flex
+                items-center
+                justify-between
+                gap-5
               "
-
             >
-
-
-
               <span
-
                 className="
-                text-4xl
-                font-black
+                  text-4xl
+                  font-black
                 "
-
                 style={{
-
-                  color:colors.primary
-
+                  color:
+                    colors.primary,
                 }}
-
               >
-
                 {product.price} TL
-
-
               </span>
-
-
-
-
-
 
               <span
-
                 className="
-                rounded-full
-                px-5
-                py-3
-                font-bold
+                  rounded-full
+                  px-5
+                  py-3
+                  font-bold
                 "
-
                 style={{
-                  background: colors.actionSecondary,
-                  color: colors.actionSecondaryText,
+                  background:
+                    colors.actionSecondary,
+
+                  color:
+                    colors.actionSecondaryText,
                 }}
-
               >
-
-                <ProductRating productSlug={product.slug} fallback={product.rating} />
-
-
+                <ProductRating
+                  productSlug={
+                    product.slug
+                  }
+                  fallback={
+                    product.rating
+                  }
+                />
               </span>
-
-
-
-
             </div>
-
-
-
-
-
-
-
-
 
             <div className="mt-8">
-
-
               <AddToCartButton
-
                 product={{
+                  id:
+                    product.id,
 
-                  id:product.id,
+                  slug:
+                    product.slug,
 
-                  slug:product.slug,
+                  name:
+                    product.name,
 
-                  name:product.name,
+                  price:
+                    product.price,
 
-                  price:product.price,
-
-                  image:product.image
-
+                  image:
+                    product.image,
                 }}
-
               />
-
-
             </div>
-
-
-
-
-
-
 
             <div className="mt-5">
-
-
               <FavoriteButton
-
-                slug={product.slug}
-
+                slug={
+                  product.slug
+                }
               />
-
-
             </div>
-
-
-
-
-
           </div>
-
-
-
-
         </div>
 
-        <ProductReviews productSlug={product.slug} />
+        {/* YORUMLAR */}
 
+        <ProductReviews
+          productSlug={
+            product.slug
+          }
+        />
 
-
-
-
-
-
-
-
-        {/* Güven Alanı */}
-
-
+        {/* GÜVEN ALANI */}
 
         <div
-
           className="
-          mt-12
-          grid
-          gap-5
-          md:grid-cols-4
+            mt-12
+            grid
+            gap-5
+            md:grid-cols-4
           "
-
         >
-
-
-
-          {
-
-            [
-
-              {
-                icon:"🚚",
-                text:"Aynı gün teslimat"
-              },
-
-              {
-                icon:"🌹",
-                text:"Profesyonel hazırlama"
-              },
-
-              {
-                icon:"🔒",
-                text:"Güvenli ödeme"
-              },
-
-              {
-                icon:"💝",
-                text:"Özel gün tasarımları"
-              }
-
-            ].map((item)=>(
-
-
+          {trustItems.map(
+            (item) => (
               <div
-
-                key={item.text}
-
+                key={
+                  item.text
+                }
                 className="
-                rounded-3xl
-                p-5
-                text-center
+                  rounded-3xl
+                  p-5
+                  text-center
                 "
-
                 style={{
-                  background: colors.actionSecondary,
-                  color: colors.actionSecondaryText,
-                  border: `1px solid ${colors.cardBorder}`,
+                  background:
+                    colors.actionSecondary,
+
+                  color:
+                    colors.actionSecondaryText,
+
+                  border:
+                    `1px solid ${colors.cardBorder}`,
                 }}
-
               >
-
-                <div className="text-3xl">
-
-                  {item.icon}
-
+                <div
+                  className="
+                    flex
+                    h-9
+                    items-center
+                    justify-center
+                  "
+                >
+                  {item.brand ? (
+                    <FlorioLogo
+                      primary={
+                        colors.actionSecondaryText
+                      }
+                      accent={
+                        colors.accent
+                      }
+                      compact
+                      iconOnly
+                    />
+                  ) : (
+                    <span className="text-3xl">
+                      {item.icon}
+                    </span>
+                  )}
                 </div>
 
-
                 <p
-
                   className="
-                  mt-3
-                  text-sm
-                  font-semibold
+                    mt-3
+                    text-sm
+                    font-semibold
                   "
-
                 >
-
                   {item.text}
-
-
                 </p>
-
-
               </div>
-
-
-            ))
-
-          }
-
-
-
-
+            )
+          )}
         </div>
-
-
-
-
-
-
       </div>
-
-
-
-
     </main>
-
-
   );
-
 }
