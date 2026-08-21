@@ -1,9 +1,8 @@
 "use client";
 
+import FlorioLogo from "@/components/FlorioLogo";
 import { useTheme } from "@/context/ThemeContext";
 import { themes } from "@/themes/themes";
-import FlorioLogo from "@/components/FlorioLogo";
-
 
 export default function Footer() {
   const { theme } = useTheme();
@@ -11,7 +10,6 @@ export default function Footer() {
   const colors = themes[theme].colors;
 
   const isNight = theme === "night";
-
 
   return (
     <footer
@@ -45,7 +43,6 @@ export default function Footer() {
           md:justify-between
         "
       >
-
         <div className="flex items-center gap-3">
           <FlorioLogo
             primary={colors.primary}
@@ -78,7 +75,6 @@ export default function Footer() {
           </p>
         </div>
 
-
         <div
           className="
             flex
@@ -91,7 +87,24 @@ export default function Footer() {
             color: colors.muted,
           }}
         >
-          <span>🌸 Özenle hazırlanır</span>
+          <span
+            className="
+              inline-flex
+              items-center
+              gap-1
+            "
+          >
+            <FlorioLogo
+              primary={colors.primary}
+              accent={colors.accent}
+              compact
+              iconOnly
+            />
+
+            <span>
+              Özenle hazırlanır
+            </span>
+          </span>
 
           <span
             style={{
@@ -101,9 +114,10 @@ export default function Footer() {
             •
           </span>
 
-          <span>© {new Date().getFullYear()} FlorioTR</span>
+          <span>
+            © {new Date().getFullYear()} FlorioTR
+          </span>
         </div>
-
       </div>
     </footer>
   );
