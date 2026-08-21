@@ -49,16 +49,29 @@ export default function CategoryPage() {
 
   return (
     <main
-      className="min-h-screen px-4 py-10 sm:px-6"
+      className="
+        px-4
+        py-6
+        sm:px-6
+        sm:py-7
+      "
       style={{
         background: colors.background,
         color: colors.foreground,
       }}
     >
       <section className="mx-auto max-w-7xl">
-        <div className="mb-10 flex items-center justify-center gap-3">
+        <div
+          className="
+            mb-6
+            flex
+            items-center
+            justify-center
+            gap-2
+          "
+        >
           {isPopular ? (
-            <span className="text-3xl">
+            <span className="text-2xl">
               ⭐
             </span>
           ) : (
@@ -71,7 +84,12 @@ export default function CategoryPage() {
           )}
 
           <h1
-            className="text-center text-3xl font-black sm:text-4xl"
+            className="
+              text-center
+              text-3xl
+              font-black
+              sm:text-4xl
+            "
             style={{
               color: colors.primary,
             }}
@@ -81,7 +99,15 @@ export default function CategoryPage() {
         </div>
 
         {categoryProducts.length ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div
+            className="
+              grid
+              gap-4
+              sm:grid-cols-2
+              lg:grid-cols-3
+              xl:grid-cols-4
+            "
+          >
             {categoryProducts.map(
               (product) => (
                 <ProductCard
@@ -93,14 +119,21 @@ export default function CategoryPage() {
           </div>
         ) : (
           <div
-            className="mx-auto max-w-xl rounded-3xl p-10 text-center shadow-xl"
+            className="
+              mx-auto
+              max-w-xl
+              rounded-3xl
+              p-8
+              text-center
+              shadow-xl
+            "
             style={{
               background: colors.card,
               border: `2px solid ${colors.cardBorder}`,
             }}
           >
-            <div className="flex h-20 items-center justify-center">
-              <div className="scale-[2.2]">
+            <div className="flex h-16 items-center justify-center">
+              <div className="scale-[1.8]">
                 <FlorioLogo
                   primary={colors.primary}
                   accent={colors.accent}
@@ -109,13 +142,20 @@ export default function CategoryPage() {
               </div>
             </div>
 
-            <h2 className="mt-5 text-2xl font-bold">
+            <h2 className="mt-4 text-2xl font-bold">
               Bu kategoride ürün bulunamadı
             </h2>
 
             <Link
               href="/"
-              className="mt-6 inline-block rounded-xl px-8 py-3 font-bold"
+              className="
+                mt-5
+                inline-block
+                rounded-xl
+                px-8
+                py-3
+                font-bold
+              "
               style={{
                 background: colors.actionPrimary,
                 color: colors.actionPrimaryText,
