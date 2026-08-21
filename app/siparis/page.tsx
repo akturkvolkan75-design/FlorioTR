@@ -2,17 +2,23 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { assignFlorist } from "@/lib/orderAssign";
-import { useTheme } from "@/context/ThemeContext";
-import { themes } from "@/themes/themes";
+
+import FlorioLogo from "@/components/FlorioLogo";
 import SavedAddressPicker from "@/components/order/SavedAddressPicker";
+import { useTheme } from "@/context/ThemeContext";
+import { assignFlorist } from "@/lib/orderAssign";
+import { themes } from "@/themes/themes";
 
 export default function SiparisPage() {
   const router = useRouter();
-  const { theme } = useTheme();
-  const colors = themes[theme].colors;
 
-  const [authChecking, setAuthChecking] = useState(true);
+  const { theme } = useTheme();
+
+  const colors =
+    themes[theme].colors;
+
+  const [authChecking, setAuthChecking] =
+    useState(true);
 
   const [form, setForm] = useState({
     receiverName: "",
@@ -32,26 +38,51 @@ export default function SiparisPage() {
 
   useEffect(() => {
     fetch("/api/musteri/auth")
-      .then((response) => response.json())
+      .then((response) =>
+        response.json()
+      )
       .then((data) => {
         if (!data.authenticated) {
-          router.replace("/musteri/giris?next=/siparis");
-        } else {
-          setForm((current) => ({
-            ...current,
-            senderName: current.senderName || data.customer.name,
-            senderPhone: current.senderPhone || data.customer.phone,
-            email: current.email || data.customer.email,
-          }));
+          router.replace(
+            "/musteri/giris?next=/siparis"
+          );
 
-          setAuthChecking(false);
+          return;
         }
+
+        setForm((current) => ({
+          ...current,
+
+          senderName:
+            current.senderName ||
+            data.customer.name,
+
+          senderPhone:
+            current.senderPhone ||
+            data.customer.phone,
+
+          email:
+            current.email ||
+            data.customer.email,
+        }));
+
+        setAuthChecking(false);
       });
   }, [router]);
 
   if (authChecking) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#f5f2eb] font-black text-[#123f34]">
+      <main
+        className="
+          flex
+          min-h-screen
+          items-center
+          justify-center
+          bg-[#f5f2eb]
+          font-black
+          text-[#123f34]
+        "
+      >
         Müşteri hesabı kontrol ediliyor...
       </main>
     );
@@ -59,19 +90,31 @@ export default function SiparisPage() {
 
   function handleChange(
     event: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      | HTMLInputElement
+      | HTMLTextAreaElement
+      | HTMLSelectElement
     >
   ) {
     setForm({
       ...form,
-      [event.target.name]: event.target.value,
+
+      [event.target.name]:
+        event.target.value,
     });
   }
 
   async function submitOrder() {
-    const florist = assignFlorist(form.district);
+    const florist =
+      assignFlorist(
+        form.district
+      );
 
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const cart =
+      JSON.parse(
+        localStorage.getItem(
+          "cart"
+        ) || "[]"
+      );
 
     if (
       !form.receiverName.trim() ||
@@ -82,60 +125,114 @@ export default function SiparisPage() {
       !form.identityNumber.trim() ||
       !form.date ||
       !form.time ||
-      form.time === "Saat Seçiniz" ||
+      form.time ===
+        "Saat Seçiniz" ||
       !form.district ||
-      form.district === "İlçe Seçiniz" ||
+      form.district ===
+        "İlçe Seçiniz" ||
       !form.address.trim()
     ) {
       alert(
         "Lütfen alıcı, gönderici ve teslimat bilgilerini eksiksiz doldurun."
       );
+
       return;
     }
 
     if (!cart.length) {
-      alert("Sipariş oluşturmak için sepete ürün ekleyin.");
+      alert(
+        "Sipariş oluşturmak için sepete ürün ekleyin."
+      );
+
       return;
     }
 
     try {
-      const response = await fetch("/api/payment/initialize", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          customer: {
-            receiverName: form.receiverName,
-            receiverPhone: form.receiverPhone,
-            senderName: form.senderName,
-            senderPhone: form.senderPhone,
-            email: form.email,
-            identityNumber: form.identityNumber,
-            city: form.city,
-            district: form.district,
-            address: form.address,
-            customerNote: form.customerNote,
-            recipientNote: form.flowerNote,
-            deliveryDate: form.date,
-            deliveryTimeSlot: form.time,
-          },
-          cart,
-        }),
-      });
+      const response =
+        await fetch(
+          "/api/payment/initialize",
+          {
+            method: "POST",
 
-      const data = await response.json();
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
 
-      if (!data.success || !data.paymentPageUrl) {
-        alert(data.message || "Sipariş oluşturulamadı.");
+            body: JSON.stringify({
+              customer: {
+                receiverName:
+                  form.receiverName,
+
+                receiverPhone:
+                  form.receiverPhone,
+
+                senderName:
+                  form.senderName,
+
+                senderPhone:
+                  form.senderPhone,
+
+                email:
+                  form.email,
+
+                identityNumber:
+                  form.identityNumber,
+
+                city:
+                  form.city,
+
+                district:
+                  form.district,
+
+                address:
+                  form.address,
+
+                customerNote:
+                  form.customerNote,
+
+                recipientNote:
+                  form.flowerNote,
+
+                deliveryDate:
+                  form.date,
+
+                deliveryTimeSlot:
+                  form.time,
+              },
+
+              cart,
+            }),
+          }
+        );
+
+      const data =
+        await response.json();
+
+      if (
+        !data.success ||
+        !data.paymentPageUrl
+      ) {
+        alert(
+          data.message ||
+            "Sipariş oluşturulamadı."
+        );
+
         return;
       }
 
       const order = {
-        id: data.orderId || Date.now(),
+        id:
+          data.orderId ||
+          Date.now(),
+
         customer: form,
+
         products: cart,
-        orderIds: [data.orderId],
+
+        orderIds: [
+          data.orderId,
+        ],
 
         total: cart.reduce(
           (
@@ -144,72 +241,154 @@ export default function SiparisPage() {
               price: number;
               quantity: number;
             }
-          ) => sum + item.price * item.quantity,
+          ) =>
+            sum +
+            item.price *
+              item.quantity,
           0
         ),
 
-        assignedFlorist: florist,
-        status: "Yeni",
-        createdAt: new Date().toLocaleDateString("tr-TR"),
+        assignedFlorist:
+          florist,
+
+        status:
+          "Yeni",
+
+        createdAt:
+          new Date().toLocaleDateString(
+            "tr-TR"
+          ),
       };
 
-      localStorage.setItem("order", JSON.stringify(order));
+      localStorage.setItem(
+        "order",
+        JSON.stringify(order)
+      );
 
-      window.location.href = data.paymentPageUrl;
+      window.location.href =
+        data.paymentPageUrl;
     } catch (error) {
       console.log(error);
 
-      alert("Sipariş oluşturulamadı. Lütfen tekrar deneyin.");
+      alert(
+        "Sipariş oluşturulamadı. Lütfen tekrar deneyin."
+      );
     }
   }
 
   const inputStyle = {
-    background: colors.background,
-    color: colors.foreground,
-    border: `1px solid ${colors.primary}`,
+    background:
+      colors.background,
+
+    color:
+      colors.foreground,
+
+    border:
+      `1px solid ${colors.primary}`,
   };
 
   return (
     <main
-      className="min-h-screen px-6 py-16"
+      className="
+        min-h-screen
+        px-6
+        py-16
+      "
       style={{
-        background: colors.background,
+        background:
+          colors.background,
       }}
     >
       <div
-        className="mx-auto max-w-3xl rounded-[40px] p-8 shadow-2xl backdrop-blur-xl"
+        className="
+          mx-auto
+          max-w-3xl
+          rounded-[40px]
+          p-8
+          shadow-2xl
+          backdrop-blur-xl
+        "
         style={{
-          background: colors.secondary,
-          border: `2px solid ${colors.primary}`,
+          background:
+            colors.secondary,
+
+          border:
+            `2px solid ${colors.primary}`,
         }}
       >
-        <h1
-          className="mb-10 text-center text-4xl font-extrabold"
-          style={{
-            color: colors.primary,
-          }}
+        {/* BAŞLIK */}
+
+        <div
+          className="
+            mb-10
+            flex
+            items-center
+            justify-center
+            gap-3
+          "
         >
-          🌸 FlorioTR Sipariş
-        </h1>
+          <FlorioLogo
+            primary={
+              colors.primary
+            }
+            accent={
+              colors.accent
+            }
+            iconOnly
+          />
+
+          <h1
+            className="
+              text-center
+              text-4xl
+              font-extrabold
+            "
+            style={{
+              color:
+                colors.primary,
+            }}
+          >
+            FlorioTR Sipariş
+          </h1>
+        </div>
 
         <SavedAddressPicker
           onSelect={(address) =>
-            setForm((current) => ({
-              ...current,
-              receiverName: address.receiverName,
-              receiverPhone: address.receiverPhone,
-              city: address.city,
-              district: address.district,
-              address: address.address,
-            }))
+            setForm(
+              (current) => ({
+                ...current,
+
+                receiverName:
+                  address.receiverName,
+
+                receiverPhone:
+                  address.receiverPhone,
+
+                city:
+                  address.city,
+
+                district:
+                  address.district,
+
+                address:
+                  address.address,
+              })
+            )
           }
         />
 
+        {/* ALICI */}
+
         <section className="mb-10">
           <h2
-            className="mb-5 text-xl font-bold"
+            className="
+              mb-5
+              text-xl
+              font-bold
+            "
             style={{
-              color: colors.foreground,
+              color:
+                colors.foreground,
             }}
           >
             👤 Alıcı Bilgileri
@@ -218,9 +397,19 @@ export default function SiparisPage() {
           <input
             name="receiverName"
             placeholder="Ad Soyad"
-            value={form.receiverName}
-            onChange={handleChange}
-            className="mb-4 w-full rounded-2xl p-4 outline-none"
+            value={
+              form.receiverName
+            }
+            onChange={
+              handleChange
+            }
+            className="
+              mb-4
+              w-full
+              rounded-2xl
+              p-4
+              outline-none
+            "
             style={inputStyle}
           />
 
@@ -228,18 +417,34 @@ export default function SiparisPage() {
             type="tel"
             name="receiverPhone"
             placeholder="Alıcı telefonu"
-            value={form.receiverPhone}
-            onChange={handleChange}
-            className="w-full rounded-2xl p-4 outline-none"
+            value={
+              form.receiverPhone
+            }
+            onChange={
+              handleChange
+            }
+            className="
+              w-full
+              rounded-2xl
+              p-4
+              outline-none
+            "
             style={inputStyle}
           />
         </section>
 
+        {/* GÖNDERİCİ */}
+
         <section className="mb-10">
           <h2
-            className="mb-5 text-xl font-bold"
+            className="
+              mb-5
+              text-xl
+              font-bold
+            "
             style={{
-              color: colors.foreground,
+              color:
+                colors.foreground,
             }}
           >
             🎁 Gönderici Bilgileri
@@ -248,9 +453,19 @@ export default function SiparisPage() {
           <input
             name="senderName"
             placeholder="Gönderici ad soyad"
-            value={form.senderName}
-            onChange={handleChange}
-            className="mb-4 w-full rounded-2xl p-4 outline-none"
+            value={
+              form.senderName
+            }
+            onChange={
+              handleChange
+            }
+            className="
+              mb-4
+              w-full
+              rounded-2xl
+              p-4
+              outline-none
+            "
             style={inputStyle}
           />
 
@@ -258,20 +473,45 @@ export default function SiparisPage() {
             type="tel"
             name="senderPhone"
             placeholder="Gönderici telefonu"
-            value={form.senderPhone}
-            onChange={handleChange}
-            className="w-full rounded-2xl p-4 outline-none"
+            value={
+              form.senderPhone
+            }
+            onChange={
+              handleChange
+            }
+            className="
+              w-full
+              rounded-2xl
+              p-4
+              outline-none
+            "
             style={inputStyle}
           />
 
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div
+            className="
+              mt-4
+              grid
+              gap-4
+              sm:grid-cols-2
+            "
+          >
             <input
               type="email"
               name="email"
               placeholder="E-posta adresi"
-              value={form.email}
-              onChange={handleChange}
-              className="w-full rounded-2xl p-4 outline-none"
+              value={
+                form.email
+              }
+              onChange={
+                handleChange
+              }
+              className="
+                w-full
+                rounded-2xl
+                p-4
+                outline-none
+              "
               style={inputStyle}
             />
 
@@ -280,24 +520,49 @@ export default function SiparisPage() {
               maxLength={11}
               name="identityNumber"
               placeholder="T.C. kimlik numarası (iyzico için zorunlu)"
-              value={form.identityNumber}
-              onChange={handleChange}
-              className="w-full rounded-2xl p-4 outline-none"
+              value={
+                form.identityNumber
+              }
+              onChange={
+                handleChange
+              }
+              className="
+                w-full
+                rounded-2xl
+                p-4
+                outline-none
+              "
               style={inputStyle}
             />
           </div>
 
-          <p className="mt-3 text-xs font-semibold opacity-70">
-            Kimlik numarası yalnızca iyzico güvenli ödeme doğrulaması için
+          <p
+            className="
+              mt-3
+              text-xs
+              font-semibold
+              opacity-70
+            "
+          >
+            Kimlik numarası yalnızca
+            iyzico güvenli ödeme
+            doğrulaması için
             kullanılır.
           </p>
         </section>
 
+        {/* TESLİMAT */}
+
         <section className="mb-10">
           <h2
-            className="mb-5 text-xl font-bold"
+            className="
+              mb-5
+              text-xl
+              font-bold
+            "
             style={{
-              color: colors.foreground,
+              color:
+                colors.foreground,
             }}
           >
             🚚 Teslimat Bilgileri
@@ -305,97 +570,212 @@ export default function SiparisPage() {
 
           <select
             name="district"
-            value={form.district}
-            onChange={handleChange}
-            className="mb-4 w-full rounded-2xl p-4"
+            value={
+              form.district
+            }
+            onChange={
+              handleChange
+            }
+            className="
+              mb-4
+              w-full
+              rounded-2xl
+              p-4
+            "
             style={inputStyle}
           >
-            <option>İlçe Seçiniz</option>
-            <option>Kadıköy</option>
-            <option>Beşiktaş</option>
-            <option>Bakırköy</option>
-            <option>Üsküdar</option>
-            <option>Şişli</option>
-            <option>Maltepe</option>
+            <option>
+              İlçe Seçiniz
+            </option>
+
+            <option>
+              Kadıköy
+            </option>
+
+            <option>
+              Beşiktaş
+            </option>
+
+            <option>
+              Bakırköy
+            </option>
+
+            <option>
+              Üsküdar
+            </option>
+
+            <option>
+              Şişli
+            </option>
+
+            <option>
+              Maltepe
+            </option>
           </select>
 
           <textarea
             name="address"
             placeholder="Açık teslimat adresi"
-            value={form.address}
-            onChange={handleChange}
-            className="h-32 w-full rounded-2xl p-4 outline-none"
+            value={
+              form.address
+            }
+            onChange={
+              handleChange
+            }
+            className="
+              h-32
+              w-full
+              rounded-2xl
+              p-4
+              outline-none
+            "
             style={inputStyle}
           />
         </section>
 
+        {/* NOTLAR */}
+
         <section className="mb-10">
           <div className="mb-8">
             <h2
-              className="text-xl font-bold"
+              className="
+                text-xl
+                font-bold
+              "
               style={{
-                color: colors.foreground,
+                color:
+                  colors.foreground,
               }}
             >
               💌 Alıcıya Kart Mesajı
             </h2>
 
             <p
-              className="mt-2 text-sm font-semibold opacity-75"
+              className="
+                mt-2
+                text-sm
+                font-semibold
+                opacity-75
+              "
               style={{
-                color: colors.foreground,
+                color:
+                  colors.foreground,
               }}
             >
-              Çiçeğin yanında alıcıya iletilmesini istediğiniz mesajı
+              Çiçeğin yanında
+              alıcıya iletilmesini
+              istediğiniz mesajı
               yazabilirsiniz.
             </p>
 
             <textarea
               name="flowerNote"
               placeholder="Örn: Seni çok seviyorum. İyi ki varsın ❤️"
-              value={form.flowerNote}
-              onChange={handleChange}
-              className="mt-4 h-24 w-full rounded-2xl p-4 outline-none"
+              value={
+                form.flowerNote
+              }
+              onChange={
+                handleChange
+              }
+              className="
+                mt-4
+                h-24
+                w-full
+                rounded-2xl
+                p-4
+                outline-none
+              "
               style={inputStyle}
             />
           </div>
 
           <div>
-            <h2
-              className="text-xl font-bold"
-              style={{
-                color: colors.foreground,
-              }}
+            <div
+              className="
+                flex
+                items-center
+                gap-2
+              "
             >
-              🌸 Çiçekçiye Özel Not
-            </h2>
+              <FlorioLogo
+                primary={
+                  colors.primary
+                }
+                accent={
+                  colors.accent
+                }
+                compact
+                iconOnly
+              />
+
+              <h2
+                className="
+                  text-xl
+                  font-bold
+                "
+                style={{
+                  color:
+                    colors.foreground,
+                }}
+              >
+                FlorioTR Hazırlama
+                Notu
+              </h2>
+            </div>
 
             <p
-              className="mt-2 text-sm font-semibold opacity-75"
+              className="
+                mt-2
+                text-sm
+                font-semibold
+                opacity-75
+              "
               style={{
-                color: colors.foreground,
+                color:
+                  colors.foreground,
               }}
             >
-              Çiçekçimizin bilmesini istediğiniz özel bir detayı buraya
+              Siparişiniz hazırlanırken
+              dikkate alınmasını
+              istediğiniz özel bir
+              detayı buraya
               yazabilirsiniz.
             </p>
 
             <textarea
               name="customerNote"
               placeholder="Örn: Mümkünse açık pembe tonları ağırlıklı olsun."
-              value={form.customerNote}
-              onChange={handleChange}
-              className="mt-4 h-24 w-full rounded-2xl p-4 outline-none"
+              value={
+                form.customerNote
+              }
+              onChange={
+                handleChange
+              }
+              className="
+                mt-4
+                h-24
+                w-full
+                rounded-2xl
+                p-4
+                outline-none
+              "
               style={inputStyle}
             />
           </div>
         </section>
 
+        {/* ZAMAN */}
+
         <section className="mb-10">
           <h2
-            className="mb-5 text-xl font-bold"
+            className="
+              mb-5
+              text-xl
+              font-bold
+            "
             style={{
-              color: colors.foreground,
+              color:
+                colors.foreground,
             }}
           >
             ⏰ Teslimat Zamanı
@@ -404,46 +784,99 @@ export default function SiparisPage() {
           <input
             type="date"
             name="date"
-            value={form.date}
-            onChange={handleChange}
-            className="mb-4 w-full rounded-2xl p-4"
+            value={
+              form.date
+            }
+            onChange={
+              handleChange
+            }
+            className="
+              mb-4
+              w-full
+              rounded-2xl
+              p-4
+            "
             style={inputStyle}
           />
 
           <select
             name="time"
-            value={form.time}
-            onChange={handleChange}
-            className="w-full rounded-2xl p-4"
+            value={
+              form.time
+            }
+            onChange={
+              handleChange
+            }
+            className="
+              w-full
+              rounded-2xl
+              p-4
+            "
             style={inputStyle}
           >
-            <option>Saat Seçiniz</option>
-            <option>09:00 - 12:00</option>
-            <option>12:00 - 15:00</option>
-            <option>15:00 - 18:00</option>
-            <option>18:00 - 21:00</option>
+            <option>
+              Saat Seçiniz
+            </option>
+
+            <option>
+              09:00 - 12:00
+            </option>
+
+            <option>
+              12:00 - 15:00
+            </option>
+
+            <option>
+              15:00 - 18:00
+            </option>
+
+            <option>
+              18:00 - 21:00
+            </option>
           </select>
         </section>
 
+        {/* ÖDEME */}
+
         <section>
           <h2
-            className="mb-5 text-xl font-bold"
+            className="
+              mb-5
+              text-xl
+              font-bold
+            "
             style={{
-              color: colors.foreground,
+              color:
+                colors.foreground,
             }}
           >
             💳 Güvenli Kart Ödemesi
           </h2>
 
           <button
-            onClick={submitOrder}
-            className="w-full rounded-2xl py-5 text-lg font-extrabold transition hover:scale-105"
+            type="button"
+            onClick={
+              submitOrder
+            }
+            className="
+              w-full
+              rounded-2xl
+              py-5
+              text-lg
+              font-extrabold
+              transition
+              hover:scale-105
+            "
             style={{
-              background: colors.primary,
-              color: colors.background,
+              background:
+                colors.primary,
+
+              color:
+                colors.background,
             }}
           >
-            🔒 Kartla Güvenli Ödemeye Geç
+            🔒 Kartla Güvenli
+            Ödemeye Geç
           </button>
         </section>
       </div>
