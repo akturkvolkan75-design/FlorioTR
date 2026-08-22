@@ -17,32 +17,11 @@ export default function Home() {
           mx-auto
           max-w-[1650px]
           px-4
-          pt-6
+          pt-5
         "
       >
 
-        <div
-          className="
-            rounded-[30px]
-            bg-white
-            p-6
-            shadow-lg
-          "
-        >
-
-          <div
-            className="
-              mx-auto
-              max-w-3xl
-            "
-          >
-
-            <SearchBox />
-
-          </div>
-
-
-        </div>
+        <SearchBox />
 
       </section>
 
