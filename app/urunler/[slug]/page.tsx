@@ -7,398 +7,494 @@ import FavoriteButton from "@/components/FavoriteButton";
 import FlorioLogo from "@/components/FlorioLogo";
 import ProductRating from "@/components/reviews/ProductRating";
 import ProductReviews from "@/components/reviews/ProductReviews";
+
 import { useTheme } from "@/context/ThemeContext";
 import { useProducts } from "@/hooks/useProducts";
 import { themes } from "@/themes/themes";
 
+
 type TrustItem = {
-  text: string;
-  icon?: string;
-  brand?: boolean;
+  text:string;
+  icon?:string;
+  brand?:boolean;
 };
 
-export default function ProductPage() {
+
+export default function ProductPage(){
+
   const products = useProducts();
 
   const params = useParams();
 
-  const slug =
-    params.slug as string;
+  const slug = params.slug as string;
 
-  const { theme } =
-    useTheme();
 
-  const colors =
-    themes[theme].colors;
+  const {theme}=useTheme();
+
+  const colors = themes[theme].colors;
+
+
 
   const product =
     products.find(
-      (item) =>
-        item.slug === slug
+      item=>item.slug===slug
     );
 
-  if (!product) {
+
+
+  if(!product){
+
     return (
-      <main
-        className="
-          flex
-          min-h-screen
-          items-center
-          justify-center
-          px-6
-        "
-        style={{
-          background:
-            colors.background,
-        }}
-      >
-        <div className="text-center">
-          <div
-            className="
-              flex
-              h-20
-              items-center
-              justify-center
-            "
-          >
-            <div className="scale-[2.2]">
-              <FlorioLogo
-                primary={
-                  colors.primary
-                }
-                accent={
-                  colors.accent
-                }
-                iconOnly
-              />
-            </div>
-          </div>
 
-          <h1
-            className="
-              mt-5
-              text-3xl
-              font-bold
-            "
-            style={{
-              color:
-                colors.primary,
-            }}
-          >
-            Ürün bulunamadı
-          </h1>
-        </div>
+      <main className="min-h-screen flex items-center justify-center">
+
+        <h1
+          className="text-3xl font-black"
+          style={{
+            color:colors.primary
+          }}
+        >
+          Ürün bulunamadı
+        </h1>
+
       </main>
+
     );
+
   }
 
-  const trustItems: TrustItem[] =
-    [
-      {
-        icon: "🚚",
-        text: "Aynı gün teslimat",
-      },
-      {
-        brand: true,
-        text: "Profesyonel hazırlama",
-      },
-      {
-        icon: "🔒",
-        text: "Güvenli ödeme",
-      },
-      {
-        icon: "💝",
-        text: "Özel gün tasarımları",
-      },
-    ];
+
+
+
+  const trustItems:TrustItem[]=[
+
+    {
+      icon:"🚚",
+      text:"Aynı gün teslimat"
+    },
+
+    {
+      brand:true,
+      text:"Profesyonel hazırlama"
+    },
+
+    {
+      icon:"🔒",
+      text:"Güvenli ödeme"
+    },
+
+    {
+      icon:"💝",
+      text:"Özel gün tasarımları"
+    }
+
+  ];
+
+
 
   return (
-    <main
-      className="
-        min-h-screen
-        px-6
-        py-16
-      "
-      style={{
-        background:
-          colors.background,
-      }}
-    >
-      <div
-        className="
-          mx-auto
-          max-w-6xl
-          rounded-[40px]
-          border
-          p-8
-          shadow-2xl
-        "
-        style={{
-          background:
-            colors.card,
 
-          borderColor:
-            colors.cardBorder,
+    <main
+
+      className="
+      min-h-screen
+      px-4
+      py-10
+      "
+
+      style={{
+        background:colors.background
+      }}
+
+    >
+
+
+
+      <div
+
+        className="
+        mx-auto
+        max-w-7xl
+        rounded-[32px]
+        border
+        p-5
+        shadow-xl
+        "
+
+        style={{
+
+          background:colors.card,
+
+          borderColor:colors.cardBorder
+
         }}
+
       >
+
+
+
         <div
+
           className="
-            grid
-            gap-10
-            md:grid-cols-2
+          grid
+          gap-6
+          lg:grid-cols-[1.6fr_0.8fr]
           "
+
         >
-          {/* ÜRÜN GÖRSELİ */}
+
+
+
+
+          {/* BÜYÜK FOTOĞRAF */}
+
 
           <div
+
             className="
-              overflow-hidden
-              rounded-[35px]
+            overflow-hidden
+            rounded-[28px]
             "
+
           >
+
             <img
+
               src={product.image}
+
               alt={product.name}
+
               className="
-                h-[500px]
-                w-full
-                object-cover
-                transition
-                duration-700
-                hover:scale-105
+              h-[520px]
+              w-full
+              object-cover
+              transition
+              duration-700
+              hover:scale-105
               "
+
             />
+
+
           </div>
 
-          {/* ÜRÜN BİLGİLERİ */}
+
+
+
+
+
+
+          {/* SAĞ BİLGİ ALANI */}
+
+
 
           <div
-            className="
-              flex
-              flex-col
-              justify-center
-            "
-          >
-            {product.vip && (
-              <span
-                className="
-                  mb-5
-                  w-fit
-                  rounded-full
-                  px-5
-                  py-2
-                  text-sm
-                  font-bold
-                "
-                style={{
-                  background:
-                    colors.actionSecondary,
 
-                  color:
-                    colors.actionSecondaryText,
+            className="
+            flex
+            flex-col
+            justify-center
+            "
+
+          >
+
+
+
+            {product.vip && (
+
+              <span
+
+                className="
+                mb-3
+                w-fit
+                rounded-full
+                px-3
+                py-1
+                text-xs
+                font-bold
+                "
+
+                style={{
+
+                  background:colors.actionSecondary,
+
+                  color:colors.actionSecondaryText
+
                 }}
+
               >
-                ✨ VIP Koleksiyon
+
+                ✨ VIP
+
+
               </span>
+
             )}
 
-            <p
-              className="font-bold"
-              style={{
-                color:
-                  colors.primary,
-              }}
-            >
-              {product.category}
-            </p>
+
+
+
+
+
 
             <h1
+
               className="
-                mt-4
-                text-5xl
-                font-extrabold
+              text-3xl
+              font-black
+              leading-tight
               "
+
               style={{
-                color:
-                  colors.foreground,
+
+                color:colors.foreground
+
               }}
+
             >
+
               {product.name}
+
+
             </h1>
 
+
+
+
+
+
             <p
+
               className="
-                mt-6
-                text-lg
-                leading-relaxed
+              mt-3
+              text-sm
+              leading-relaxed
               "
+
               style={{
-                color:
-                  colors.muted,
+
+                color:colors.muted
+
               }}
+
             >
+
               {product.description}
+
+
             </p>
 
+
+
+
+
+
             <div
+
               className="
-                mt-8
-                flex
-                items-center
-                justify-between
-                gap-5
+              mt-5
+              flex
+              items-center
+              justify-between
               "
+
             >
-              <span
-                className="
-                  text-4xl
-                  font-black
-                "
-                style={{
-                  color:
-                    colors.primary,
-                }}
-              >
-                {product.price} TL
-              </span>
+
+
 
               <span
-                className="
-                  rounded-full
-                  px-5
-                  py-3
-                  font-bold
-                "
-                style={{
-                  background:
-                    colors.actionSecondary,
 
-                  color:
-                    colors.actionSecondaryText,
+                className="
+                text-3xl
+                font-black
+                "
+
+                style={{
+
+                  color:colors.primary
+
                 }}
+
               >
-                <ProductRating
-                  productSlug={
-                    product.slug
-                  }
-                  fallback={
-                    product.rating
-                  }
-                />
+
+                {product.price.toLocaleString("tr-TR")} TL
+
+
               </span>
+
+
+
+
+              <ProductRating
+
+                productSlug={product.slug}
+
+                fallback={product.rating}
+
+              />
+
+
             </div>
 
-            <div className="mt-8">
+
+
+
+
+
+
+            <div className="mt-4">
+
+
               <AddToCartButton
+
                 product={{
-                  id:
-                    product.id,
 
-                  slug:
-                    product.slug,
+                  id:product.id,
 
-                  name:
-                    product.name,
+                  slug:product.slug,
 
-                  price:
-                    product.price,
+                  name:product.name,
 
-                  image:
-                    product.image,
+                  price:product.price,
+
+                  image:product.image
+
                 }}
+
               />
+
+
             </div>
 
-            <div className="mt-5">
+
+
+
+
+            <div className="mt-3">
+
+
               <FavoriteButton
-                slug={
-                  product.slug
-                }
+
+                slug={product.slug}
+
               />
+
+
             </div>
+
+
+
           </div>
+
+
+
         </div>
 
-        {/* YORUMLAR */}
+
+
+
+
 
         <ProductReviews
-          productSlug={
-            product.slug
-          }
+
+          productSlug={product.slug}
+
         />
 
-        {/* GÜVEN ALANI */}
+
+
+
+
 
         <div
+
           className="
-            mt-12
-            grid
-            gap-5
-            md:grid-cols-4
+          mt-8
+          grid
+          gap-4
+          md:grid-cols-4
           "
+
         >
-          {trustItems.map(
-            (item) => (
-              <div
-                key={
-                  item.text
-                }
-                className="
-                  rounded-3xl
-                  p-5
-                  text-center
-                "
-                style={{
-                  background:
-                    colors.actionSecondary,
 
-                  color:
-                    colors.actionSecondaryText,
 
-                  border:
-                    `1px solid ${colors.cardBorder}`,
-                }}
-              >
-                <div
-                  className="
-                    flex
-                    h-9
-                    items-center
-                    justify-center
-                  "
-                >
-                  {item.brand ? (
-                    <FlorioLogo
-                      primary={
-                        colors.actionSecondaryText
-                      }
-                      accent={
-                        colors.accent
-                      }
-                      compact
-                      iconOnly
-                    />
-                  ) : (
-                    <span className="text-3xl">
-                      {item.icon}
-                    </span>
-                  )}
-                </div>
+          {trustItems.map(item=>(
 
-                <p
-                  className="
-                    mt-3
-                    text-sm
-                    font-semibold
-                  "
-                >
-                  {item.text}
-                </p>
+
+            <div
+
+              key={item.text}
+
+              className="
+              rounded-2xl
+              p-4
+              text-center
+              "
+
+              style={{
+
+                background:colors.actionSecondary,
+
+                color:colors.actionSecondaryText,
+
+                border:
+                `1px solid ${colors.cardBorder}`
+
+              }}
+
+            >
+
+
+              <div className="text-2xl">
+
+                {item.brand ? (
+
+                  <FlorioLogo
+
+                    primary={
+                      colors.actionSecondaryText
+                    }
+
+                    accent={
+                      colors.accent
+                    }
+
+                    compact
+
+                    iconOnly
+
+                  />
+
+                ):(
+                  item.icon
+                )}
+
               </div>
-            )
-          )}
+
+
+              <p className="mt-2 text-xs font-bold">
+
+                {item.text}
+
+              </p>
+
+
+
+            </div>
+
+
+          ))}
+
+
         </div>
+
+
+
       </div>
+
+
     </main>
+
   );
+
 }
