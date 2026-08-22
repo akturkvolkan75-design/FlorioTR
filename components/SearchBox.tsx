@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 
 import FlorioLogo from "@/components/FlorioLogo";
-import { useProducts } from "@/hooks/useProducts";
 import { useTheme } from "@/context/ThemeContext";
+import { flowers } from "@/data/flowers";
 import { themes } from "@/themes/themes";
 
 
@@ -13,102 +13,59 @@ export default function SearchBox() {
 
   const [search,setSearch] = useState("");
 
-  const products = useProducts();
-
-  const {theme}=useTheme();
+  const {theme} = useTheme();
 
   const colors = themes[theme].colors;
 
 
 
-  const results =
-    search.trim().length > 1
-    ?
-    products.filter((product:any)=>
-
-      product.name
+  const results = Object.entries(flowers).filter(
+    ([,flower]) =>
+      flower.name
       .toLowerCase()
       .includes(search.toLowerCase())
 
       ||
 
-      product.category
-      ?.toLowerCase()
+      flower.location
+      .toLowerCase()
       .includes(search.toLowerCase())
-
-      ||
-
-      product.description
-      ?.toLowerCase()
-      .includes(search.toLowerCase())
-
-    ).slice(0,6)
-
-    :
-
-    [];
-
-
+  );
 
 
 
   return (
 
-    <div className="
-      relative
-      w-full
-      max-w-xl
-    ">
+    <div className="relative w-full">
 
 
+      <input
 
-      <div
+        type="text"
+
+        value={search}
+
+        onChange={(e)=>setSearch(e.target.value)}
+
+        placeholder="Ürün ara"
+
         className="
-        flex
-        items-center
-        rounded-2xl
-        border
-        bg-white
-        px-5
-        shadow-lg
-        "
-        style={{
-          borderColor:colors.cardBorder
-        }}
-      >
-
-
-        <span className="text-xl">
-          🔎
-        </span>
-
-
-
-        <input
-
-          type="text"
-
-          value={search}
-
-          onChange={(e)=>setSearch(e.target.value)}
-
-          placeholder="Gül, orkide veya buket ara"
-
-          className="
           w-full
-          bg-transparent
-          px-4
-          py-4
+          rounded-2xl
+          border
+          border-[#efc979]
+          bg-white
+          px-6
+          py-3
           text-lg
           text-gray-900
+          shadow-md
           outline-none
-          "
+          transition
+          focus:border-[#123f34]
+        "
 
-        />
-
-
-      </div>
-
+      />
 
 
 
@@ -119,160 +76,108 @@ export default function SearchBox() {
         <div
 
           className="
-          absolute
-          z-50
-          mt-3
-          w-full
-          overflow-hidden
-          rounded-2xl
-          bg-white
-          shadow-2xl
+            absolute
+            z-50
+            mt-2
+            w-full
+            overflow-hidden
+            rounded-2xl
+            bg-white
+            shadow-xl
           "
 
         >
 
 
-
           {
-          results.length > 0
-          ?
+            results.length > 0 ?
 
-          results.map((product:any)=>(
+            results.map(([slug,flower])=>(
 
+              <Link
 
-            <Link
+                key={slug}
 
-              key={product.id}
-
-              href={`/urunler/${product.slug}`}
-
-              onClick={()=>setSearch("")}
-
-              className="
-              flex
-              items-center
-              gap-4
-              border-b
-              p-4
-              transition
-              hover:bg-pink-50
-              "
-
-            >
-
-
-
-              <img
-
-                src={product.image}
-
-                alt={product.name}
+                href={`/cicekci/${slug}`}
 
                 className="
-                h-16
-                w-16
-                rounded-xl
-                object-cover
+                  block
+                  border-b
+                  border-gray-100
+                  p-4
+                  hover:bg-yellow-50
                 "
 
-              />
+              >
+
+                <div
+                  className="
+                    flex
+                    items-center
+                    gap-3
+                  "
+                >
+
+                  <FlorioLogo
+
+                    primary={colors.primary}
+
+                    accent={colors.accent}
+
+                    compact
+
+                    iconOnly
+
+                  />
 
 
+                  <div>
+
+                    <h3 className="font-bold text-gray-800">
+
+                      {flower.name}
+
+                    </h3>
 
 
-              <div className="flex-1">
+                    <p className="text-sm text-gray-500">
+
+                      📍 {flower.location}
+
+                    </p>
 
 
-                <h3 className="
-                font-black
-                text-gray-800
-                ">
-
-                  {product.name}
-
-                </h3>
+                  </div>
 
 
-
-                <p className="
-                text-sm
-                text-gray-500
-                ">
-
-                  {product.category}
-
-                </p>
+                </div>
 
 
+              </Link>
 
+            ))
 
-                <p className="
-                font-bold
-                text-pink-600
-                ">
+            :
 
-                  {product.price.toLocaleString("tr-TR")} TL
+            (
 
-                </p>
+              <div className="p-5 text-center text-gray-500">
 
+                Çiçekçi bulunamadı
 
               </div>
 
-
-
-            </Link>
-
-
-          ))
-
-
-
-          :
-
-          <div
-            className="
-            flex
-            items-center
-            justify-center
-            gap-3
-            p-5
-            text-gray-500
-            "
-          >
-
-            <FlorioLogo
-
-              primary={colors.primary}
-
-              accent={colors.accent}
-
-              compact
-
-              iconOnly
-
-            />
-
-            <span>
-              Ürün bulunamadı
-            </span>
-
-
-          </div>
-
+            )
 
           }
 
 
-
         </div>
-
 
       )}
 
 
-
     </div>
-
 
   );
 

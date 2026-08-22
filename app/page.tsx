@@ -17,7 +17,7 @@ export default function Home() {
           mx-auto
           max-w-[1650px]
           px-4
-          pt-5
+          pt-4
         "
       >
 
@@ -36,7 +36,7 @@ export default function Home() {
           mx-auto
           max-w-[1650px]
           px-4
-          mt-5
+          mt-4
         "
       >
 
