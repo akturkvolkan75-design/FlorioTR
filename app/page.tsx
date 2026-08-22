@@ -25,38 +25,15 @@ export default function Home() {
           className="
             rounded-[30px]
             bg-white
-            p-8
-            text-center
+            p-6
             shadow-lg
           "
         >
 
-          <h1
-            className="
-              text-3xl
-              font-black
-              text-[#123f34]
-            "
-          >
-            Çiçeğinizi kolayca bulun 🌸
-          </h1>
-
-
-          <p
-            className="
-              mt-2
-              text-gray-500
-            "
-          >
-            Çiçekçi veya konum arayın
-          </p>
-
-
           <div
             className="
-              mt-6
-              flex
-              justify-center
+              mx-auto
+              max-w-3xl
             "
           >
 
