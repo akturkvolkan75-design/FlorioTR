@@ -45,8 +45,12 @@ export default function ProductPage(){
   if(!product){
 
     return (
-
-      <main className="min-h-screen flex items-center justify-center">
+      <main
+        className="min-h-screen flex items-center justify-center"
+        style={{
+          background:colors.background
+        }}
+      >
 
         <h1
           className="text-3xl font-black"
@@ -58,11 +62,9 @@ export default function ProductPage(){
         </h1>
 
       </main>
-
     );
 
   }
-
 
 
 
@@ -93,27 +95,22 @@ export default function ProductPage(){
 
 
 
-
-
   return (
 
     <main
-
       className="
       min-h-screen
       px-4
-      py-10
+      py-8
       "
-
       style={{
         background:colors.background
       }}
-
     >
 
 
-      <div
 
+      <div
         className="
         mx-auto
         max-w-7xl
@@ -122,81 +119,61 @@ export default function ProductPage(){
         p-5
         shadow-xl
         "
-
         style={{
           background:colors.card,
           borderColor:colors.cardBorder
         }}
-
       >
 
 
 
         <div
-
           className="
           grid
-          gap-6
-          lg:grid-cols-[1.7fr_0.7fr]
+          gap-8
+          lg:grid-cols-[1.35fr_0.85fr]
           "
-
         >
-
-
 
 
 
           {/* FOTOĞRAF */}
 
-
           <div
-
             className="
             relative
             overflow-hidden
             rounded-[28px]
             "
-
           >
 
-
             <img
-
               src={product.image}
-
               alt={product.name}
-
               className="
-              h-[450px]
+              h-[420px]
               w-full
               object-cover
               transition
               duration-700
               hover:scale-105
               "
-
             />
 
 
-
             <div
-
               className="
               absolute
               right-4
               top-4
               "
-
             >
 
               <FavoriteButton
-
                 slug={product.slug}
-
               />
 
             </div>
-
 
 
           </div>
@@ -206,18 +183,14 @@ export default function ProductPage(){
 
 
 
-
-          {/* BİLGİ ALANI */}
-
+          {/* BİLGİ */}
 
           <div
-
             className="
             flex
             flex-col
             justify-center
             "
-
           >
 
 
@@ -225,7 +198,6 @@ export default function ProductPage(){
             {product.vip && (
 
               <span
-
                 className="
                 mb-3
                 w-fit
@@ -235,19 +207,13 @@ export default function ProductPage(){
                 text-xs
                 font-bold
                 "
-
                 style={{
-
                   background:colors.actionSecondary,
-
                   color:colors.actionSecondaryText
-
                 }}
-
               >
 
                 ✨ VIP
-
 
               </span>
 
@@ -255,107 +221,81 @@ export default function ProductPage(){
 
 
 
-
+            <p
+              className="text-sm font-bold"
+              style={{
+                color:colors.primary
+              }}
+            >
+              {product.category}
+            </p>
 
 
 
             <h1
-
               className="
+              mt-3
               text-3xl
               font-black
               leading-tight
               "
-
               style={{
-
                 color:colors.foreground
-
               }}
-
             >
 
               {product.name}
-
 
             </h1>
 
 
 
 
-
-
-
             <p
-
               className="
-              mt-2
+              mt-3
               text-sm
               leading-relaxed
               "
-
               style={{
-
                 color:colors.muted
-
               }}
-
             >
 
               {product.description}
-
 
             </p>
 
 
 
 
-
-
-
             <div
-
               className="
-              mt-4
+              mt-5
               flex
               items-center
               justify-between
               "
-
             >
 
-
-
               <span
-
                 className="
                 text-3xl
                 font-black
                 "
-
                 style={{
-
                   color:colors.primary
-
                 }}
-
               >
 
                 {product.price.toLocaleString("tr-TR")} TL
 
-
               </span>
 
 
-
-
-
               <ProductRating
-
                 productSlug={product.slug}
-
                 fallback={product.rating}
-
               />
 
 
@@ -365,30 +305,21 @@ export default function ProductPage(){
 
 
 
-
-
-
-            <div className="mt-3">
-
+            <div className="mt-5">
 
               <AddToCartButton
 
                 product={{
 
                   id:product.id,
-
                   slug:product.slug,
-
                   name:product.name,
-
                   price:product.price,
-
                   image:product.image
 
                 }}
 
               />
-
 
             </div>
 
@@ -398,6 +329,19 @@ export default function ProductPage(){
           </div>
 
 
+        </div>
+
+
+
+
+
+        {/* YORUMLAR */}
+
+        <div className="mt-8">
+
+          <ProductReviews
+            productSlug={product.slug}
+          />
 
         </div>
 
@@ -406,101 +350,59 @@ export default function ProductPage(){
 
 
 
-
-        <ProductReviews
-
-          productSlug={product.slug}
-
-        />
-
-
-
-
-
-
+        {/* GÜVEN */}
 
         <div
-
           className="
           mt-8
           grid
-          gap-4
+          gap-3
           md:grid-cols-4
           "
-
         >
-
 
           {trustItems.map(item=>(
 
-
             <div
-
               key={item.text}
-
               className="
               rounded-2xl
-              p-4
+              p-3
               text-center
               "
-
               style={{
-
                 background:colors.actionSecondary,
-
                 color:colors.actionSecondaryText,
-
-                border:
-                `1px solid ${colors.cardBorder}`
-
+                border:`1px solid ${colors.cardBorder}`
               }}
-
             >
 
-
-
-              <div className="text-2xl">
-
+              <div className="text-xl">
 
                 {item.brand ? (
 
                   <FlorioLogo
-
-                    primary={
-                      colors.actionSecondaryText
-                    }
-
-                    accent={
-                      colors.accent
-                    }
-
+                    primary={colors.actionSecondaryText}
+                    accent={colors.accent}
                     compact
-
                     iconOnly
-
                   />
 
-                ):(
+                ) : (
 
                   item.icon
 
                 )}
 
-
               </div>
 
 
-
-              <p className="mt-2 text-xs font-bold">
-
+              <p className="mt-1 text-xs font-bold">
                 {item.text}
-
               </p>
 
 
-
             </div>
-
 
           ))}
 
@@ -508,9 +410,7 @@ export default function ProductPage(){
         </div>
 
 
-
       </div>
-
 
 
     </main>
