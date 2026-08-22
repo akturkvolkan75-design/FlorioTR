@@ -29,8 +29,7 @@ export default function ProductCard({
 }) {
   const { theme } = useTheme();
 
-  const colors =
-    themes[theme].colors;
+  const colors = themes[theme].colors;
 
   return (
     <article
@@ -43,14 +42,9 @@ export default function ProductCard({
         hover:-translate-y-1
       "
       style={{
-        background:
-          colors.card,
-
-        border:
-          `1px solid ${colors.cardBorder}`,
-
-        boxShadow:
-          `0 5px 14px ${colors.cardBorder}14`,
+        background: colors.card,
+        border: `1px solid ${colors.cardBorder}`,
+        boxShadow: `0 5px 14px ${colors.cardBorder}14`,
       }}
     >
       {/* ÜRÜN FOTOĞRAFI */}
@@ -90,18 +84,15 @@ export default function ProductCard({
               font-black
             "
             style={{
-              background:
-                colors.primary,
-
-              color:
-                colors.background,
+              background: colors.primary,
+              color: colors.background,
             }}
           >
             ✨ VIP
           </span>
         )}
 
-        {/* PUAN FOTOĞRAFIN ÜSTÜNDE */}
+        {/* PUAN */}
 
         <div
           className="
@@ -115,20 +106,13 @@ export default function ProductCard({
             backdrop-blur-md
           "
           style={{
-            background:
-              `${colors.card}E8`,
-
-            color:
-              colors.foreground,
+            background: `${colors.card}E8`,
+            color: colors.foreground,
           }}
         >
           <ProductRating
-            productSlug={
-              product.slug
-            }
-            fallback={
-              product.rating
-            }
+            productSlug={product.slug}
+            fallback={product.rating}
           />
         </div>
 
@@ -142,13 +126,11 @@ export default function ProductCard({
             scale-[0.82]
           "
         >
-          <FavoriteButton
-            slug={product.slug}
-          />
+          <FavoriteButton slug={product.slug} />
         </div>
       </div>
 
-      {/* MİNİMUM BİLGİ ALANI */}
+      {/* ULTRA KOMPAKT ALT ALAN */}
 
       <div
         className="
@@ -172,11 +154,10 @@ export default function ProductCard({
               truncate
               text-[12px]
               font-black
-              leading-tight
+              leading-none
             "
             style={{
-              color:
-                colors.foreground,
+              color: colors.foreground,
             }}
           >
             {product.name}
@@ -190,35 +171,12 @@ export default function ProductCard({
               leading-none
             "
             style={{
-              color:
-                colors.primary,
+              color: colors.primary,
             }}
           >
-            {product.price.toLocaleString(
-              "tr-TR"
-            )}{" "}
-            TL
+            {product.price.toLocaleString("tr-TR")} TL
           </span>
         </div>
-
-        {/* TEK SATIR AÇIKLAMA */}
-
-        {product.description && (
-          <p
-            className="
-              mt-0.5
-              truncate
-              text-[9px]
-              leading-tight
-            "
-            style={{
-              color:
-                colors.muted,
-            }}
-          >
-            {product.description}
-          </p>
-        )}
 
         {/* MİNİ BUTONLAR */}
 
@@ -248,48 +206,30 @@ export default function ProductCard({
               hover:scale-[1.02]
             "
             style={{
-              background:
-                colors.actionSecondary,
-
-              color:
-                colors.actionSecondaryText,
+              background: colors.actionSecondary,
+              color: colors.actionSecondaryText,
             }}
           >
             <span className="scale-[0.7]">
               <FlorioLogo
-                primary={
-                  colors.actionSecondaryText
-                }
-                accent={
-                  colors.accent
-                }
+                primary={colors.actionSecondaryText}
+                accent={colors.accent}
                 compact
                 iconOnly
               />
             </span>
 
-            <span>
-              İncele
-            </span>
+            <span>İncele</span>
           </Link>
 
           <AddToCartButton
             compact
             product={{
-              id:
-                product.id,
-
-              slug:
-                product.slug,
-
-              name:
-                product.name,
-
-              price:
-                product.price,
-
-              image:
-                product.image,
+              id: product.id,
+              slug: product.slug,
+              name: product.name,
+              price: product.price,
+              image: product.image,
             }}
           />
         </div>

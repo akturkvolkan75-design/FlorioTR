@@ -6,7 +6,6 @@ import { useProducts } from "@/hooks/useProducts";
 import { useTheme } from "@/context/ThemeContext";
 import { themes } from "@/themes/themes";
 
-
 function ProductCard({
   product,
   colors,
@@ -28,7 +27,6 @@ function ProductCard({
     ? "#F0C978"
     : "#C8952C";
 
-
   return (
     <Link
       href={`/urunler/${product.slug}`}
@@ -38,7 +36,7 @@ function ProductCard({
         min-w-0
       "
     >
-      {/* FOTOĞRAF */}
+      {/* FOTOĞRAF - AYNEN KALIYOR */}
 
       <div
         className="
@@ -69,7 +67,6 @@ function ProductCard({
             group-hover:scale-[1.025]
           "
         />
-
 
         {/* FAVORİ */}
 
@@ -107,18 +104,17 @@ function ProductCard({
         </button>
       </div>
 
+      {/* ULTRA KOMPAKT ÜRÜN BİLGİLERİ */}
 
-      {/* ÜRÜN BİLGİLERİ */}
-
-      <div className="px-0.5 pt-2">
+      <div className="px-0.5 pt-1.5">
+        {/* ÜRÜN ADI */}
 
         <h3
           className="
-            line-clamp-2
-            min-h-[30px]
-            text-[12px]
-            font-semibold
-            leading-[15px]
+            truncate
+            text-[11px]
+            font-bold
+            leading-none
           "
           style={{
             color: titleColor,
@@ -127,49 +123,58 @@ function ProductCard({
           {product.name}
         </h3>
 
+        {/* YILDIZ + PUAN + FİYAT TEK SATIR */}
 
         <div
           className="
             mt-1
             flex
             items-center
+            justify-between
             gap-1
-            text-[10px]
-            font-medium
           "
-          style={{
-            color: mutedColor,
-          }}
         >
-          <span className="text-amber-400">
-            ★★★★★
-          </span>
+          <div
+            className="
+              flex
+              items-center
+              gap-1
+              text-[8px]
+              font-medium
+              leading-none
+            "
+            style={{
+              color: mutedColor,
+            }}
+          >
+            <span className="tracking-[-1px] text-amber-400">
+              ★★★★★
+            </span>
 
-          <span>
-            {product.rating}
-          </span>
+            <span>
+              {product.rating}
+            </span>
+          </div>
+
+          <p
+            className="
+              whitespace-nowrap
+              text-[12px]
+              font-black
+              leading-none
+              tracking-[-0.01em]
+            "
+            style={{
+              color: priceColor,
+            }}
+          >
+            {product.price.toLocaleString("tr-TR")} TL
+          </p>
         </div>
-
-
-        <p
-          className="
-            mt-1
-            text-[14px]
-            font-black
-            tracking-[-0.01em]
-          "
-          style={{
-            color: priceColor,
-          }}
-        >
-          {product.price.toLocaleString("tr-TR")} TL
-        </p>
-
       </div>
     </Link>
   );
 }
-
 
 export default function FeaturedFlowers() {
   const products = useProducts();
@@ -181,7 +186,6 @@ export default function FeaturedFlowers() {
 
   const isNight =
     theme === "night";
-
 
   return (
     <section
@@ -195,27 +199,25 @@ export default function FeaturedFlowers() {
           grid
           grid-cols-2
           gap-x-3
-          gap-y-6
+          gap-y-5
 
           sm:grid-cols-3
-
           md:grid-cols-4
-
           lg:grid-cols-5
-
           xl:grid-cols-6
-
           2xl:grid-cols-7
         "
       >
-        {products.map((product: any) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            colors={colors}
-            isNight={isNight}
-          />
-        ))}
+        {products.map(
+          (product: any) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              colors={colors}
+              isNight={isNight}
+            />
+          )
+        )}
       </div>
     </section>
   );
