@@ -29,22 +29,28 @@ export default function ProductCard({
 }) {
   const { theme } = useTheme();
 
-  const colors = themes[theme].colors;
+  const colors =
+    themes[theme].colors;
 
   return (
     <article
       className="
         group
         overflow-hidden
-        rounded-[22px]
+        rounded-[20px]
         transition-all
         duration-300
         hover:-translate-y-1
       "
       style={{
-        background: colors.card,
-        border: `1px solid ${colors.cardBorder}`,
-        boxShadow: `0 6px 16px ${colors.cardBorder}16`,
+        background:
+          colors.card,
+
+        border:
+          `1px solid ${colors.cardBorder}`,
+
+        boxShadow:
+          `0 5px 14px ${colors.cardBorder}14`,
       }}
     >
       {/* ÜRÜN FOTOĞRAFI */}
@@ -52,10 +58,10 @@ export default function ProductCard({
       <div
         className="
           relative
-          h-[260px]
+          h-[280px]
           overflow-hidden
-          sm:h-[300px]
-          lg:h-[320px]
+          sm:h-[320px]
+          lg:h-[340px]
         "
       >
         <img
@@ -67,7 +73,7 @@ export default function ProductCard({
             object-cover
             transition
             duration-500
-            group-hover:scale-[1.03]
+            group-hover:scale-[1.025]
           "
         />
 
@@ -78,181 +84,214 @@ export default function ProductCard({
               left-2
               top-2
               rounded-full
-              px-2.5
+              px-2
               py-1
-              text-[10px]
+              text-[9px]
               font-black
             "
             style={{
-              background: colors.primary,
-              color: colors.background,
+              background:
+                colors.primary,
+
+              color:
+                colors.background,
             }}
           >
             ✨ VIP
           </span>
         )}
 
+        {/* PUAN FOTOĞRAFIN ÜSTÜNDE */}
+
+        <div
+          className="
+            absolute
+            bottom-2
+            left-2
+            rounded-full
+            px-2
+            py-1
+            text-[9px]
+            backdrop-blur-md
+          "
+          style={{
+            background:
+              `${colors.card}E8`,
+
+            color:
+              colors.foreground,
+          }}
+        >
+          <ProductRating
+            productSlug={
+              product.slug
+            }
+            fallback={
+              product.rating
+            }
+          />
+        </div>
+
+        {/* FAVORİ */}
+
         <div
           className="
             absolute
             bottom-2
             right-2
-            scale-90
+            scale-[0.82]
           "
         >
-          <FavoriteButton slug={product.slug} />
+          <FavoriteButton
+            slug={product.slug}
+          />
         </div>
       </div>
 
-      {/* KOMPAKT BİLGİ ALANI */}
+      {/* MİNİMUM BİLGİ ALANI */}
 
-      <div className="px-3 pb-3 pt-2.5">
-        <p
-          className="
-            text-[10px]
-            font-bold
-            leading-none
-          "
-          style={{
-            color: colors.primary,
-          }}
-        >
-          {product.category}
-        </p>
+      <div
+        className="
+          px-2.5
+          pb-2.5
+          pt-2
+        "
+      >
+        {/* ÜRÜN ADI + FİYAT */}
 
-        <h3
+        <div
           className="
-            mt-1
-            truncate
-            text-[14px]
-            font-black
-            leading-tight
+            grid
+            grid-cols-[minmax(0,1fr)_auto]
+            items-center
+            gap-2
           "
-          style={{
-            color: colors.foreground,
-          }}
         >
-          {product.name}
-        </h3>
+          <h3
+            className="
+              truncate
+              text-[12px]
+              font-black
+              leading-tight
+            "
+            style={{
+              color:
+                colors.foreground,
+            }}
+          >
+            {product.name}
+          </h3>
+
+          <span
+            className="
+              whitespace-nowrap
+              text-[14px]
+              font-black
+              leading-none
+            "
+            style={{
+              color:
+                colors.primary,
+            }}
+          >
+            {product.price.toLocaleString(
+              "tr-TR"
+            )}{" "}
+            TL
+          </span>
+        </div>
+
+        {/* TEK SATIR AÇIKLAMA */}
 
         {product.description && (
           <p
             className="
-              mt-1
+              mt-0.5
               truncate
-              text-[10px]
+              text-[9px]
               leading-tight
             "
             style={{
-              color: colors.muted,
+              color:
+                colors.muted,
             }}
           >
             {product.description}
           </p>
         )}
 
-        {/* FİYAT + PUAN */}
+        {/* MİNİ BUTONLAR */}
 
         <div
           className="
-            mt-2
-            flex
-            items-center
-            justify-between
-            gap-2
-          "
-        >
-          <span
-            className="
-              text-[17px]
-              font-black
-              leading-none
-            "
-            style={{
-              color: colors.primary,
-            }}
-          >
-            {product.price.toLocaleString("tr-TR")} TL
-          </span>
-
-          <span
-            className="
-              origin-right
-              scale-90
-              text-[10px]
-            "
-          >
-            <ProductRating
-              productSlug={product.slug}
-              fallback={product.rating}
-            />
-          </span>
-        </div>
-
-        {/* SİMETRİK BUTONLAR */}
-
-        <div
-          className="
-            mt-2.5
+            mt-1.5
             grid
             grid-cols-2
-            gap-2
+            gap-1.5
           "
         >
           <Link
             href={`/urunler/${product.slug}`}
             className="
               flex
-              h-10
+              h-8
               w-full
               items-center
               justify-center
-              gap-1.5
-              rounded-xl
+              gap-1
+              rounded-lg
               px-2
-              text-[11px]
+              text-[10px]
               font-black
+              leading-none
               transition
-              hover:scale-[1.01]
+              hover:scale-[1.02]
             "
             style={{
-              background: colors.actionSecondary,
-              color: colors.actionSecondaryText,
+              background:
+                colors.actionSecondary,
+
+              color:
+                colors.actionSecondaryText,
             }}
           >
-            <FlorioLogo
-              primary={colors.actionSecondaryText}
-              accent={colors.accent}
-              compact
-              iconOnly
-            />
+            <span className="scale-[0.7]">
+              <FlorioLogo
+                primary={
+                  colors.actionSecondaryText
+                }
+                accent={
+                  colors.accent
+                }
+                compact
+                iconOnly
+              />
+            </span>
 
-            <span>İncele</span>
+            <span>
+              İncele
+            </span>
           </Link>
 
-          <div
-            className="
-              w-full
-              [&_button]:!h-10
-              [&_button]:!min-h-0
-              [&_button]:!w-full
-              [&_button]:!rounded-xl
-              [&_button]:!px-2
-              [&_button]:!py-0
-              [&_button]:!text-[11px]
-              [&_button]:!font-black
-            "
-          >
-            <AddToCartButton
-              product={{
-                id: product.id,
-                slug: product.slug,
-                name: product.name,
-                price: product.price,
-                image: product.image,
-              }}
-            />
-          </div>
+          <AddToCartButton
+            compact
+            product={{
+              id:
+                product.id,
+
+              slug:
+                product.slug,
+
+              name:
+                product.name,
+
+              price:
+                product.price,
+
+              image:
+                product.image,
+            }}
+          />
         </div>
       </div>
     </article>
