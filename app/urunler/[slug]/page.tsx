@@ -66,6 +66,7 @@ export default function ProductPage(){
 
 
 
+
   const trustItems:TrustItem[]=[
 
     {
@@ -92,6 +93,8 @@ export default function ProductPage(){
 
 
 
+
+
   return (
 
     <main
@@ -109,7 +112,6 @@ export default function ProductPage(){
     >
 
 
-
       <div
 
         className="
@@ -122,11 +124,8 @@ export default function ProductPage(){
         "
 
         style={{
-
           background:colors.card,
-
           borderColor:colors.cardBorder
-
         }}
 
       >
@@ -138,7 +137,7 @@ export default function ProductPage(){
           className="
           grid
           gap-6
-          lg:grid-cols-[1.6fr_0.8fr]
+          lg:grid-cols-[1.7fr_0.7fr]
           "
 
         >
@@ -146,17 +145,20 @@ export default function ProductPage(){
 
 
 
-          {/* BÜYÜK FOTOĞRAF */}
+
+          {/* FOTOĞRAF */}
 
 
           <div
 
             className="
+            relative
             overflow-hidden
             rounded-[28px]
             "
 
           >
+
 
             <img
 
@@ -165,7 +167,7 @@ export default function ProductPage(){
               alt={product.name}
 
               className="
-              h-[520px]
+              h-[450px]
               w-full
               object-cover
               transition
@@ -176,6 +178,27 @@ export default function ProductPage(){
             />
 
 
+
+            <div
+
+              className="
+              absolute
+              right-4
+              top-4
+              "
+
+            >
+
+              <FavoriteButton
+
+                slug={product.slug}
+
+              />
+
+            </div>
+
+
+
           </div>
 
 
@@ -184,8 +207,7 @@ export default function ProductPage(){
 
 
 
-          {/* SAĞ BİLGİ ALANI */}
-
+          {/* BİLGİ ALANI */}
 
 
           <div
@@ -263,10 +285,11 @@ export default function ProductPage(){
 
 
 
+
             <p
 
               className="
-              mt-3
+              mt-2
               text-sm
               leading-relaxed
               "
@@ -289,10 +312,11 @@ export default function ProductPage(){
 
 
 
+
             <div
 
               className="
-              mt-5
+              mt-4
               flex
               items-center
               justify-between
@@ -325,6 +349,7 @@ export default function ProductPage(){
 
 
 
+
               <ProductRating
 
                 productSlug={product.slug}
@@ -342,7 +367,8 @@ export default function ProductPage(){
 
 
 
-            <div className="mt-4">
+
+            <div className="mt-3">
 
 
               <AddToCartButton
@@ -369,21 +395,6 @@ export default function ProductPage(){
 
 
 
-
-            <div className="mt-3">
-
-
-              <FavoriteButton
-
-                slug={product.slug}
-
-              />
-
-
-            </div>
-
-
-
           </div>
 
 
@@ -395,11 +406,13 @@ export default function ProductPage(){
 
 
 
+
         <ProductReviews
 
           productSlug={product.slug}
 
         />
+
 
 
 
@@ -445,7 +458,9 @@ export default function ProductPage(){
             >
 
 
+
               <div className="text-2xl">
+
 
                 {item.brand ? (
 
@@ -466,10 +481,14 @@ export default function ProductPage(){
                   />
 
                 ):(
+
                   item.icon
+
                 )}
 
+
               </div>
+
 
 
               <p className="mt-2 text-xs font-bold">
@@ -491,6 +510,7 @@ export default function ProductPage(){
 
 
       </div>
+
 
 
     </main>
