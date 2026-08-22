@@ -47,7 +47,7 @@ export default function ProductCard({
         boxShadow: `0 6px 16px ${colors.cardBorder}16`,
       }}
     >
-      {/* ÜRÜN FOTOĞRAFI - KARTIN ANA ALANI */}
+      {/* ÜRÜN FOTOĞRAFI */}
 
       <div
         className="
@@ -177,9 +177,9 @@ export default function ProductCard({
 
           <span
             className="
+              origin-right
               scale-90
               text-[10px]
-              origin-right
             "
           >
             <ProductRating
@@ -189,13 +189,13 @@ export default function ProductCard({
           </span>
         </div>
 
-        {/* ÇOK KOMPAKT BUTONLAR */}
+        {/* SİMETRİK BUTONLAR */}
 
         <div
           className="
-            mt-2
+            mt-2.5
             grid
-            grid-cols-[0.8fr_1.2fr]
+            grid-cols-2
             gap-2
           "
         >
@@ -203,11 +203,12 @@ export default function ProductCard({
             href={`/urunler/${product.slug}`}
             className="
               flex
-              h-9
+              h-10
+              w-full
               items-center
               justify-center
-              gap-1
-              rounded-lg
+              gap-1.5
+              rounded-xl
               px-2
               text-[11px]
               font-black
@@ -231,9 +232,11 @@ export default function ProductCard({
 
           <div
             className="
-              [&_button]:!h-9
+              w-full
+              [&_button]:!h-10
               [&_button]:!min-h-0
-              [&_button]:!rounded-lg
+              [&_button]:!w-full
+              [&_button]:!rounded-xl
               [&_button]:!px-2
               [&_button]:!py-0
               [&_button]:!text-[11px]
