@@ -2,65 +2,26 @@ generator client {
   provider = "prisma-client-js"
 }
 
+
 datasource db {
   provider = "postgresql"
 }
+
+
 model FlowerShop {
+
   id Int @id @default(autoincrement())
 
   shopName String
-  owner    String
-  phone    String
-  email    String @unique
+
+  owner String
+
+  phone String
+
+  email String @unique
+
   password String
 
-  city     String
-  district String
-  address  String
-
-  status        String @default("Onay Bekliyor")
-  contactStatus String @default("Aranacak")
-
-  adminNote String?
-
-  createdAt DateTime @default(now()) @db.Timestamptz
-
-  orders Order[]
-
-  passwordResets FlowerShopPasswordReset[]
-}
-
-
-model FlowerShopPasswordReset {
-
-  id Int @id @default(autoincrement())
-
-  flowerShopId Int
-
-  codeHash String
-
-  expiresAt DateTime @db.Timestamptz
-
-  attempts Int @default(0)
-
-  createdAt DateTime @default(now()) @db.Timestamptz
-
-  flowerShop FlowerShop @relation(fields: [flowerShopId], references: [id], onDelete: Cascade)
-
-  @@index([flowerShopId])
-
-}
-
-
-model Order {
-
-  id Int @id @default(autoincrement())
-
-  customerName String
-
-  customerPhone String
-
-  senderPhone String @default("")
 
   city String
 
@@ -68,31 +29,117 @@ model Order {
 
   address String
 
+
+  status String @default("Onay Bekliyor")
+
+  contactStatus String @default("Aranacak")
+
+
+  adminNote String?
+
+
+  createdAt DateTime @default(now()) @db.Timestamptz
+
+
+  orders Order[]
+
+  passwordResets FlowerShopPasswordReset[]
+
+}
+
+
+
+model FlowerShopPasswordReset {
+
+  id Int @id @default(autoincrement())
+
+
+  flowerShopId Int
+
+
+  codeHash String
+
+
+  expiresAt DateTime @db.Timestamptz
+
+
+  attempts Int @default(0)
+
+
+  createdAt DateTime @default(now()) @db.Timestamptz
+
+
+  flowerShop FlowerShop @relation(fields: [flowerShopId], references: [id], onDelete: Cascade)
+
+
+  @@index([flowerShopId])
+
+}
+
+
+
+model Order {
+
+  id Int @id @default(autoincrement())
+
+
+  customerName String
+
+
+  customerPhone String
+
+
+  senderPhone String @default("")
+
+
+  city String
+
+
+  district String
+
+
+  address String
+
+
   customerNote String?
+
 
   recipientNote String?
 
+
+
   productName String
+
 
   productSlug String?
 
+
   quantity Int
+
 
   price Int
 
+
   paymentStatus String @default("Bekliyor")
+
 
   status String @default("Yeni")
 
+
   flowerShopId Int?
+
 
   assignedAt DateTime? @db.Timestamptz
 
+
   deliveryDate String?
+
 
   deliveryTimeSlot String?
 
+
   customerId Int?
+
 
   acceptedAt DateTime? @db.Timestamptz
 
@@ -104,20 +151,28 @@ model Order {
 
   deliveredAt DateTime? @db.Timestamptz
 
+
   preparationImage String?
 
+
   selected Boolean @default(false)
+
 
   createdAt DateTime @default(now()) @db.Timestamptz
 
 
+
   flowerShop FlowerShop? @relation(fields: [flowerShopId], references: [id])
+
 
   customer Customer? @relation(fields: [customerId], references: [id])
 
+
   histories OrderHistory[]
 
+
   review Review?
+
 
 
   @@index([flowerShopId])
@@ -130,59 +185,107 @@ model Order {
 
 }
 
-
-
 model Customer {
 
   id Int @id @default(autoincrement())
 
+
   name String
+
 
   email String @unique
 
+
   phone String
+
 
   passwordHash String
 
+
+
   emailVerifiedAt DateTime? @db.Timestamptz
+
+
+
+  membershipAcceptedAt DateTime? @db.Timestamptz
+
+  membershipAgreementVersion String?
+
+
+
+  kvkkNoticePresentedAt DateTime? @db.Timestamptz
+
+  kvkkNoticeVersion String?
+
+
+
+  marketingConsent Boolean @default(false)
+
+  marketingConsentAt DateTime? @db.Timestamptz
+
+  marketingConsentVersion String?
+
+
 
   status String @default("Aktif")
 
+
   createdAt DateTime @default(now()) @db.Timestamptz
+
 
 
   sessions CustomerSession[]
 
+
   emailVerifications CustomerEmailVerification[]
+
 
   addresses CustomerAddress[]
 
+
   orders Order[]
 
+
   reviewReplies ReviewReply[]
+
 
   reviewLikes ReviewLike[]
 
 }
+
+
+
+
+
 model CustomerAddress {
+
 
   id Int @id @default(autoincrement())
 
+
   customerId Int
+
 
   title String
 
+
   receiverName String
+
 
   receiverPhone String
 
+
   city String @default("İstanbul")
+
 
   district String
 
+
   address String
 
+
   createdAt DateTime @default(now()) @db.Timestamptz
+
 
 
   customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
@@ -190,55 +293,71 @@ model CustomerAddress {
 
   @@index([customerId])
 
+
 }
+
+
 
 
 
 model CustomerEmailVerification {
 
+
   id Int @id @default(autoincrement())
+
 
   customerId Int
 
+
   codeHash String
+
 
   expiresAt DateTime @db.Timestamptz
 
+
   attempts Int @default(0)
+
 
   createdAt DateTime @default(now()) @db.Timestamptz
 
 
-  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
   @@index([customerId])
 
+
 }
+
+
 
 
 
 model CustomerSession {
 
+
   id Int @id @default(autoincrement())
+
 
   customerId Int
 
+
   tokenHash String @unique
 
+
   expiresAt DateTime @db.Timestamptz
+
 
   createdAt DateTime @default(now()) @db.Timestamptz
 
 
-  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
   @@index([customerId])
 
+
 }
-
-
 
 model Review {
 
@@ -274,9 +393,6 @@ model Review {
 
 
   order Order? @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-
-
   replies ReviewReply[]
 
 
@@ -294,7 +410,10 @@ model Review {
 
 
 
+
+
 model ReviewReply {
+
 
   id Int @id @default(autoincrement())
 
@@ -320,25 +439,21 @@ model ReviewReply {
   createdAt DateTime @default(now()) @db.Timestamptz
 
 
-
   review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
-
 
   customer Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
 
-
   @@index([reviewId])
-
-  @@index([isApproved])
-
-  @@index([isHidden])
 
 }
 
 
 
+
+
 model ReviewLike {
+
 
   id Int @id @default(autoincrement())
 
@@ -355,18 +470,19 @@ model ReviewLike {
 
   review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 
-
   customer Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
 
-
-  @@index([reviewId])
+  @@unique([reviewId, customerId])
 
 }
 
 
 
+
+
 model OrderHistory {
+
 
   id Int @id @default(autoincrement())
 
@@ -384,16 +500,19 @@ model OrderHistory {
 
 
 
-  order Order? @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
   @@index([orderId])
+
 
 }
 
 
 
+
+
 model AdminUser {
+
 
   id Int @id @default(autoincrement())
 
@@ -417,7 +536,10 @@ model AdminUser {
 
 
 
+
+
 model AdminPasswordReset {
+
 
   id Int @id @default(autoincrement())
 
@@ -440,14 +562,16 @@ model AdminPasswordReset {
 
   admin AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
 
-
   @@index([adminId])
 
 }
 
 
 
+
+
 model AdminSession {
+
 
   id Int @id @default(autoincrement())
 
@@ -467,14 +591,16 @@ model AdminSession {
 
   admin AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
 
-
   @@index([adminId])
 
 }
 
 
 
+
+
 model ProductOverride {
+
 
   slug String @id
 
@@ -510,5 +636,6 @@ model ProductOverride {
 
 
   updatedAt DateTime @updatedAt @db.Timestamptz
+
 
 }
