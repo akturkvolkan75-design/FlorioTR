@@ -1,67 +1,70 @@
 "use client";
 
+import { products } from "@/data/products";
 import { useParams } from "next/navigation";
-
-import AddToCartButton from "@/components/AddToCartButton";
+import Image from "next/image";
 import FavoriteButton from "@/components/FavoriteButton";
-import FlorioLogo from "@/components/FlorioLogo";
+import AddToCartButton from "@/components/AddToCartButton";
+import { useTheme } from "@/context/ThemeContext";
+import { themes } from "@/themes/themes";
 import ProductRating from "@/components/reviews/ProductRating";
 import ProductReviews from "@/components/reviews/ProductReviews";
 
-import { useTheme } from "@/context/ThemeContext";
-import { useProducts } from "@/hooks/useProducts";
-import { themes } from "@/themes/themes";
 
-
-type TrustItem = {
-  text:string;
-  icon?:string;
-  brand?:boolean;
-};
-
-
-export default function ProductPage(){
-
-  const products = useProducts();
+export default function ProductPage() {
 
   const params = useParams();
-
   const slug = params.slug as string;
-
-
-  const {theme}=useTheme();
-
+  const { theme } = useTheme();
   const colors = themes[theme].colors;
 
 
+  const product = products.find(
 
-  const product =
-    products.find(
-      item=>item.slug===slug
-    );
+    (item)=>item.slug === slug
+
+  );
+
 
 
 
   if(!product){
 
+
     return (
+
       <main
-        className="min-h-screen flex items-center justify-center"
-        style={{
-          background:colors.background
-        }}
+
+        className="
+        min-h-screen
+        flex
+        items-center
+        justify-center
+        "
+
+        style={{ background: colors.background }}
+
       >
 
         <h1
-          className="text-3xl font-black"
-          style={{
-            color:colors.primary
-          }}
+
+          className="
+          text-3xl
+          font-bold
+          "
+
+          style={{ color: colors.primary }}
+
         >
-          Ürün bulunamadı
+
+          🌸 Ürün bulunamadı
+
+
         </h1>
 
+
       </main>
+
     );
 
   }
@@ -69,111 +72,104 @@ export default function ProductPage(){
 
 
 
-  const trustItems:TrustItem[]=[
-
-    {
-      icon:"🚚",
-      text:"Aynı gün teslimat"
-    },
-
-    {
-      brand:true,
-      text:"Profesyonel hazırlama"
-    },
-
-    {
-      icon:"🔒",
-      text:"Güvenli ödeme"
-    },
-
-    {
-      icon:"💝",
-      text:"Özel gün tasarımları"
-    }
-
-  ];
-
-
 
   return (
 
+
     <main
+
       className="
       min-h-screen
-      px-4
-      py-8
+      px-6
+      py-16
       "
+
       style={{
+
         background:colors.background
+
       }}
+
     >
 
 
 
       <div
+
         className="
         mx-auto
-        max-w-7xl
-        rounded-[32px]
+        max-w-6xl
+        rounded-[40px]
         border
-        p-5
-        shadow-xl
+        p-8
+        shadow-2xl
         "
+
         style={{
-          background:colors.card,
-          borderColor:colors.cardBorder
+          background: colors.card,
+          borderColor: colors.cardBorder,
         }}
+
       >
 
 
 
+
+
         <div
+
           className="
           grid
-          gap-8
-          lg:grid-cols-[1.35fr_0.85fr]
+          gap-10
+          md:grid-cols-2
           "
+
         >
 
 
 
-          {/* FOTOĞRAF */}
+
+
+          {/* Ürün Görseli */}
+
 
           <div
+
             className="
             relative
+            h-[500px]
+            sm:h-[580px]
+            lg:h-[720px]
             overflow-hidden
-            rounded-[28px]
+            rounded-[35px]
             "
+
+            style={{ background: colors.background }}
+
           >
 
-            <img
+
+            <Image
+
               src={product.image}
+
               alt={product.name}
+
+              fill
+
+              sizes="(max-width: 767px) 100vw, 50vw"
+
               className="
-              h-[420px]
-              w-full
-              object-cover
+              object-contain
+              p-4
+              sm:p-6
+              lg:p-8
               transition
               duration-700
-              hover:scale-105
+              hover:scale-[1.02]
               "
+
             />
-
-
-            <div
-              className="
-              absolute
-              right-4
-              top-4
-              "
-            >
-
-              <FavoriteButton
-                slug={product.slug}
-              />
-
-            </div>
 
 
           </div>
@@ -183,123 +179,243 @@ export default function ProductPage(){
 
 
 
-          {/* BİLGİ */}
+
+
+          {/* Bilgiler */}
+
+
 
           <div
+
             className="
             flex
             flex-col
             justify-center
             "
+
           >
 
 
 
-            {product.vip && (
 
-              <span
-                className="
-                mb-3
-                w-fit
-                rounded-full
-                px-3
-                py-1
-                text-xs
-                font-bold
-                "
-                style={{
-                  background:colors.actionSecondary,
-                  color:colors.actionSecondaryText
-                }}
-              >
+            {
+              product.vip && (
 
-                ✨ VIP
 
-              </span>
+                <span
 
-            )}
+                  className="
+                  mb-5
+                  w-fit
+                  rounded-full
+                  px-5
+                  py-2
+                  text-sm
+                  font-bold
+                  "
+
+                  style={{
+
+                    background:colors.actionSecondary,
+
+                    color:colors.actionSecondaryText
+
+                  }}
+
+                >
+
+                  ✨ VIP Koleksiyon
+
+
+                </span>
+
+
+              )
+
+            }
+
+
+
+
 
 
 
             <p
-              className="text-sm font-bold"
+
+              className="
+              font-bold
+              "
+
               style={{
+
                 color:colors.primary
+
               }}
+
             >
+
               {product.category}
+
+
             </p>
 
 
 
+
+
+
             <h1
+
               className="
-              mt-3
-              text-3xl
-              font-black
-              leading-tight
+              mt-4
+              text-5xl
+              font-extrabold
               "
+
               style={{
+
                 color:colors.foreground
+
               }}
+
             >
 
               {product.name}
+
 
             </h1>
 
 
 
 
+
+
+
             <p
+
               className="
-              mt-3
-              text-sm
+              mt-6
+              text-lg
               leading-relaxed
               "
+
               style={{
+
                 color:colors.muted
+
               }}
+
             >
 
               {product.description}
+
 
             </p>
 
 
 
 
+
+
+
+
             <div
+
               className="
-              mt-5
+              mt-8
               flex
               items-center
               justify-between
               "
+
             >
 
+
+
               <span
+
                 className="
-                text-3xl
+                text-4xl
                 font-black
                 "
+
                 style={{
+
                   color:colors.primary
+
                 }}
+
               >
 
-                {product.price.toLocaleString("tr-TR")} TL
+                {product.price} TL
+
 
               </span>
 
 
-              <ProductRating
-                productSlug={product.slug}
-                fallback={product.rating}
+
+
+
+
+              <span
+
+                className="
+                rounded-full
+                px-5
+                py-3
+                font-bold
+                "
+
+                style={{
+                  background: colors.actionSecondary,
+                  color: colors.actionSecondaryText,
+                }}
+
+              >
+
+                <ProductRating productSlug={product.slug} fallback={product.rating} />
+
+
+              </span>
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+            <div className="mt-8">
+
+
+              <AddToCartButton
+
+                product={{
+
+                  id:product.id,
+
+                  slug:product.slug,
+
+                  name:product.name,
+
+                  price:product.price,
+
+                  image:product.image
+
+                }}
+
               />
 
 
             </div>
+
+
 
 
 
@@ -307,21 +423,16 @@ export default function ProductPage(){
 
             <div className="mt-5">
 
-              <AddToCartButton
 
-                product={{
+              <FavoriteButton
 
-                  id:product.id,
-                  slug:product.slug,
-                  name:product.name,
-                  price:product.price,
-                  image:product.image
-
-                }}
+                slug={product.slug}
 
               />
 
+
             </div>
+
 
 
 
@@ -329,91 +440,129 @@ export default function ProductPage(){
           </div>
 
 
-        </div>
 
-
-
-
-
-        {/* YORUMLAR */}
-
-        <div className="mt-8">
-
-          <ProductReviews
-            productSlug={product.slug}
-          />
 
         </div>
 
+        <ProductReviews productSlug={product.slug} />
 
 
 
 
 
-        {/* GÜVEN */}
+
+
+
+
+        {/* Güven Alanı */}
+
+
 
         <div
+
           className="
-          mt-8
+          mt-12
           grid
-          gap-3
+          gap-5
           md:grid-cols-4
           "
+
         >
 
-          {trustItems.map(item=>(
 
-            <div
-              key={item.text}
-              className="
-              rounded-2xl
-              p-3
-              text-center
-              "
-              style={{
-                background:colors.actionSecondary,
-                color:colors.actionSecondaryText,
-                border:`1px solid ${colors.cardBorder}`
-              }}
-            >
 
-              <div className="text-xl">
+          {
 
-                {item.brand ? (
+            [
 
-                  <FlorioLogo
-                    primary={colors.actionSecondaryText}
-                    accent={colors.accent}
-                    compact
-                    iconOnly
-                  />
+              {
+                icon:"🚚",
+                text:"Aynı gün teslimat"
+              },
 
-                ) : (
+              {
+                icon:"🌹",
+                text:"Profesyonel hazırlama"
+              },
 
-                  item.icon
+              {
+                icon:"🔒",
+                text:"Güvenli ödeme"
+              },
 
-                )}
+              {
+                icon:"💝",
+                text:"Özel gün tasarımları"
+              }
+
+            ].map((item)=>(
+
+
+              <div
+
+                key={item.text}
+
+                className="
+                rounded-3xl
+                p-5
+                text-center
+                "
+
+                style={{
+                  background: colors.actionSecondary,
+                  color: colors.actionSecondaryText,
+                  border: `1px solid ${colors.cardBorder}`,
+                }}
+
+              >
+
+                <div className="text-3xl">
+
+                  {item.icon}
+
+                </div>
+
+
+                <p
+
+                  className="
+                  mt-3
+                  text-sm
+                  font-semibold
+                  "
+
+                >
+
+                  {item.text}
+
+
+                </p>
+
 
               </div>
 
 
-              <p className="mt-1 text-xs font-bold">
-                {item.text}
-              </p>
+            ))
+
+          }
 
 
-            </div>
-
-          ))}
 
 
         </div>
+
+
+
+
 
 
       </div>
 
 
+
+
     </main>
+
 
   );
 
