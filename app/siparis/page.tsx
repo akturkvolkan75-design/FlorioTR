@@ -8,7 +8,11 @@ import SavedAddressPicker from "@/components/order/SavedAddressPicker";
 import { useTheme } from "@/context/ThemeContext";
 import { assignFlorist } from "@/lib/orderAssign";
 import { themes } from "@/themes/themes";
-
+function getTodayDate() {
+  return new Date()
+    .toISOString()
+    .split("T")[0];
+}
 export default function SiparisPage() {
   const router = useRouter();
 
@@ -32,7 +36,7 @@ export default function SiparisPage() {
     address: "",
     flowerNote: "",
     customerNote: "",
-    date: "",
+    date: getTodayDate(),
     time: "",
   });
 
@@ -763,79 +767,76 @@ export default function SiparisPage() {
             />
           </div>
         </section>
+      {/* ZAMAN */}
 
-        {/* ZAMAN */}
+<section className="mb-10">
 
-        <section className="mb-10">
-          <h2
-            className="
-              mb-5
-              text-xl
-              font-bold
-            "
-            style={{
-              color:
-                colors.foreground,
-            }}
-          >
-            ⏰ Teslimat Zamanı
-          </h2>
+  <h2
+    className="
+      mb-5
+      text-xl
+      font-bold
+    "
+    style={{
+      color: colors.foreground,
+    }}
+  >
+    ⏰ Teslimat Zamanı
+  </h2>
 
-          <input
-            type="date"
-            name="date"
-            value={
-              form.date
-            }
-            onChange={
-              handleChange
-            }
-            className="
-              mb-4
-              w-full
-              rounded-2xl
-              p-4
-            "
-            style={inputStyle}
-          />
 
-          <select
-            name="time"
-            value={
-              form.time
-            }
-            onChange={
-              handleChange
-            }
-            className="
-              w-full
-              rounded-2xl
-              p-4
-            "
-            style={inputStyle}
-          >
-            <option>
-              Saat Seçiniz
-            </option>
+  <input
+    type="date"
+    name="date"
+    min={getTodayDate()}
+    value={form.date}
+    onChange={handleChange}
+     onClick={(e) => e.currentTarget.showPicker()}
+    className="
+      mb-4
+      w-full
+      rounded-2xl
+      p-4
+    "
+    style={inputStyle}
+  />
 
-            <option>
-              09:00 - 12:00
-            </option>
 
-            <option>
-              12:00 - 15:00
-            </option>
+  <select
+    name="time"
+    value={form.time}
+    onChange={handleChange}
+    className="
+      w-full
+      rounded-2xl
+      p-4
+    "
+    style={inputStyle}
+  >
 
-            <option>
-              15:00 - 18:00
-            </option>
+    <option>
+      Saat Seçiniz
+    </option>
 
-            <option>
-              18:00 - 21:00
-            </option>
-          </select>
-        </section>
 
+    {new Date().getHours() < 11 && (
+      <option>
+        09:00 - 13:00
+      </option>
+    )}
+
+
+    <option>
+      13:00 - 20:00
+    </option>
+
+
+  </select>
+
+
+
+
+</section>
         {/* ÖDEME */}
 
         <section>
