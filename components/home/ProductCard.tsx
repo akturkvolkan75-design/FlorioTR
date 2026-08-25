@@ -104,13 +104,13 @@ export default function ProductCard({
 
       <div
 
-        className="
+        className={`
         relative
-          h-56
-          sm:h-64
-          lg:h-72
         overflow-hidden
-        "
+        ${isOrchid
+          ? "aspect-[3/4]"
+          : "h-56 sm:h-64 lg:h-72"}
+        `}
 
       >
 
@@ -130,7 +130,7 @@ export default function ProductCard({
           transition
           duration-700
           ${isOrchid
-            ? "object-contain p-3 group-hover:scale-[1.03]"
+            ? "object-contain group-hover:scale-[1.015]"
             : "object-cover group-hover:scale-110"}
           `}
 
@@ -139,18 +139,22 @@ export default function ProductCard({
 
 
 
-        <div
+        {!isOrchid && (
 
-          className="
-          absolute
-          inset-0
-          bg-gradient-to-t
-          from-black/50
-          via-transparent
-          to-transparent
-          "
+          <div
 
-        />
+            className="
+            absolute
+            inset-0
+            bg-gradient-to-t
+            from-black/50
+            via-transparent
+            to-transparent
+            "
+
+          />
+
+        )}
 
 
 
