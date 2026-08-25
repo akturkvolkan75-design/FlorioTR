@@ -54,7 +54,7 @@ export const products = [
     rating: 5,
     image: "/images/beyaz-cift-dal-orkide.png",
     description:
-      "Beyaz çiçekleri, zarif kurdeleleri ve FlorioTR'ye özel süslemesiyle hazırlanan çift dallı orkide.",
+      "Beyaz çiçekleri, zarif beyaz kurdeleleri ve kırmızı-siyah ambalajıyla hazırlanan çift dallı orkide.",
     favorite: false,
     vip: false,
   },
@@ -181,7 +181,7 @@ export const products = [
     price: 1350,
     rating: 4.9,
     image: "/images/mor-cift-dal-orkide.png",
-    description: "Canlı mor çiçekleri, zarif kurdeleleri ve FlorioTR'ye özel süslemesiyle hazırlanan çift dallı orkide.",
+    description: "Canlı mor çiçekleri, zarif beyaz kurdeleleri ve kırmızı-siyah ambalajıyla hazırlanan çift dallı orkide.",
     favorite: false,
     vip: false,
   },
