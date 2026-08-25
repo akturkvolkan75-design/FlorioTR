@@ -1,239 +1,510 @@
 "use client";
 
-import Link from "next/link";
 
-import AddToCartButton from "@/components/AddToCartButton";
+import Link from "next/link";
+import Image from "next/image";
+
 import FavoriteButton from "@/components/FavoriteButton";
-import FlorioLogo from "@/components/FlorioLogo";
-import ProductRating from "@/components/reviews/ProductRating";
+import AddToCartButton from "@/components/AddToCartButton";
 
 import { useTheme } from "@/context/ThemeContext";
 import { themes } from "@/themes/themes";
+import ProductRating from "@/components/reviews/ProductRating";
+
+
 
 type Product = {
-  id: number;
-  slug: string;
-  name: string;
-  category: string;
-  price: number;
-  rating: number;
-  image: string;
-  description: string;
-  vip: boolean;
+
+  id:number;
+
+  slug:string;
+
+  name:string;
+
+  category:string;
+
+  price:number;
+
+  rating:number;
+
+  image:string;
+
+  description:string;
+
+  vip:boolean;
+
 };
 
+
+
+
+
 export default function ProductCard({
+
   product,
-}: {
-  product: Product;
-}) {
+
+}:{
+
+  product:Product;
+
+}){
+
+
   const { theme } = useTheme();
 
   const colors = themes[theme].colors;
+  const isOrchid = product.category === "Orkideler";
+
+
 
   return (
+
+
+
     <article
+
+
       className="
-        group
-        overflow-hidden
-        rounded-[20px]
-        transition-all
-        duration-300
-        hover:-translate-y-1
+      group
+      overflow-hidden
+      rounded-[32px]
+      shadow-xl
+      transition-all
+      duration-500
+      hover:-translate-y-3
+      hover:shadow-2xl
       "
+
       style={{
-        background: colors.card,
-        border: `1px solid ${colors.cardBorder}`,
-        boxShadow: `0 5px 14px ${colors.cardBorder}14`,
+
+
+        background:
+        colors.card,
+
+
+        border:
+        `2px solid ${colors.cardBorder}`,
+
+        boxShadow:
+        `0 14px 34px ${colors.cardBorder}22`
+
+
       }}
+
+
     >
-      {/* ÜRÜN FOTOĞRAFI */}
+
+
+
+
+
+      {/* Görsel */}
+
+
 
       <div
+
         className="
-          relative
-          h-[280px]
-          overflow-hidden
-          sm:h-[320px]
-          lg:h-[340px]
+        relative
+          h-56
+          sm:h-64
+          lg:h-72
+        overflow-hidden
         "
+
       >
-        <img
+
+
+
+        <Image
+
           src={product.image}
+
           alt={product.name}
-          className="
-            h-full
-            w-full
-            object-cover
-            transition
-            duration-500
-            group-hover:scale-[1.025]
-          "
+
+          fill
+
+          sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
+
+          className={`
+          transition
+          duration-700
+          ${isOrchid
+            ? "object-contain p-3 group-hover:scale-[1.03]"
+            : "object-cover group-hover:scale-110"}
+          `}
+
         />
 
+
+
+
+        <div
+
+          className="
+          absolute
+          inset-0
+          bg-gradient-to-t
+          from-black/50
+          via-transparent
+          to-transparent
+          "
+
+        />
+
+
+
+
+
+
+
         {product.vip && (
+
+
           <span
+
             className="
-              absolute
-              left-2
-              top-2
-              rounded-full
-              px-2
-              py-1
-              text-[9px]
-              font-black
+            absolute
+            right-4
+            top-4
+            rounded-full
+            px-4
+            py-2
+            text-xs
+            font-bold
             "
+
             style={{
-              background: colors.primary,
-              color: colors.background,
+
+
+              background:
+              colors.primary,
+
+
+              color:
+              colors.background
+
+
             }}
+
           >
-            ✨ VIP
+
+            ✨ VIP Koleksiyon
+
+
           </span>
+
+
         )}
 
-        {/* PUAN */}
 
-        <div
-          className="
-            absolute
-            bottom-2
-            left-2
-            rounded-full
-            px-2
-            py-1
-            text-[9px]
-            backdrop-blur-md
-          "
-          style={{
-            background: `${colors.card}E8`,
-            color: colors.foreground,
-          }}
-        >
-          <ProductRating
-            productSlug={product.slug}
-            fallback={product.rating}
-          />
-        </div>
 
-        {/* FAVORİ */}
 
-        <div
-          className="
-            absolute
-            bottom-2
-            right-2
-            scale-[0.82]
-          "
-        >
-          <FavoriteButton slug={product.slug} />
-        </div>
+
       </div>
 
-      {/* ULTRA KOMPAKT ALT ALAN */}
 
-      <div
-        className="
-          px-2.5
-          pb-2.5
-          pt-2
-        "
-      >
-        {/* ÜRÜN ADI + FİYAT */}
+
+
+
+
+
+
+      {/* Bilgiler */}
+
+
+
+      <div className="p-6">
+
+
+
+
+
+        <p
+
+          className="
+          text-sm
+          font-bold
+          "
+
+          style={{
+
+
+            color:
+            colors.primary
+
+
+          }}
+
+        >
+
+          {product.category}
+
+
+        </p>
+
+
+
+
+
+
+
+        <h3
+
+          className="
+          mt-3
+          text-xl
+          font-extrabold
+          "
+
+          style={{
+
+
+            color:
+            colors.foreground
+
+
+          }}
+
+        >
+
+          {product.name}
+
+
+        </h3>
+
+
+
+
+
+
+
+        <p
+
+          className="
+          mt-3
+          line-clamp-2
+          text-sm
+          font-medium
+          leading-relaxed
+          "
+
+          style={{
+
+
+            color: colors.muted
+
+
+          }}
+
+        >
+
+          {product.description}
+
+
+        </p>
+
+
+
+
+
+
+
+
 
         <div
+
           className="
-            grid
-            grid-cols-[minmax(0,1fr)_auto]
-            items-center
-            gap-2
+          mt-6
+          flex
+          items-center
+          justify-between
           "
+
         >
-          <h3
-            className="
-              truncate
-              text-[12px]
-              font-black
-              leading-none
-            "
-            style={{
-              color: colors.foreground,
-            }}
-          >
-            {product.name}
-          </h3>
+
+
 
           <span
+
             className="
-              whitespace-nowrap
-              text-[14px]
-              font-black
-              leading-none
+            text-2xl
+            font-black
             "
+
             style={{
-              color: colors.primary,
+
+
+              color:
+              colors.primary
+
+
             }}
+
           >
-            {product.price.toLocaleString("tr-TR")} TL
+
+            {product.price} TL
+
+
           </span>
+
+
+
+
+
+
+
+          <span
+
+            className="
+            rounded-full
+            px-4
+            py-2
+            text-sm
+            font-bold
+            "
+
+            style={{
+
+
+              background:
+              colors.secondary,
+
+
+              color:
+              colors.foreground
+
+
+            }}
+
+          >
+
+            <ProductRating productSlug={product.slug} fallback={product.rating} />
+
+
+          </span>
+
+
+
+
         </div>
 
-        {/* MİNİ BUTONLAR */}
 
-        <div
+
+
+
+
+
+
+        <div className="mt-5">
+
+
+          <FavoriteButton
+
+            slug={product.slug}
+
+          />
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <Link
+
+
+          href={`/urunler/${product.slug}`}
+
+
           className="
-            mt-1.5
-            grid
-            grid-cols-2
-            gap-1.5
+          mt-4
+          block
+          rounded-2xl
+          py-3
+          text-center
+          font-bold
+          transition
+          hover:scale-105
           "
-        >
-          <Link
-            href={`/urunler/${product.slug}`}
-            className="
-              flex
-              h-8
-              w-full
-              items-center
-              justify-center
-              gap-1
-              rounded-lg
-              px-2
-              text-[10px]
-              font-black
-              leading-none
-              transition
-              hover:scale-[1.02]
-            "
-            style={{
-              background: colors.actionSecondary,
-              color: colors.actionSecondaryText,
-            }}
-          >
-            <span className="scale-[0.7]">
-              <FlorioLogo
-                primary={colors.actionSecondaryText}
-                accent={colors.accent}
-                compact
-                iconOnly
-              />
-            </span>
 
-            <span>İncele</span>
-          </Link>
+
+          style={{
+
+
+            background:
+            colors.actionSecondary,
+
+
+            color:
+            colors.actionSecondaryText,
+
+            border:
+            `2px solid ${colors.actionPrimary}`
+
+
+          }}
+
+        >
+
+          🌸 Ürünü İncele
+
+
+        </Link>
+
+
+
+
+
+
+
+        <div className="mt-3">
+
 
           <AddToCartButton
-            compact
+
+
             product={{
-              id: product.id,
-              slug: product.slug,
-              name: product.name,
-              price: product.price,
-              image: product.image,
+
+
+              id:product.id,
+
+              slug:product.slug,
+
+              name:product.name,
+
+              price:product.price,
+
+              image:product.image,
+
+
             }}
+
+
           />
+
+
         </div>
+
+
+
+
+
       </div>
+
+
+
+
+
     </article>
+
+
+
   );
+
 }
