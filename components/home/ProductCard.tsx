@@ -53,7 +53,6 @@ export default function ProductCard({
   const { theme } = useTheme();
 
   const colors = themes[theme].colors;
-  const isOrchid = product.category === "Orkideler";
 
 
 
@@ -104,15 +103,27 @@ export default function ProductCard({
 
       <div
 
-        className={`
+        className="
         relative
+        aspect-[3/4]
         overflow-hidden
-        ${isOrchid
-          ? "aspect-[3/4]"
-          : "h-56 sm:h-64 lg:h-72"}
-        `}
+        "
+
+        style={{
+          backgroundImage: `url(${product.image})`,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}
 
       >
+
+        <div
+
+          className="absolute inset-0 backdrop-blur-md"
+
+          style={{ background: `${colors.card}C8` }}
+
+        />
 
 
 
@@ -126,38 +137,16 @@ export default function ProductCard({
 
           sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
 
-          className={`
+          className="
+          z-10
+          object-contain
+          p-3
           transition
           duration-700
-          ${isOrchid
-            ? "object-contain group-hover:scale-[1.015]"
-            : "object-cover group-hover:scale-110"}
-          `}
+          group-hover:scale-[1.015]
+          "
 
         />
-
-
-
-
-        {!isOrchid && (
-
-          <div
-
-            className="
-            absolute
-            inset-0
-            bg-gradient-to-t
-            from-black/50
-            via-transparent
-            to-transparent
-            "
-
-          />
-
-        )}
-
-
-
 
 
 
@@ -169,6 +158,7 @@ export default function ProductCard({
 
             className="
             absolute
+            z-20
             right-4
             top-4
             rounded-full

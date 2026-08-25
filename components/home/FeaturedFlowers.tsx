@@ -26,22 +26,27 @@ function ProductCard({ product, colors, isNight }: { product: Product; colors: C
   const titleColor = isNight ? "#FFF8EA" : "#40372B";
   const mutedColor = isNight ? "#CFC2AE" : "#746B5C";
   const priceColor = isNight ? "#F0C978" : "#C8952C";
-  const isOrchid = product.category === "Orkideler";
-
   return (
     <Link href={`/urunler/${product.slug}`} className="group block min-w-0">
       <div
         className="relative aspect-[4/4.35] overflow-hidden rounded-xl border transition duration-300 group-hover:-translate-y-0.5 group-hover:shadow-lg"
-        style={{ background: colors.card, borderColor: colors.cardBorder }}
+        style={{
+          background: colors.card,
+          borderColor: colors.cardBorder,
+          backgroundImage: `url(${product.image})`,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}
       >
+        <div
+          className="absolute inset-0 backdrop-blur-md"
+          style={{ background: `${colors.card}C8` }}
+        />
+
         <img
           src={product.image}
           alt={product.name}
-          className={`h-full w-full transition duration-500 ${
-            isOrchid
-              ? "object-contain p-2 group-hover:scale-[1.015]"
-              : "object-cover group-hover:scale-[1.025]"
-          }`}
+          className="relative z-10 h-full w-full object-contain p-3 transition duration-500 group-hover:scale-[1.015]"
         />
 
         <button
@@ -51,7 +56,7 @@ function ProductCard({ product, colors, isNight }: { product: Product; colors: C
             e.stopPropagation();
           }}
           aria-label="Favorilere ekle"
-          className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-lg border text-[13px] shadow-sm backdrop-blur transition hover:scale-105"
+          className="absolute right-2 top-2 z-20 flex h-7 w-7 items-center justify-center rounded-lg border text-[13px] shadow-sm backdrop-blur transition hover:scale-105"
           style={{
             background: `${colors.card}E8`,
             borderColor: colors.cardBorder,
