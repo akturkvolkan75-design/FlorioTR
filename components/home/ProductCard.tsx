@@ -67,7 +67,7 @@ export default function ProductCard({
       className="
       group
       overflow-hidden
-      rounded-[32px]
+      rounded-2xl
       shadow-xl
       transition-all
       duration-500
@@ -218,7 +218,7 @@ export default function ProductCard({
 
 
 
-      <div className="p-6">
+      <div className="p-4">
 
 
 
@@ -227,7 +227,7 @@ export default function ProductCard({
         <p
 
           className="
-          text-sm
+          text-xs
           font-bold
           "
 
@@ -256,8 +256,8 @@ export default function ProductCard({
         <h3
 
           className="
-          mt-3
-          text-xl
+          mt-2
+          text-lg
           font-extrabold
           "
 
@@ -286,9 +286,9 @@ export default function ProductCard({
         <p
 
           className="
-          mt-3
+          mt-2
           line-clamp-2
-          text-sm
+          text-xs
           font-medium
           leading-relaxed
           "
@@ -319,7 +319,7 @@ export default function ProductCard({
         <div
 
           className="
-          mt-6
+          mt-4
           flex
           items-center
           justify-between
@@ -332,7 +332,7 @@ export default function ProductCard({
           <span
 
             className="
-            text-2xl
+            text-xl
             font-black
             "
 
@@ -362,9 +362,9 @@ export default function ProductCard({
 
             className="
             rounded-full
-            px-4
-            py-2
-            text-sm
+            px-3
+            py-1.5
+            text-xs
             font-bold
             "
 
@@ -400,7 +400,7 @@ export default function ProductCard({
 
 
 
-        <div className="mt-5">
+        <div className="mt-3">
 
 
           <FavoriteButton
@@ -427,11 +427,12 @@ export default function ProductCard({
 
 
           className="
-          mt-4
+          mt-3
           block
-          rounded-2xl
-          py-3
+          rounded-xl
+          py-2
           text-center
+          text-sm
           font-bold
           transition
           hover:scale-105
@@ -471,6 +472,8 @@ export default function ProductCard({
 
 
           <AddToCartButton
+
+            compact
 
 
             product={{
