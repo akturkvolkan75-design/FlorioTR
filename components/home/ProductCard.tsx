@@ -105,25 +105,11 @@ export default function ProductCard({
 
         className="
         relative
-        aspect-[3/4]
+        aspect-square
         overflow-hidden
         "
 
-        style={{
-          backgroundImage: `url(${product.image})`,
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-        }}
-
       >
-
-        <div
-
-          className="absolute inset-0 backdrop-blur-md"
-
-          style={{ background: `${colors.card}C8` }}
-
-        />
 
 
 
@@ -138,9 +124,7 @@ export default function ProductCard({
           sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
 
           className="
-          z-10
-          object-contain
-          p-3
+          object-cover
           transition
           duration-700
           group-hover:scale-[1.015]

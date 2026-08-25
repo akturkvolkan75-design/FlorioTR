@@ -29,24 +29,13 @@ function ProductCard({ product, colors, isNight }: { product: Product; colors: C
   return (
     <Link href={`/urunler/${product.slug}`} className="group block min-w-0">
       <div
-        className="relative aspect-[4/4.35] overflow-hidden rounded-xl border transition duration-300 group-hover:-translate-y-0.5 group-hover:shadow-lg"
-        style={{
-          background: colors.card,
-          borderColor: colors.cardBorder,
-          backgroundImage: `url(${product.image})`,
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-        }}
+        className="relative aspect-square overflow-hidden rounded-xl border transition duration-300 group-hover:-translate-y-0.5 group-hover:shadow-lg"
+        style={{ background: colors.card, borderColor: colors.cardBorder }}
       >
-        <div
-          className="absolute inset-0 backdrop-blur-md"
-          style={{ background: `${colors.card}C8` }}
-        />
-
         <img
           src={product.image}
           alt={product.name}
-          className="relative z-10 h-full w-full object-contain p-3 transition duration-500 group-hover:scale-[1.015]"
+          className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.015]"
         />
 
         <button
