@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { themes } from "@/themes/themes";
@@ -148,19 +147,7 @@ export default function ProductReviews({ productSlug }: { productSlug: string })
             {sending ? "Gönderiliyor..." : "Yorumu Gönder"}
           </button>
         </div>
-      ) : (
-        <div className="mt-3 rounded-xl border p-3 text-sm font-bold" style={{ background: colors.card, borderColor: colors.cardBorder }}>
-          Yorumları herkes okuyabilir. Yorum yazmak için{" "}
-          <Link
-            href={`/musteri/giris?next=${encodeURIComponent(`/urunler/${productSlug}`)}`}
-            className="underline"
-            style={{ color: colors.primary }}
-          >
-            e-posta hesabınızla giriş yapın
-          </Link>
-          .
-        </div>
-      )}
+      ) : null}
 
       {message && (
         <p className="mt-2 rounded-lg p-2 text-sm font-bold" style={{ background: colors.card, color: colors.foreground }}>
