@@ -80,8 +80,10 @@ export default function ProductPage() {
 
       className="
       min-h-screen
-      px-6
-      py-16
+      px-4
+      py-4
+      sm:px-6
+      lg:py-6
       "
 
       style={{
@@ -98,10 +100,12 @@ export default function ProductPage() {
 
         className="
         mx-auto
-        max-w-6xl
+        max-w-5xl
         rounded-[40px]
         border
-        p-8
+        p-3
+        sm:p-4
+        lg:p-5
         shadow-2xl
         "
 
@@ -120,7 +124,8 @@ export default function ProductPage() {
 
           className="
           grid
-          gap-10
+          gap-4
+          lg:gap-6
           md:grid-cols-2
           "
 
@@ -137,9 +142,9 @@ export default function ProductPage() {
 
             className="
             relative
-            h-[500px]
-            sm:h-[580px]
-            lg:h-[720px]
+            h-[400px]
+            sm:h-[420px]
+            lg:h-[440px]
             overflow-hidden
             rounded-[35px]
             "
@@ -268,7 +273,8 @@ export default function ProductPage() {
 
               className="
               mt-4
-              text-5xl
+              text-3xl
+              sm:text-4xl
               font-extrabold
               "
 
@@ -294,8 +300,9 @@ export default function ProductPage() {
             <p
 
               className="
-              mt-6
-              text-lg
+              mt-4
+              text-base
+              lg:text-lg
               leading-relaxed
               "
 
@@ -322,7 +329,7 @@ export default function ProductPage() {
             <div
 
               className="
-              mt-8
+              mt-5
               flex
               items-center
               justify-between
@@ -334,8 +341,9 @@ export default function ProductPage() {
 
               <span
 
-                className="
-                text-4xl
+              className="
+                text-3xl
+                lg:text-4xl
                 font-black
                 "
 
@@ -391,7 +399,7 @@ export default function ProductPage() {
 
 
 
-            <div className="mt-8">
+            <div className="mt-5">
 
 
               <AddToCartButton
@@ -421,7 +429,7 @@ export default function ProductPage() {
 
 
 
-            <div className="mt-5">
+            <div className="mt-3">
 
 
               <FavoriteButton
