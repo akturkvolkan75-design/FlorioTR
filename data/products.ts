@@ -1,48 +1,6 @@
 export const products = [
 
 {
-    id: 1,
-    slug: "kirmizi-gul-sevgi-buketi",
-    name: "Kırmızı Gül Sevgi Buketi",
-    category: "Gül Buketleri",
-    price: 1499,
-    rating: 4.9,
-    image: "/images/gul-bahcesi.jpg",
-    description:
-      "Tutkunun ve sevginin simgesi olan özel hazırlanmış kırmızı gül buketi.",
-    favorite: false,
-    vip: false,
-  },
-
-{
-    id: 2,
-    slug: "bahar-esintisi-mevsim-buketi",
-    name: "Bahar Esintisi Mevsim Buketi",
-    category: "Karışık Mevsim Buketleri",
-    price: 1299,
-    rating: 4.8,
-    image: "/images/renkli-bahce.jpg",
-    description:
-      "Mevsimin en güzel çiçeklerinden hazırlanan renkli ve zarif buket.",
-    favorite: false,
-    vip: false,
-  },
-
-{
-    id: 3,
-    slug: "papatya-gul-huzur-buketi",
-    name: "Papatya & Gül Huzur Buketi",
-    category: "Papatya & Gül Buketleri",
-    price: 1249,
-    rating: 4.9,
-    image: "/images/renkli-bahce.jpg",
-    description:
-      "Sade şıklığı sevenler için papatya ve güllerin özel uyumu.",
-    favorite: false,
-    vip: false,
-  },
-
-{
     id: 4,
     slug: "beyaz-cift-dal-orkide",
     name: "Beyaz Çift Dal Orkide",
@@ -52,48 +10,6 @@ export const products = [
     image: "/images/beyaz-cift-dal-orkide-kirmizi-siyah.png",
     description:
       "Beyaz çiçekleri, zarif beyaz kurdeleleri ve kırmızı-siyah ambalajıyla hazırlanan çift dallı orkide.",
-    favorite: false,
-    vip: false,
-  },
-
-{
-    id: 5,
-    slug: "florio-premium-rose",
-    name: "Florio Premium Rose Collection",
-    category: "Gül Buketleri",
-    price: 4499,
-    rating: 5,
-    image: "/images/gul-bahcesi.jpg",
-    description:
-      "FlorioTR özel koleksiyonundan premium gül tasarımı.",
-    favorite: false,
-    vip: true,
-  },
-
-{
-    id: 6,
-    slug: "mutluluk-saksi-cicegi",
-    name: "Mutluluk Saksı Çiçeği",
-    category: "Saksı Çiçekleri",
-    price: 1399,
-    rating: 4.7,
-    image: "/images/renkli-bahce.jpg",
-    description:
-      "Yaşam alanlarına renk katan uzun ömürlü saksı çiçeği.",
-    favorite: false,
-    vip: false,
-  },
-
-{
-    id: 7,
-    slug: "zarif-dugun-sepeti",
-    name: "Zarif Düğün Sepeti",
-    category: "Düğün Sepetleri",
-    price: 3299,
-    rating: 4.9,
-    image: "/images/lale-dunyasi.jpg",
-    description:
-      "Özel günler ve düğün törenleri için hazırlanmış şık çiçek sepeti.",
     favorite: false,
     vip: false,
   },
@@ -113,62 +29,6 @@ export const products = [
   },
 
 {
-    id: 9,
-    slug: "pembe-romantik-gul",
-    name: "Pembe Romantik Gül Buketi",
-    category: "Gül Buketleri",
-    price: 1699,
-    rating: 4.9,
-    image: "/images/gul-bahcesi.jpg",
-    description:
-      "Romantik anlar için hazırlanan zarif pembe gül buketi.",
-    favorite: false,
-    vip: false,
-  },
-
-{
-    id: 10,
-    slug: "florio-luxury-koleksiyon",
-    name: "Florio Luxury Koleksiyon",
-    category: "VIP",
-    price: 5499,
-    rating: 5,
-    image: "/images/gul-bahcesi.jpg",
-    description:
-      "FlorioTR'nin en özel ve seçkin premium çiçek koleksiyonu.",
-    favorite: false,
-    vip: true,
-  },
-
-{
-    id: 11,
-    slug: "pastel-mevsim-buketi",
-    name: "Pastel Mevsim Buketi",
-    category: "Karışık Mevsim Buketleri",
-    price: 1399,
-    rating: 4.8,
-    image: "/images/renkli-bahce.jpg",
-    description:
-      "Pastel tonlardaki mevsim çiçeklerinden hazırlanan neşeli buket.",
-    favorite: false,
-    vip: false,
-  },
-
-{
-    id: 12,
-    slug: "beyaz-papatya-mutluluk-buketi",
-    name: "Beyaz Papatya Mutluluk Buketi",
-    category: "Papatya & Gül Buketleri",
-    price: 1299,
-    rating: 4.7,
-    image: "/images/renkli-bahce.jpg",
-    description:
-      "İç açan papatyalar ve zarif güllerle hazırlanan günlük mutluluk buketi.",
-    favorite: false,
-    vip: false,
-  },
-
-{
     id: 13,
     slug: "mor-cift-dal-orkide",
     name: "Mor Çift Dal Orkide",
@@ -178,34 +38,6 @@ export const products = [
     image: "/images/mor-cift-dal-orkide-kirmizi-siyah.png",
     description:
       "Canlı mor çiçekleri, zarif beyaz kurdeleleri ve kırmızı-siyah ambalajıyla hazırlanan çift dallı orkide.",
-    favorite: false,
-    vip: false,
-  },
-
-{
-    id: 14,
-    slug: "yesil-huzur-saksi-cicegi",
-    name: "Yeşil Huzur Saksı Çiçeği",
-    category: "Saksı Çiçekleri",
-    price: 1399,
-    rating: 4.8,
-    image: "/images/renkli-bahce.jpg",
-    description:
-      "Evinize canlılık ve huzur katan dekoratif saksı çiçeği.",
-    favorite: false,
-    vip: false,
-  },
-
-{
-    id: 15,
-    slug: "romantik-dugun-sepeti",
-    name: "Romantik Düğün Sepeti",
-    category: "Düğün Sepetleri",
-    price: 3499,
-    rating: 5,
-    image: "/images/lale-dunyasi.jpg",
-    description:
-      "Nikâh ve düğün törenleri için romantik tonlarda hazırlanan özel sepet.",
     favorite: false,
     vip: false,
   },
@@ -824,5 +656,5 @@ export const products = [
       "Düğün ve nikâh törenleri için beyaz ve kırmızı çiçeklerle hazırlanan çift göbekli çelenk.",
     favorite: false,
     vip: false,
-  },
+  }
 ];
