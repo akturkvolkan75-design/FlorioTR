@@ -48,27 +48,11 @@ const categories = [
     position: "center 45%",
   },
   {
-    badge: "KUTLAMA",
-    name: "Düğün Sepetleri",
-    slug: "dugun-sepetleri",
-    image: "/images/categories/ozel-buketler.jpg",
-    description: "Mutlu günlere özel tasarımlar",
-    position: "center",
-  },
-  {
     badge: "TÖREN",
     name: "Çelenkler",
     slug: "celenkler",
     image: "/images/categories/celenkler.jpg",
     description: "Açılış, düğün ve kutlamalara",
-    position: "center",
-  },
-  {
-    badge: "PREMİUM",
-    name: "VIP Koleksiyon",
-    slug: "vip",
-    image: "/images/categories/kutu-guller.jpg",
-    description: "Gösterişli ve unutulmaz",
     position: "center",
   },
 ];
@@ -105,7 +89,7 @@ export default function Categories() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-3">
         {categories.map((category) => (
           <Link
             key={category.slug}
